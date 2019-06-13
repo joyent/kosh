@@ -1,0 +1,8 @@
+kosh
+.DS_Store
+release
+*.swp
+*.test
+vendor
+*.yml
+*.out
