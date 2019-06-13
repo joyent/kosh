@@ -6,14 +6,19 @@
 
 package main
 
+//lint:file-ignore U1000 WIP
+
 import (
 	"fmt"
 	"os"
 	"os/user"
+	"regexp"
 	"runtime"
 	"time"
 
+	"github.com/gofrs/uuid"
 	"github.com/jawher/mow.cli"
+	"github.com/olekukonko/tablewriter"
 )
 
 const (
@@ -56,6 +61,37 @@ func TimeStr(t time.Time) string {
 		return ""
 	}
 	return t.Local().Format(DateFormat)
+}
+
+func CutUUID(id string) string {
+	re := regexp.MustCompile("^(.+?)-")
+	bits := re.FindStringSubmatch(id)
+	if len(bits) > 0 {
+		return bits[1]
+	}
+	return id
+}
+
+func FindUUID(id string, list []uuid.UUID) (bool, uuid.UUID) {
+	re := regexp.MustCompile(fmt.Sprintf("^%s", id))
+	for _, item := range list {
+		if re.MatchString(item.String()) {
+			return true, item
+		}
+	}
+	return false, uuid.UUID{}
+}
+
+func Table() (table *tablewriter.Table) {
+	table = tablewriter.NewWriter(os.Stdout)
+	TableToMarkdown(table)
+	return table
+}
+
+func TableToMarkdown(table *tablewriter.Table) {
+	table.SetAutoWrapText(false)
+	table.SetBorders(tablewriter.Border{Left: true, Top: false, Right: true, Bottom: false})
+	table.SetCenterSeparator("|")
 }
 
 /***/
