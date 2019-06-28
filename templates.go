@@ -40,3 +40,17 @@ Description: {{ .Description }}
 Your Role: {{ .Role }}
 Your Role Was Derived From: {{ if eq "" $.Via }}[Direct Assignment]{{ else }}{{ .Via }}{{ end }}
 `
+
+const detailedUserTemplate = `
+ID: {{ .ID }}
+Name: {{ .Name }}
+Email: {{ .Email }}
+System Admin: {{ if $.IsAdmin }}Yes{{ else }}No{{ end }}
+
+Created: {{ .Created.Local }}
+Last Login: {{ if $.LastLogin.IsZero }}Never/Unknown{{ else }}{{ .LastLogin.Local }}{{ end }}
+
+
+Workspaces:
+{{ .Workspaces }}
+`
