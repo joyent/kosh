@@ -54,3 +54,14 @@ Last Login: {{ if $.LastLogin.IsZero }}Never/Unknown{{ else }}{{ .LastLogin.Loca
 Workspaces:
 {{ .Workspaces }}
 `
+
+const datacenterTemplate = `
+ID: {{ .ID }}
+Vendor: {{ .Vendor }}
+Vendor Name: {{ .VendorName }}
+Region: {{ .Region }}
+Location: {{ .Location }}
+
+Created: {{ .Created.Local }}
+Updated: {{ .Updated.Local }}
+`
