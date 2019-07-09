@@ -227,58 +227,8 @@ func (d *Datacenters) Delete(id uuid.UUID) {
 
 /****/
 
-// This is called DatacenterRoomsDetailed in the json schema
-type DatacenterRooms []DatacenterRoom
-
-func (dr DatacenterRooms) String() string {
-	if API.JsonOnly {
-		return API.AsJSON(dr)
-	}
-
-	tableString := &strings.Builder{}
-	table := tablewriter.NewWriter(tableString)
-	TableToMarkdown(table)
-
-	table.SetHeader([]string{
-		"ID",
-		"AZ",
-		"Alias",
-		"Vendor Name",
-		"Datacenter ID",
-		"Created",
-		"Updated",
-	})
-
-	for _, r := range dr {
-		table.Append([]string{
-			CutUUID(r.ID.String()),
-			r.AZ,
-			r.Alias,
-			r.VendorName,
-			CutUUID(r.DatacenterID.String()),
-			TimeStr(r.Created),
-			TimeStr(r.Updated),
-		})
-	}
-
-	table.Render()
-	return tableString.String()
-
-}
-
-// This is called DatacenterRoomDetailed in the json schema
-type DatacenterRoom struct {
-	ID           uuid.UUID `json:"id"`
-	AZ           string    `json:"az"`
-	Alias        string    `json:"alias"`
-	VendorName   string    `json:"vendor_name,omitempty"`
-	DatacenterID uuid.UUID `json:"datacenter_id"`
-	Created      time.Time `json:"created"`
-	Updated      time.Time `json:"updated"`
-}
-
-func (d *Datacenters) GetRooms(id uuid.UUID) DatacenterRooms {
-	rooms := make(DatacenterRooms, 0)
+func (d *Datacenters) GetRooms(id uuid.UUID) RoomList {
+	rooms := make(RoomList, 0)
 	uri := fmt.Sprintf(
 		"/dc/%s/rooms",
 		url.PathEscape(id.String()),

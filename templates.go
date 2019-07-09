@@ -65,3 +65,13 @@ Location: {{ .Location }}
 Created: {{ .Created.Local }}
 Updated: {{ .Updated.Local }}
 `
+
+const roomTemplate = `
+Alias: {{ .Alias }}
+AZ: {{ .AZ }}
+Vendor Name: {{ .VendorName }}
+Datacenter ID: {{ .DatacenterID }}
+
+Created: {{ .Created.Local }}
+Updated: {{ .Updated.Local }}
+`
