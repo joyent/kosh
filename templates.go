@@ -75,3 +75,11 @@ Datacenter ID: {{ .DatacenterID }}
 Created: {{ .Created.Local }}
 Updated: {{ .Updated.Local }}
 `
+
+const rackRoleTemplate = `
+Name: {{ .Name }}
+Rack Size: {{ .RackSize }}
+
+Created: {{ .Created.Local }}
+Updated: {{ .Updated.Local }}
+`
