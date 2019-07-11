@@ -239,59 +239,6 @@ func (r *Rooms) Delete(id uuid.UUID) {
 	}
 }
 
-type RackList []Rack
-type Rack struct {
-	ID           uuid.UUID `json:"id"`
-	Name         string    `json:"name"`
-	RoomID       uuid.UUID `json:"datacenter_room_id"`
-	RoleID       uuid.UUID `json:"rack_role_id"`
-	SerialNumber string    `json:"serial_number,omitempty"`
-	AssetTag     string    `json:"asset_tag,omitempty"`
-	Phase        string    `json:"phase"`
-	Created      time.Time `json:"created"`
-	Updated      time.Time `json:"updated"`
-}
-
-func (rl RackList) String() string {
-	if API.JsonOnly {
-		return API.AsJSON(rl)
-	}
-
-	tableString := &strings.Builder{}
-	table := tablewriter.NewWriter(tableString)
-	TableToMarkdown(table)
-
-	table.SetHeader([]string{
-		"ID",
-		"Name",
-		"Room ID",
-		"Role ID",
-		"Serial Number",
-		"Asset Tag",
-		"Phase",
-		"Created",
-		"Updated",
-	})
-
-	for _, r := range rl {
-		table.Append([]string{
-			CutUUID(r.ID.String()),
-			r.Name,
-			CutUUID(r.RoomID.String()),
-			CutUUID(r.RoleID.String()),
-			r.SerialNumber,
-			r.AssetTag,
-			r.Phase,
-			TimeStr(r.Created),
-			TimeStr(r.Updated),
-		})
-	}
-
-	table.Render()
-	return tableString.String()
-
-}
-
 func (r *Rooms) Racks(id uuid.UUID) RackList {
 	uri := fmt.Sprintf("/room/%s/racks", url.PathEscape(id.String()))
 

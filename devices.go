@@ -7,6 +7,8 @@
 package main
 
 import (
+	"fmt"
+	"net/url"
 	"sort"
 	"strings"
 	"time"
@@ -26,9 +28,8 @@ func (c *Conch) Devices() *Devices {
 /***/
 
 type Device struct {
-	// ID uuid.UUID `json:"id"`
-	// Serial string `json:"serial_number"`
-	Serial   string    `json:"id"`
+	ID       uuid.UUID `json:"id"`
+	Serial   string    `json:"serial_number"`
 	AssetTag string    `json:"asset_tag,omitempty"`
 	Created  time.Time `json:"created"`
 	Updated  time.Time `json:"updated"`
@@ -92,6 +93,15 @@ func (d DeviceList) String() string {
 
 	table.Render()
 	return tableString.String()
+}
+
+func (ds *Devices) Get(id uuid.UUID) (d Device) {
+	uri := fmt.Sprintf("/device/%s", url.PathEscape(id.String()))
+	res := ds.Do(ds.Sling().New().Get(uri))
+	if ok := res.Parse(&d); !ok {
+		panic(res)
+	}
+	return d
 }
 
 /***/

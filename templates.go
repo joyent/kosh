@@ -83,3 +83,16 @@ Rack Size: {{ .RackSize }}
 Created: {{ .Created.Local }}
 Updated: {{ .Updated.Local }}
 `
+
+const rackTemplate = `
+ID: {{ .ID }}
+Name: {{ .Name }}
+Serial Number: {{ .SerialNumber }}
+Asset Tag: {{ .AssetTag }}
+Phase: {{ .Phase }}
+Role: {{ .Role.Name }}
+Room: {{ .Room.Alias }}
+
+Created: {{ .Created.Local }}
+Updated: {{ .Updated.Local }}
+`

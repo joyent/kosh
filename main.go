@@ -94,8 +94,12 @@ func TableToMarkdown(table *tablewriter.Table) {
 	table.SetCenterSeparator("|")
 }
 
+func IsSysAdmin() bool {
+	return API.Users().Me().IsAdmin
+}
+
 func RequireSysAdmin() {
-	if !API.Users().Me().IsAdmin {
+	if !IsSysAdmin() {
 		panic("This action requires Conch systems administrator privileges")
 	}
 }
