@@ -6,12 +6,14 @@
 
 package main
 
-const relayTemplate = `
+const workspaceRelayTemplate = `
 ID: {{ .ID }}
-Alias: {{ .Alias }}
+Name: {{ .Alias }}
 Version: {{ .Version }}
 Created: {{ .Created.Local }}
-Last Seen: {{ .LastSeen }}
+Updated: {{ .Updated.Local }}
+
+Last Seen: {{ .LastSeen.Local }}
 
 IP Address: {{ .IpAddr }}
 SSH Port: {{ .SshPort }}
@@ -21,6 +23,18 @@ Location:
   Rack Name: {{ .Location.RackName }}
   Rack Unit: {{ .Location.RackUnitStart }}
   Rack ID: {{ .Location.RackID }}
+`
+
+const relayTemplate = `
+ID: {{ .ID }}
+Serial Number: {{ .SerialNumber }}
+Name: {{ .Name }}
+Version: {{ .Version }}
+Created: {{ .Created.Local }}
+Updated: {{ .Updated.Local }}
+
+IP Address: {{ .IpAddr }}
+SSH Port: {{ .SshPort }}
 `
 
 const rackSummaryTemplate = `

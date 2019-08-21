@@ -586,7 +586,7 @@ func (w *Workspaces) GetRackSummaries(name string) WorkspaceRackSummaries {
 
 type WorkspaceRelay struct {
 	ID         string    `json:"id"`
-	Alias      string    `json:"alias,omitempty"`
+	Name       string    `json:"name,omitempty"`
 	Version    string    `json:"version,omitempty"`
 	IpAddr     string    `json:"ipaddr,omitempty"`
 	SshPort    int       `json:"ssh_port,omitempty"`
@@ -608,7 +608,7 @@ func (w WorkspaceRelay) String() string {
 		return API.AsJSON(w)
 	}
 
-	t, err := template.New("r").Parse(relayTemplate)
+	t, err := template.New("r").Parse(workspaceRelayTemplate)
 	if err != nil {
 		panic(err)
 	}
