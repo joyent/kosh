@@ -458,7 +458,7 @@ func (a RackAssignments) String() string {
 	for _, r := range a {
 		var serial string
 		if (r.DeviceID != uuid.UUID{}) {
-			serial = API.Devices().Get(r.DeviceID).Serial
+			serial = API.Devices().Get(r.DeviceID.String()).Serial
 		}
 
 		table.Append([]string{

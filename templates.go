@@ -6,6 +6,74 @@
 
 package main
 
+const deviceTemplate = `
+ID: {{ .ID }}
+Serial: {{ .Serial }}
+Asset Tag: {{ .AssetTag }}
+Hostname: {{ .Hostname }}
+System UUID: {{ .SystemUUID }}
+
+Phase: {{ .Phase }}
+Health: {{ .Health }}
+Validated: {{ if not $.Validated.IsZero }}{{ .Validated.Local }}{{ end }}
+
+Created:   {{ .Created.Local }}
+Updated:   {{ .Updated.Local }}
+Last Seen: {{ .LastSeen.Local }}{{ if .Links }}
+
+Links: {{ range .Links }}
+  - {{ $ }}
+{{ end }}{{ end }}
+
+Hardware:
+  Name: {{ .HardwareProduct.Name }}
+  Legacy Name: {{ .HardwareProduct.LegacyProductName }}
+  Alias: {{ .HardwareProduct.Alias }}
+  Prefix: {{ .HardwareProduct.Prefix }}
+  SKU: {{ .HardwareProduct.SKU }}
+  Generation Name: {{ .HardwareProduct.GenerationName }}
+
+Location: {{- if ne .Phase "integration" }} ** Device has left integration. This data is historic and likely not accurate. **{{ end }}
+  AZ:  {{ .Location.Room.AZ }}
+  Datacenter:
+    ID: {{ .Location.Datacenter.ID }}
+    Vendor:   {{ .Location.Datacenter.Vendor }} / {{ .Location.Datacenter.VendorName }}
+    Region:   {{ .Location.Datacenter.Region }}
+    Location: {{ .Location.Datacenter.Location }}
+
+  Room:
+    ID: {{ .Location.Room.ID }}
+    Alias: {{ .Location.Room.Alias }}
+    Vendor Name: {{ .Location.Room.VendorName }}
+
+  Rack:
+    ID:    {{ .Location.Rack.ID }}
+    Name:  {{ .Location.Rack.Name }}{{ if ne .RackRole.Name "" }}
+    Role:  {{ .RackRole.Name }}{{ end }}
+    Phase: {{ .Location.Rack.Phase }}
+    RU:    {{ .Location.RackUnitStart }}
+
+
+Network Interfaces: {{ range .Nics }}
+  - {{ .InterfaceName }} - {{ .Mac }}
+    Type: {{ .InterfaceType }}
+    Vendor: {{ .InterfaceVendor }}{{ if ne .PeerMac "" }}
+    Peer: {{ .PeerMac }}{{ end }}{{ if ne .PeerSwitch "" }} - {{ .PeerSwitch }}{{ end }}
+{{ end }}
+Disks:{{range $name, $slots := .Enclosures}}
+  Enclosure: {{ $name }}{{ range $slots }}
+    Slot: {{ .Slot }}
+        SN:     {{ .SerialNumber }}
+        Type:   {{ .DriveType }}
+        Vendor: {{ .Vendor }}
+        Model:  {{ .Model }}
+        Size:   {{ .Size }}
+        Health: {{ .Health }}
+        Firmware: {{ .Firmware }}
+        Transport: {{ .Transport }}
+{{ end }}{{ end }}
+`
+
 const workspaceRelayTemplate = `
 ID: {{ .ID }}
 Name: {{ .Alias }}
