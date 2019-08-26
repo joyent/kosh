@@ -6,6 +6,18 @@
 
 package main
 
+const validationStatesWithResultsTemplate = `{{ range . }}
+- ID: {{ .ID }}
+  Created: {{ .Created }}
+  Completed: {{ .Completed }}
+  Status: {{ .Status }}
+  Validation Plan: {{ .ValidationPlan.Name }}{{ if len .Results }}
+
+  Results:
+{{ .Results }}
+{{ end }}{{ end }}
+`
+
 const deviceTemplate = `
 ID: {{ .ID }}
 Serial: {{ .Serial }}
@@ -72,6 +84,9 @@ Disks:{{range $name, $slots := .Enclosures}}
         Firmware: {{ .Firmware }}
         Transport: {{ .Transport }}
 {{ end }}{{ end }}
+
+Validations:
+{{ .Validations }}
 `
 
 const workspaceRelayTemplate = `

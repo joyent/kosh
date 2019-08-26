@@ -180,12 +180,15 @@ func (d DetailedDevice) String() string {
 		hp = API.Hardware().GetProduct(d.HardwareProductID)
 	}
 
+	validations := API.Devices().ValidationState(d.ID.String())
+
 	extended := struct {
 		DetailedDevice
 		RackRole        RackRole
 		HardwareProduct HardwareProduct
 		Enclosures      map[int]map[int]Disk
-	}{d, rackRole, hp, enclosures}
+		Validations     ValidationStatesWithResults
+	}{d, rackRole, hp, enclosures, validations}
 
 	t, err := template.New("d").Parse(deviceTemplate)
 	if err != nil {
@@ -268,6 +271,16 @@ func (ds *Devices) Get(id string) (d DetailedDevice) {
 	return d
 }
 
+// id is a string because the API accepts both a UUID and a serial number
+func (ds *Devices) ValidationState(id string) (v ValidationStatesWithResults) {
+	uri := fmt.Sprintf("/device/%s/validation_state", url.PathEscape(id))
+	res := ds.Do(ds.Sling().New().Get(uri))
+	if ok := res.Parse(&v); !ok {
+		panic(res)
+	}
+	return v
+}
+
 /***/
 
 var HealthList = []string{"error", "fail", "unknown", "pass"}
@@ -301,6 +314,10 @@ func init() {
 			cmd.Action = func() { fmt.Println(API.Devices().Get(*idArg)) }
 		})
 
+		cmd.Command("validations", "Get the most recent validation results for a single device", func(cmd *cli.Cmd) {
+			cmd.Action = func() { fmt.Println(API.Devices().ValidationState(*idArg)) }
+		})
+
 		cmd.Command("settings", "See all settings for a device", func(cmd *cli.Cmd) {
 			cmd.Action = func() { fmt.Println(API.Devices().Settings(*idArg)) }
 		})
@@ -319,5 +336,4 @@ func init() {
 			}
 		})
 	})
-
 }
