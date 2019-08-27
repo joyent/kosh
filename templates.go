@@ -193,3 +193,41 @@ Room: {{ .Room.Alias }}
 Created: {{ .Created.Local }}
 Updated: {{ .Updated.Local }}
 `
+
+const deviceLocationTemplate = `
+Datacenter:
+  ID: {{ .Datacenter.ID }}
+  Vendor: {{ .Datacenter.Vendor }}
+  Vendor Name: {{ .Datacenter.VendorName }}
+  Region: {{ .Datacenter.Region }}
+  Location: {{ .Datacenter.Location }}
+
+Room:
+  ID: {{ .Room.ID }}
+  Alias: {{ .Room.Alias }}
+  AZ: {{ .Room.AZ }}
+  Vendor Name: {{ .Room.VendorName }}
+
+Rack:
+  ID: {{ .Rack.ID }}
+  Name: {{ .Rack.Name }}
+  Serial Number: {{ .Rack.SerialNumber }}
+  Asset Tag: {{ .Rack.AssetTag }}
+  Phase: {{ .Rack.Phase }}
+  Role: {{ .Rack.Role.Name }}
+
+Rack Unit Start: {{ .RackUnitStart }}
+`
+
+const deviceNicTemplate = `
+Name: {{ .InterfaceName }}
+Vendor: {{ .InterfaceVendor }}
+Driver: {{ .InterfaceDriver }}
+
+IP Address: {{ .IpAddress }}
+MAC: {{ .MAC }}
+MTU: {{ .MTU }}
+State: {{ .State }}
+
+Device ID: {{ .DeviceID }}
+`

@@ -10,6 +10,8 @@ import (
 	"bytes"
 	"fmt"
 	"net/url"
+	"os"
+	"regexp"
 	"sort"
 	"strings"
 	"text/template"
@@ -56,7 +58,7 @@ func (ds DeviceSettings) String() string {
 	return tableString.String()
 }
 
-func (d Devices) Setting(id string, key string) interface{} {
+func (d Devices) Setting(id, key string) interface{} {
 	uri := fmt.Sprintf(
 		"/device/%s/settings/%s",
 		url.PathEscape(id),
@@ -73,13 +75,96 @@ func (d Devices) Setting(id string, key string) interface{} {
 	return settings[key]
 }
 
-func (d Devices) Settings(id string) (settings DeviceSettings) {
+func (d Devices) Settings(id string) DeviceSettings {
 	uri := fmt.Sprintf("/device/%s/settings", url.PathEscape(id))
 	res := d.Do(d.Sling().New().Get(uri))
+
+	settings := make(DeviceSettings)
 	if ok := res.Parse(&settings); !ok {
 		panic(res)
 	}
-	return settings
+
+	out := make(DeviceSettings)
+	re := regexp.MustCompile(`^tag\.`)
+	for key, value := range settings {
+		if !re.MatchString(key) {
+			out[key] = value
+		}
+	}
+
+	return out
+}
+
+func (ds *Devices) SetSetting(id, key, value string) {
+	uri := fmt.Sprintf(
+		"/device/%s/settings/%s",
+		url.PathEscape(id),
+		url.PathEscape(key),
+	)
+
+	settings := make(DeviceSettings)
+	settings[key] = value
+
+	ds.Do(
+		ds.Sling().New().Post(uri).
+			Set("Content-Type", "application/json").
+			BodyJSON(settings),
+	)
+}
+
+func (ds *Devices) DeleteSetting(id, key string) {
+	uri := fmt.Sprintf(
+		"/device/%s/settings/%s",
+		url.PathEscape(id),
+		url.PathEscape(key),
+	)
+	ds.Do(ds.Sling().New().Delete(uri))
+}
+
+func (d Devices) Tags(id string) DeviceSettings {
+	uri := fmt.Sprintf("/device/%s/settings", url.PathEscape(id))
+	res := d.Do(d.Sling().New().Get(uri))
+
+	settings := make(DeviceSettings)
+	if ok := res.Parse(&settings); !ok {
+		panic(res)
+	}
+
+	tags := make(DeviceSettings)
+
+	re := regexp.MustCompile(`^tag\.`)
+	for key, value := range settings {
+		if re.MatchString(key) {
+			tag := strings.TrimPrefix(key, "tag.")
+			tags[tag] = value
+		}
+	}
+
+	return tags
+}
+
+func (d Devices) Tag(id, key string) interface{} {
+	re := regexp.MustCompile(`^tag\.`)
+	if !re.MatchString(key) {
+		key = "tag." + key
+	}
+	return d.Setting(id, key)
+}
+
+func (d Devices) SetTag(id, key, value string) {
+	re := regexp.MustCompile(`^tag\.`)
+	if !re.MatchString(key) {
+		key = "tag." + key
+	}
+	d.SetSetting(id, key, value)
+}
+
+func (d Devices) DeleteTag(id, key string) {
+	re := regexp.MustCompile(`^tag\.`)
+	if !re.MatchString(key) {
+		key = "tag." + key
+	}
+	d.DeleteSetting(id, key)
 }
 
 /***/
@@ -100,6 +185,90 @@ type DeviceLocation struct {
 		Vendor string    `json:"vendor"`
 	} `json:"target_hardware_product"`
 }
+
+func (dl DeviceLocation) String() string {
+	if API.JsonOnly {
+		return API.AsJSON(dl)
+	}
+
+	t, err := template.New("d").Parse(deviceLocationTemplate)
+	if err != nil {
+		panic(err)
+	}
+
+	buf := new(bytes.Buffer)
+
+	if err := t.Execute(buf, dl); err != nil {
+		panic(err)
+	}
+
+	return buf.String()
+}
+
+func (ds *Devices) GetLocation(id string) (l DeviceLocation) {
+	uri := fmt.Sprintf("/device/%s/location", url.PathEscape(id))
+	res := ds.Do(ds.Sling().New().Get(uri))
+	if ok := res.Parse(&l); !ok {
+		panic(res)
+	}
+	return l
+}
+
+/***/
+
+type DeviceNic struct {
+	DeviceID        uuid.UUID `json:"device_id"`
+	MAC             string    `json:"mac"`
+	InterfaceName   string    `json:"iface_name"`
+	InterfaceVendor string    `json:"iface_vendor"`
+	InterfaceDriver string    `json:"iface_driver"`
+	State           string    `json:"state,omitempty"`
+	IpAddress       string    `json:"ipaddr,omitempty"`
+	MTU             int       `json:"mtu,omitempty"`
+
+	InterfaceType string `json:"iface_type"`
+}
+
+func (dn DeviceNic) String() string {
+	if API.JsonOnly {
+		return API.AsJSON(dn)
+	}
+
+	t, err := template.New("d").Parse(deviceNicTemplate)
+	if err != nil {
+		panic(err)
+	}
+
+	buf := new(bytes.Buffer)
+
+	if err := t.Execute(buf, dn); err != nil {
+		panic(err)
+	}
+
+	return buf.String()
+}
+
+// type DeviceNics []DeviceNic
+
+func (ds *Devices) GetInterface(id, name string) (n DeviceNic) {
+	uri := fmt.Sprintf(
+		"/device/%s/interface/%s",
+		url.PathEscape(id),
+		url.PathEscape(name),
+	)
+
+	res := ds.Do(ds.Sling().New().Get(uri))
+	if ok := res.Parse(&n); !ok {
+		panic(res)
+	}
+	return n
+}
+
+func (ds *Devices) GetIPMI(id string) string {
+	return ds.GetInterface(id, "ipmi1").IpAddress
+}
+
+/***/
 
 type deviceCore struct {
 	ID       uuid.UUID `json:"id"`
@@ -236,21 +405,28 @@ func (d DeviceList) String() string {
 	table := tablewriter.NewWriter(tableString)
 	TableToMarkdown(table)
 
-	// TODO(sungo): rack, hardware product
 	table.SetHeader([]string{
 		"Serial",
 		"Hostname",
 		"Asset Tag",
+		"Hardware",
 		"Phase",
 		"Updated",
 		"Validated",
 	})
 
+	hpCache := make(map[uuid.UUID]HardwareProduct)
+
 	for _, device := range d {
+		if _, ok := hpCache[device.HardwareProductID]; !ok {
+			hpCache[device.HardwareProductID] = API.Hardware().GetProduct(device.HardwareProductID)
+		}
+
 		table.Append([]string{
 			device.Serial,
 			device.Hostname,
 			device.AssetTag,
+			hpCache[device.HardwareProductID].Name,
 			device.Phase,
 			TimeStr(device.Updated),
 			TimeStr(device.Validated),
@@ -271,6 +447,31 @@ func (ds *Devices) Get(id string) (d DetailedDevice) {
 	return d
 }
 
+func (ds *Devices) FindByField(key, value string) DeviceList {
+	uri := fmt.Sprintf(
+		"/device?%s=%s",
+		url.PathEscape(key),
+		url.PathEscape(value),
+	)
+	d := make(DeviceList, 0)
+
+	res := ds.Do(ds.Sling().New().Get(uri))
+	if ok := res.Parse(&d); !ok {
+		panic(res)
+	}
+	return d
+}
+
+func (ds *Devices) FindBySetting(key, value string) DeviceList {
+	return ds.FindByField(key, value)
+}
+
+func (ds *Devices) FindByTag(key, value string) DeviceList {
+	return ds.FindByField("tag."+key, value)
+}
+
+/***/
+
 // id is a string because the API accepts both a UUID and a serial number
 func (ds *Devices) ValidationState(id string) (v ValidationStatesWithResults) {
 	uri := fmt.Sprintf("/device/%s/validation_state", url.PathEscape(id))
@@ -279,6 +480,38 @@ func (ds *Devices) ValidationState(id string) (v ValidationStatesWithResults) {
 		panic(res)
 	}
 	return v
+}
+
+/***/
+
+func (ds *Devices) GetPhase(id string) string {
+	data := struct {
+		ID    uuid.UUID `json:"id"`
+		Phase string    `json:"phase"`
+	}{}
+
+	uri := fmt.Sprintf("/device/%s/phase", url.PathEscape(id))
+	res := ds.Do(ds.Sling().New().Get(uri))
+	if ok := res.Parse(&data); !ok {
+		panic(res)
+	}
+	return data.Phase
+}
+
+func (ds *Devices) SetPhase(id, phase string) string {
+	uri := fmt.Sprintf("/device/%s/phase", url.PathEscape(id))
+
+	payload := make(map[string]string)
+	payload["id"] = id
+	payload["phase"] = phase
+
+	ds.Do(
+		ds.Sling().New().Post(uri).
+			Set("Content-Type", "application/json").
+			BodyJSON(payload),
+	)
+
+	return ds.GetPhase(id)
 }
 
 /***/
@@ -299,8 +532,65 @@ func okHealth(health string) bool {
 }
 
 /***/
+var PhasesList = []string{"integration", "installation", "production", "diagnostics", "decommissioned"}
+
+func prettyPhasesList() string {
+	return strings.Join(PhasesList, ", ")
+}
+
+func okPhase(phase string) bool {
+	for _, b := range PhasesList {
+		if phase == b {
+			return true
+		}
+	}
+	return false
+}
+
+/***/
 
 func init() {
+	App.Command("devices ds", "Commands for dealing with multiple devices", func(cmd *cli.Cmd) {
+		cmd.Command("search s", "Search for devices", func(cmd *cli.Cmd) {
+
+			cmd.Command("setting", "Search for devices by exact setting value", func(cmd *cli.Cmd) {
+				var (
+					keyArg   = cmd.StringArg("KEY", "", "Setting name")
+					valueArg = cmd.StringArg("VALUE", "", "Setting Value")
+				)
+				cmd.Spec = "KEY VALUE"
+
+				cmd.Action = func() {
+					fmt.Println(API.Devices().FindBySetting(*keyArg, *valueArg))
+				}
+			})
+
+			cmd.Command("tag", "Search for devices by exact tag value", func(cmd *cli.Cmd) {
+				var (
+					keyArg   = cmd.StringArg("KEY", "", "Tag name")
+					valueArg = cmd.StringArg("VALUE", "", "Tag Value")
+				)
+				cmd.Spec = "KEY VALUE"
+
+				cmd.Action = func() {
+					fmt.Println(API.Devices().FindByTag(*keyArg, *valueArg))
+				}
+			})
+
+			cmd.Command("hostname", "Search for devices by exact hostname", func(cmd *cli.Cmd) {
+				var (
+					hostnameArg = cmd.StringArg("HOSTNAME", "", "hostname")
+				)
+				cmd.Spec = "HOSTNAME"
+
+				cmd.Action = func() {
+					fmt.Println(API.Devices().FindByField("hostname", *hostnameArg))
+				}
+			})
+		})
+	},
+	)
+
 	App.Command("device", "Perform actions against a single device", func(cmd *cli.Cmd) {
 		idArg := cmd.StringArg(
 			"DEVICE",
@@ -333,6 +623,120 @@ func init() {
 
 			cmd.Action = func() {
 				fmt.Println(API.Devices().Setting(*idArg, *keyArg))
+			}
+
+			cmd.Command("get", "Get a particular device setting", func(cmd *cli.Cmd) {
+				cmd.Action = func() {
+					fmt.Println(API.Devices().Setting(*idArg, *keyArg))
+				}
+			})
+
+			cmd.Command("set", "Set a particular device setting", func(cmd *cli.Cmd) {
+				valueArg := cmd.StringArg("VALUE", "", "Value of the setting")
+				cmd.Spec = "VALUE"
+
+				cmd.Action = func() {
+					API.Devices().SetSetting(*idArg, *keyArg, *valueArg)
+					fmt.Println(API.Devices().Settings(*idArg))
+				}
+			})
+
+			cmd.Command("delete rm", "Delete a particular device setting", func(cmd *cli.Cmd) {
+				cmd.Action = func() {
+					API.Devices().DeleteSetting(*idArg, *keyArg)
+					fmt.Println(API.Devices().Settings(*idArg))
+				}
+			})
+		})
+
+		cmd.Command("tags", "See all tags for a device", func(cmd *cli.Cmd) {
+			cmd.Action = func() { fmt.Println(API.Devices().Tags(*idArg)) }
+		})
+		cmd.Command("tag", "See a single tag for a device", func(cmd *cli.Cmd) {
+			nameArg := cmd.StringArg("NAME", "", "Name of the tag")
+
+			cmd.Spec = "NAME"
+
+			cmd.Action = func() {
+				fmt.Println(API.Devices().Tag(*idArg, *nameArg))
+			}
+
+			cmd.Command("get", "Get a particular device tag", func(cmd *cli.Cmd) {
+				cmd.Action = func() {
+					fmt.Println(API.Devices().Tag(*idArg, *nameArg))
+				}
+			})
+
+			cmd.Command("set", "Set a particular device tag", func(cmd *cli.Cmd) {
+				valueArg := cmd.StringArg("VALUE", "", "Value of the tag")
+				cmd.Spec = "VALUE"
+
+				cmd.Action = func() {
+					API.Devices().SetTag(*idArg, *nameArg, *valueArg)
+					fmt.Println(API.Devices().Tags(*idArg))
+				}
+			})
+
+			cmd.Command("delete rm", "Delete a particular device tag", func(cmd *cli.Cmd) {
+				cmd.Action = func() {
+					API.Devices().DeleteTag(*idArg, *nameArg)
+					fmt.Println(API.Devices().Tags(*idArg))
+				}
+			})
+		})
+
+		cmd.Command("interface", "Information about a single interface", func(cmd *cli.Cmd) {
+			nameArg := cmd.StringArg("NAME", "", "Name of the interface")
+			cmd.Spec = "NAME"
+			cmd.Action = func() { fmt.Println(API.Devices().GetInterface(*idArg, *nameArg)) }
+		})
+
+		cmd.Command("preflight", "Data that is only accurate inside preflight", func(cmd *cli.Cmd) {
+			cmd.Before = func() {
+				if API.Devices().GetPhase(*idArg) != "integration" {
+					os.Stderr.WriteString("Warning: This device is no longer in the 'integration' phase. This data is likely to be inaccurate\n")
+				}
+			}
+
+			cmd.Command("location", "The location of a device in preflight", func(cmd *cli.Cmd) {
+				cmd.Action = func() { fmt.Println(API.Devices().GetLocation(*idArg)) }
+			})
+
+			cmd.Command("ipmi", "IPMI address for a device in preflight", func(cmd *cli.Cmd) {
+				cmd.Action = func() { fmt.Println(API.Devices().GetIPMI(*idArg)) }
+			})
+		})
+
+		cmd.Command("phase", "Actions on the lifecycle phase of the device", func(cmd *cli.Cmd) {
+			cmd.Command("get", "Get the phase of the device", func(cmd *cli.Cmd) {
+				cmd.Action = func() { fmt.Println(API.Devices().GetPhase(*idArg)) }
+			})
+
+			cmd.Command("set", "Set the phase of the device [one of: "+prettyPhasesList()+"]", func(cmd *cli.Cmd) {
+				phaseArg := cmd.StringArg("PHASE", "", "Name of the phase [one of: "+prettyPhasesList()+"]")
+				cmd.Spec = "PHASE"
+				cmd.Action = func() {
+					if !okPhase(*phaseArg) {
+						panic("Phase must be one of: " + prettyPhasesList())
+					}
+
+					fmt.Println(API.Devices().SetPhase(*idArg, *phaseArg))
+				}
+			})
+		})
+
+		cmd.Command("validations", "Information about the latest validation runs", func(cmd *cli.Cmd) {
+			cmd.Action = func() { fmt.Println(API.Devices().ValidationState(*idArg)) }
+		})
+
+		cmd.Command("report", "Get the most recently recorded report for this device", func(cmd *cli.Cmd) {
+			cmd.Action = func() {
+				d := API.Devices().Get(*idArg)
+				if d.LatestReport == nil {
+					fmt.Println("{}")
+					return
+				}
+				API.PrintJSON(d.LatestReport)
 			}
 		})
 	})
