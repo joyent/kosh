@@ -8,8 +8,8 @@ package main
 
 const validationStatesWithResultsTemplate = `{{ range . }}
 - ID: {{ .ID }}
-  Created: {{ .Created }}
-  Completed: {{ .Completed }}
+  Created: {{ TimeStr .Created }}
+  Completed: {{ TimeStr .Completed }}
   Status: {{ .Status }}
   Validation Plan: {{ .ValidationPlan.Name }}{{ if len .Results }}
 
@@ -29,9 +29,9 @@ Phase: {{ .Phase }}
 Health: {{ .Health }}
 Validated: {{ if not $.Validated.IsZero }}{{ .Validated.Local }}{{ end }}
 
-Created:   {{ .Created.Local }}
-Updated:   {{ .Updated.Local }}
-Last Seen: {{ .LastSeen.Local }}{{ if .Links }}
+Created:   {{ TimeStr .Created }}
+Updated:   {{ TimeStr .Updated }}
+Last Seen: {{ TimeStr .LastSeen }}{{ if .Links }}
 
 Links: {{ range .Links }}
   - {{ $ }}
@@ -93,10 +93,10 @@ const workspaceRelayTemplate = `
 ID: {{ .ID }}
 Name: {{ .Alias }}
 Version: {{ .Version }}
-Created: {{ .Created.Local }}
-Updated: {{ .Updated.Local }}
+Created: {{ TimeStr .Created }}
+Updated: {{ TimeStr .Updated }}
 
-Last Seen: {{ .LastSeen.Local }}
+Last Seen: {{ TimeStr .LastSeen }}
 
 IP Address: {{ .IpAddr }}
 SSH Port: {{ .SshPort }}
@@ -113,8 +113,8 @@ ID: {{ .ID }}
 Serial Number: {{ .SerialNumber }}
 Name: {{ .Name }}
 Version: {{ .Version }}
-Created: {{ .Created.Local }}
-Updated: {{ .Updated.Local }}
+Created: {{ TimeStr .Created }}
+Updated: {{ TimeStr .Updated }}
 
 IP Address: {{ .IpAddr }}
 SSH Port: {{ .SshPort }}
@@ -144,8 +144,8 @@ Name: {{ .Name }}
 Email: {{ .Email }}
 System Admin: {{ if $.IsAdmin }}Yes{{ else }}No{{ end }}
 
-Created: {{ .Created.Local }}
-Last Login: {{ if $.LastLogin.IsZero }}Never/Unknown{{ else }}{{ .LastLogin.Local }}{{ end }}
+Created: {{ TimeStr .Created }}
+Last Login: {{ if $.LastLogin.IsZero }}Never/Unknown{{ else }}{{ TimeStr .LastLogin }}{{ end }}
 
 
 Workspaces:
@@ -159,8 +159,8 @@ Vendor Name: {{ .VendorName }}
 Region: {{ .Region }}
 Location: {{ .Location }}
 
-Created: {{ .Created.Local }}
-Updated: {{ .Updated.Local }}
+Created: {{ TimeStr .Created }}
+Updated: {{ TimeStr .Updated }}
 `
 
 const roomTemplate = `
@@ -169,16 +169,16 @@ AZ: {{ .AZ }}
 Vendor Name: {{ .VendorName }}
 Datacenter ID: {{ .DatacenterID }}
 
-Created: {{ .Created.Local }}
-Updated: {{ .Updated.Local }}
+Created: {{ TimeStr .Created }}
+Updated: {{ TimeStr .Updated }}
 `
 
 const rackRoleTemplate = `
 Name: {{ .Name }}
 Rack Size: {{ .RackSize }}
 
-Created: {{ .Created.Local }}
-Updated: {{ .Updated.Local }}
+Created: {{ TimeStr .Created }}
+Updated: {{ TimeStr .Updated }}
 `
 
 const rackTemplate = `
@@ -190,8 +190,8 @@ Phase: {{ .Phase }}
 Role: {{ .Role.Name }}
 Room: {{ .Room.Alias }}
 
-Created: {{ .Created.Local }}
-Updated: {{ .Updated.Local }}
+Created: {{ TimeStr .Created }}
+Updated: {{ TimeStr .Updated }}
 `
 
 const deviceLocationTemplate = `

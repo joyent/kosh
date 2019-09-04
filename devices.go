@@ -14,7 +14,6 @@ import (
 	"regexp"
 	"sort"
 	"strings"
-	"text/template"
 	"time"
 
 	"github.com/gofrs/uuid"
@@ -191,7 +190,7 @@ func (dl DeviceLocation) String() string {
 		return API.AsJSON(dl)
 	}
 
-	t, err := template.New("d").Parse(deviceLocationTemplate)
+	t, err := NewTemplate().Parse(deviceLocationTemplate)
 	if err != nil {
 		panic(err)
 	}
@@ -234,7 +233,7 @@ func (dn DeviceNic) String() string {
 		return API.AsJSON(dn)
 	}
 
-	t, err := template.New("d").Parse(deviceNicTemplate)
+	t, err := NewTemplate().Parse(deviceNicTemplate)
 	if err != nil {
 		panic(err)
 	}
@@ -359,7 +358,7 @@ func (d DetailedDevice) String() string {
 		Validations     ValidationStatesWithResults
 	}{d, rackRole, hp, enclosures, validations}
 
-	t, err := template.New("d").Parse(deviceTemplate)
+	t, err := NewTemplate().Parse(deviceTemplate)
 	if err != nil {
 		panic(err)
 	}
@@ -595,7 +594,7 @@ func init() {
 		idArg := cmd.StringArg(
 			"DEVICE",
 			"",
-			"UUID or serial number of the device",
+			"UUID or serial number of the device. Short UUIDs are *not* accepted",
 		)
 
 		cmd.Spec = "DEVICE"

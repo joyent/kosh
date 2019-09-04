@@ -16,7 +16,6 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	"text/template"
 	"time"
 
 	"github.com/gofrs/uuid"
@@ -94,7 +93,7 @@ func (r RackRole) String() string {
 		return API.AsJSON(r)
 	}
 
-	t, err := template.New("r").Parse(rackRoleTemplate)
+	t, err := NewTemplate().Parse(rackRoleTemplate)
 	if err != nil {
 		panic(err)
 	}

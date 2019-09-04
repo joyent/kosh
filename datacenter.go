@@ -14,7 +14,6 @@ import (
 	"fmt"
 	"net/url"
 	"strings"
-	"text/template"
 	"time"
 
 	"github.com/gofrs/uuid"
@@ -45,7 +44,7 @@ func (d Datacenter) String() string {
 		return API.AsJSON(d)
 	}
 
-	t, err := template.New("d").Parse(datacenterTemplate)
+	t, err := NewTemplate().Parse(datacenterTemplate)
 	if err != nil {
 		panic(err)
 	}

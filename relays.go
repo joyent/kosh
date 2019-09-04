@@ -14,7 +14,6 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	"text/template"
 	"time"
 
 	"github.com/gofrs/uuid"
@@ -95,7 +94,7 @@ func (r Relay) String() string {
 		return API.AsJSON(r)
 	}
 
-	t, err := template.New("r").Parse(relayTemplate)
+	t, err := NewTemplate().Parse(relayTemplate)
 	if err != nil {
 		panic(err)
 	}

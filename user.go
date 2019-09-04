@@ -14,7 +14,6 @@ import (
 	"net/url"
 	"sort"
 	"strings"
-	"text/template"
 	"time"
 
 	"github.com/gofrs/uuid"
@@ -51,7 +50,7 @@ func (u DetailedUser) String() string {
 		return API.AsJSON(u)
 	}
 
-	t, err := template.New("u").Parse(detailedUserTemplate)
+	t, err := NewTemplate().Parse(detailedUserTemplate)
 	if err != nil {
 		panic(err)
 	}

@@ -14,7 +14,6 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	"text/template"
 	"time"
 
 	"github.com/gofrs/uuid"
@@ -67,7 +66,7 @@ func (w WorkspaceAndRole) String() string {
 		return API.AsJSON(w)
 	}
 
-	t, err := template.New("w").Parse(workspaceTemplate)
+	t, err := NewTemplate().Parse(workspaceTemplate)
 	if err != nil {
 		panic(err)
 	}
@@ -546,7 +545,7 @@ func (summaries WorkspaceRackSummaries) String() string {
 				Statuses []*status
 			}{summary, az, statusii}
 
-			t, err := template.New("r").Parse(rackSummaryTemplate)
+			t, err := NewTemplate().Parse(rackSummaryTemplate)
 			if err != nil {
 				panic(err)
 			}
@@ -608,7 +607,7 @@ func (w WorkspaceRelay) String() string {
 		return API.AsJSON(w)
 	}
 
-	t, err := template.New("r").Parse(workspaceRelayTemplate)
+	t, err := NewTemplate().Parse(workspaceRelayTemplate)
 	if err != nil {
 		panic(err)
 	}

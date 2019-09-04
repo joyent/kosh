@@ -12,7 +12,6 @@ import (
 	"net/url"
 	"sort"
 	"strings"
-	"text/template"
 	"time"
 
 	"github.com/gofrs/uuid"
@@ -161,7 +160,7 @@ func (vs ValidationStatesWithResults) String() string {
 		})
 	}
 
-	t, err := template.New("v").Parse(validationStatesWithResultsTemplate)
+	t, err := NewTemplate().Parse(validationStatesWithResultsTemplate)
 	if err != nil {
 		panic(err)
 	}

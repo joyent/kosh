@@ -14,6 +14,7 @@ import (
 	"os/user"
 	"regexp"
 	"runtime"
+	"text/template"
 	"time"
 
 	"github.com/gofrs/uuid"
@@ -102,6 +103,13 @@ func RequireSysAdmin() {
 	if !IsSysAdmin() {
 		panic("This action requires Conch systems administrator privileges")
 	}
+}
+
+func NewTemplate() *template.Template {
+	return template.New("wat").Funcs(template.FuncMap{
+		"CutUUID": func(id string) string { return CutUUID(id) },
+		"TimeStr": func(t time.Time) string { return TimeStr(t) },
+	})
 }
 
 /***/
