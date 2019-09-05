@@ -6,16 +6,18 @@
 
 package main
 
-// TODO: rack layouts: CRUD
 // TODO: rack assignments: CRUD
 
 //lint:file-ignore U1000 WIP
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"net/url"
+	"os"
 	"sort"
 	"strconv"
 	"strings"
@@ -383,7 +385,94 @@ func (rl RackLayout) String() string {
 
 	table.Render()
 	return tableString.String()
+}
 
+func (rl RackLayout) Export() string {
+	type Slot struct {
+		RU           int       `json:"ru_start"`
+		ProductID    uuid.UUID `json:"product_id,omitempty"`
+		ProductName  string    `json:"product_name,omitempty"`
+		ProductAlias string    `json:"product_alias,omitempty"`
+	}
+	slots := make([]Slot, 0)
+
+	sort.Sort(rl)
+
+	hpCache := make(map[uuid.UUID]HardwareProduct)
+
+	for _, slot := range rl {
+		if _, ok := hpCache[slot.HardwareProductID]; !ok {
+			hpCache[slot.HardwareProductID] = API.Hardware().GetProduct(slot.HardwareProductID)
+		}
+
+		slots = append(slots, Slot{
+			slot.RackUnitStart,
+			slot.HardwareProductID,
+			hpCache[slot.HardwareProductID].Name,
+			hpCache[slot.HardwareProductID].Alias,
+		})
+	}
+
+	return API.AsJSON(slots)
+}
+
+func (r *Racks) ImportLayout(rackID uuid.UUID, b []byte) RackLayout {
+	type Slot struct {
+		RU           int       `json:"ru_start"`
+		ProductID    uuid.UUID `json:"product_id,omitempty"`
+		ProductName  string    `json:"product_name,omitempty"`
+		ProductAlias string    `json:"product_alias,omitempty"`
+	}
+
+	imported := make([]Slot, 0)
+	if err := json.Unmarshal(b, &imported); err != nil {
+		panic(err)
+	}
+
+	hpCache := make(map[string]HardwareProduct)
+	slots := make([]Slot, 0)
+
+	for _, row := range imported {
+		var slot Slot
+
+		slot.RU = row.RU
+		slot.ProductID = row.ProductID
+		if (row.ProductID != uuid.UUID{}) {
+			slots = append(slots, slot)
+			continue
+		}
+
+		if row.ProductName != "" {
+			if hp, ok := hpCache[row.ProductName]; ok {
+				hpCache[row.ProductName] = hp
+			} else {
+				hpCache[row.ProductName] = API.Hardware().GetProductByName(row.ProductName)
+			}
+			slot.ProductID = hpCache[row.ProductName].ID
+		} else if row.ProductAlias != "" {
+			if hp, ok := hpCache[row.ProductAlias]; ok {
+				hpCache[row.ProductAlias] = hp
+			} else {
+				hpCache[row.ProductAlias] = API.Hardware().GetProductByAlias(row.ProductAlias)
+			}
+			slot.ProductID = hpCache[row.ProductAlias].ID
+		} else {
+			panic(fmt.Errorf("RU %d entry does not have a product id, name, or alias", row.RU))
+		}
+		slots = append(slots, slot)
+	}
+
+	// There is no way to do this atomically. The api has no way to perform
+	// this action other than deleting each row at a time and then putting them
+	// back. If this seems really risky to you, then we are of the same mind.
+	for _, row := range r.Layouts(rackID) {
+		r.DeleteLayoutSlot(row.ID)
+	}
+	for _, slot := range slots {
+		r.SaveLayoutSlot(rackID, slot.RU, slot.ProductID)
+	}
+
+	return r.Layouts(rackID)
 }
 
 type RackLayoutSlot struct {
@@ -410,6 +499,34 @@ func (r *Racks) Layouts(id uuid.UUID) RackLayout {
 	}
 
 	return layouts
+}
+
+func (r *Racks) DeleteLayoutSlot(id uuid.UUID) {
+	uri := fmt.Sprintf(
+		"/layout/%s",
+		url.PathEscape(id.String()),
+	)
+
+	if res := r.Do(r.Sling().New().Delete(uri)); res.StatusCode() != 204 {
+		panic(res)
+	}
+}
+
+func (r *Racks) SaveLayoutSlot(rackID uuid.UUID, ruStart int, hardwareProductID uuid.UUID) (l RackLayoutSlot) {
+	payload := make(map[string]interface{})
+	payload["rack_id"] = rackID.String()
+	payload["hardware_product_id"] = hardwareProductID.String()
+	payload["rack_unit_start"] = ruStart
+
+	res := r.Do(
+		r.Sling().New().Post("/layout").
+			Set("Content-Type", "application/json").
+			BodyJSON(payload),
+	)
+	if ok := res.Parse(&l); !ok {
+		panic(res)
+	}
+	return l
 }
 
 /****/
@@ -662,9 +779,45 @@ func init() {
 		})
 
 		cmd.Command("layout", "The layout of the rack", func(cmd *cli.Cmd) {
-			cmd.Action = func() {
-				fmt.Println(API.Racks().Layouts(rackID))
-			}
+			cmd.Command("get", "Get the layout of a rack", func(cmd *cli.Cmd) {
+				cmd.Action = func() {
+					fmt.Println(API.Racks().Layouts(rackID))
+				}
+			})
+
+			cmd.Command("export", "Export the layout of the rack as JSON", func(cmd *cli.Cmd) {
+				cmd.Action = func() {
+					fmt.Println(API.Racks().Layouts(rackID).Export())
+				}
+			})
+
+			cmd.Command("import", "Import the layout of this rack (using the same format as 'export')", func(cmd *cli.Cmd) {
+				var (
+					filePathArg  = cmd.StringArg("FILE", "-", "Path to a JSON file that defines the layout. '-' indicates STDIN")
+					overwriteOpt = cmd.BoolOpt("overwrite", false, "If the rack has an existing layout, *overwrite* it. This is a destructive action")
+				)
+				cmd.Action = func() {
+					layout := API.Racks().Layouts(rackID)
+					if len(layout) > 0 {
+						if !*overwriteOpt {
+							panic("rack already has a layout. use --overwrite to force")
+						}
+					}
+
+					var b []byte
+					var err error
+					if *filePathArg == "-" {
+						b, err = ioutil.ReadAll(os.Stdin)
+					} else {
+						b, err = ioutil.ReadFile(*filePathArg)
+					}
+					if err != nil {
+						panic(err)
+					}
+
+					fmt.Println(API.Racks().ImportLayout(rackID, b))
+				}
+			})
 		})
 
 		cmd.Command("assignments", "The devices assigned to the rack", func(cmd *cli.Cmd) {
