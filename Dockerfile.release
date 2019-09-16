@@ -1,0 +1,38 @@
+# vim: se syn=dockerfile:
+FROM golang:1.13-alpine AS build
+ENV CGO_ENABLED 0
+
+RUN apk add --no-cache --update make git perl-utils dep shadow
+
+ARG UID="1000"
+ARG BRANCH="master"
+
+ENV GOPATH "/home/app/go"
+ENV PATH "${GOPATH}/bin:${PATH}"
+ENV GOCACHE "/home/app/.cache"
+
+RUN mkdir -p "${GOPATH}/src/github.com/joyent/"
+RUN chown -R $UID /home/app
+
+
+USER $UID
+ENV HOME "/home/app"
+
+RUN rm -rf release
+RUN rm -rf vendor
+
+RUN mkdir -p "${GOPATH}/src/github.com/joyent"
+WORKDIR "${GOPATH}/src/github.com/joyent/"
+RUN git clone --branch $BRANCH https://github.com/joyent/kosh kosh
+
+WORKDIR "${GOPATH}/src/github.com/joyent/kosh"
+RUN go get honnef.co/go/tools/cmd/staticcheck
+
+RUN id
+RUN env
+
+ENTRYPOINT ["make" ]
+CMD [ "release" ]
+
+
+
