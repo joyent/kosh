@@ -183,6 +183,25 @@ func init() {
 		API.StrictParsing = *strictParseOpt
 		API.DevelMode = *develOpt
 	}
+
+	App.Version("version", Version)
+
+	App.Command(
+		"version",
+		"Get more detailed version info than --version",
+		func(cmd *cli.Cmd) {
+
+			cmd.Action = func() {
+				fmt.Printf(
+					"Kosh %s\n"+
+						"  Git Revision: %s\n",
+					Version,
+					GitRev,
+				)
+			}
+		},
+	)
+
 }
 
 func main() {
