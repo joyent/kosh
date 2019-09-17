@@ -6,8 +6,6 @@
 
 package main
 
-// TODO: rack assignments: CRUD
-
 //lint:file-ignore U1000 WIP
 
 import (
@@ -546,7 +544,7 @@ func (r RackAssignments) Less(i, j int) bool {
 }
 
 type RackAssignment struct {
-	DeviceID            uuid.UUID `json:"device_id,omitempty"`
+	DeviceID            uuid.UUID `json:"device_id"`
 	DeviceAssetTag      string    `json:"device_asset_tag,omitempty"`
 	HardwareProductName string    `json:"hardware_product_name,omitempty"`
 	RackUnitStart       int       `json:"rack_unit_start"`
@@ -603,6 +601,32 @@ func (r *Racks) Assignments(id uuid.UUID) RackAssignments {
 		panic(res)
 	}
 	return assignments
+}
+
+func (r *Racks) ImportAssignments(id uuid.UUID, b []byte) RackAssignments {
+	type Assignment struct {
+		DeviceID       uuid.UUID `json:"device_id"`
+		RackUnitStart  int       `json:"rack_unit_start"`
+		DeviceAssetTag string    `json:"device_asset_tag,omitempty"`
+	}
+
+	imported := make([]Assignment, 0)
+	if err := json.Unmarshal(b, &imported); err != nil {
+		panic(err)
+	}
+
+	uri := fmt.Sprintf(
+		"/rack/%s/assignment",
+		url.PathEscape(id.String()),
+	)
+
+	r.Do(
+		r.Sling().New().Post(uri).
+			Set("Content-Type", "application/json").
+			BodyJSON(imported),
+	)
+
+	return r.Assignments(id)
 }
 
 /****/
@@ -818,6 +842,26 @@ func init() {
 					fmt.Println(API.Racks().ImportLayout(rackID, b))
 				}
 			})
+		})
+
+		cmd.Command("assign", "Assign devices to rack slots, using the `--json` output from 'assignments'", func(cmd *cli.Cmd) {
+			filePathArg := cmd.StringArg("FILE", "-", "Path to a JSON file to use as the data source. '-' indicates STDIN")
+			cmd.Action = func() {
+
+				var b []byte
+				var err error
+				if *filePathArg == "-" {
+					b, err = ioutil.ReadAll(os.Stdin)
+				} else {
+					b, err = ioutil.ReadFile(*filePathArg)
+				}
+				if err != nil {
+					panic(err)
+				}
+
+				fmt.Println(API.Racks().ImportAssignments(rackID, b))
+
+			}
 		})
 
 		cmd.Command("assignments", "The devices assigned to the rack", func(cmd *cli.Cmd) {
