@@ -10,12 +10,12 @@
   version = "v1.1.1"
 
 [[projects]]
-  digest = "1:fba61d8584058169c5bd4625196f33077ba937f7131625d4440686c5e4cff380"
+  digest = "1:3f7570ad151d00244d94ea2a4f884084984be7617a92089b1c35db9f5d65be89"
   name = "github.com/dghubble/sling"
   packages = ["."]
   pruneopts = "UT"
-  revision = "e2624bf29a7de45ab0802b09aea94ca0a7815c5f"
-  version = "v1.2.0"
+  revision = "5a2946623f885d0cfcd7085b039baec12ad53fdd"
+  version = "v1.3.0"
 
 [[projects]]
   digest = "1:bed9d72d596f94e65fff37f4d6c01398074a6bb1c3f3ceff963516bd01db6ff5"
