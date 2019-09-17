@@ -176,6 +176,20 @@ func (r *Relays) Register(
 	return relay
 }
 
+func (r *Relays) Delete(identifier string) {
+	uri := fmt.Sprintf("/relay/%s", url.PathEscape(identifier))
+	res := r.Do(r.Sling().New().Delete(uri))
+
+	if res.StatusCode() != 204 {
+		// I know this is weird. Like in other places, it should be impossible
+		// to reach here unless the status code is 204. The API returns 204
+		// (which gets us here) or 409 (which will explode before it gets here).
+		// If we got here via some other code, then there's some new behavior
+		// that we need to know about.
+		panic(res)
+	}
+}
+
 func init() {
 	App.Command("relays", "Perform actions against the whole list of relays", func(cmd *cli.Cmd) {
 		cmd.Command("get", "Get a list of relays", func(cmd *cli.Cmd) {
@@ -280,6 +294,12 @@ For instance:
 					*nameOpt,
 					*sshPortOpt,
 				))
+			}
+		})
+		cmd.Command("delete rm", "Delete a relay", func(cmd *cli.Cmd) {
+			cmd.Action = func() {
+				API.Relays().Delete(*relayArg)
+				fmt.Println(API.Relays().GetAll())
 			}
 		})
 	})
