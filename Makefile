@@ -25,6 +25,7 @@ deps: ## Update dependencies to latest version
 .PHONY: test
 test: ## Ensure that code matches best practices
 	staticcheck ./...
+	go test
 
 .PHONY: help
 help: ## Display this help message
@@ -47,14 +48,14 @@ docker_release: ## Build all release binaries and checksums in docker
 
 PLATFORMS  := darwin-amd64 linux-amd64 solaris-amd64 freebsd-amd64 openbsd-amd64 linux-arm
 BINARIES   := kosh
-RELEASE_BINARIES := kosh 
+RELEASE_BINARIES := kosh
 
-BINS       := $(foreach bin,$(BINARIES),bin/$(bin)) 
+BINS       := $(foreach bin,$(BINARIES),bin/$(bin))
 RELEASES   := $(foreach bin,$(RELEASE_BINARIES),release/$(bin))
 
 GIT_REV    := $(shell git describe --always --abbrev --dirty --long)
 LD_FLAGS   := -ldflags="-X main.Version=$(VERSION) -X main.GitRev=$(GIT_REV)"
-BUILD      := CGO_ENABLED=0 go build $(LD_FLAGS) 
+BUILD      := CGO_ENABLED=0 go build $(LD_FLAGS)
 
 ####
 
