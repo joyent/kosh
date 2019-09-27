@@ -488,7 +488,7 @@ type WorkspaceRackSummary struct {
 	Name           string         `json:"name"`
 	Phase          string         `json:"phase"`
 	RoleName       string         `json:"role_name"`
-	RackSize       int            `json:"rack_size"`
+	RackSize       int            `json:"rack_size" faker:"rack_size"`
 	DeviceProgress map[string]int `json:"device_progress"`
 }
 
@@ -596,7 +596,7 @@ type WorkspaceRelay struct {
 	Location   struct {
 		RackID        uuid.UUID `json:"rack_id"`
 		RackName      string    `json:"rack_name"`
-		RackUnitStart int       `json:"rack_unit_start"`
+		RackUnitStart int       `json:"rack_unit_start" faker:"rack_unit_start"`
 		RoleName      string    `json:"role_name"`
 		AZ            string    `json:"az"`
 	} `json:"location"`

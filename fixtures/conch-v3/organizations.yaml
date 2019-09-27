@@ -1,0 +1,152 @@
+---
+version: 1
+interactions:
+- request:
+    body: |
+      {"admins":[{"email":"conch@example.com"}],"description":"aNpldCrjhEwhQlgbLnsgBHdoP","name":"DTrkBjvuRtOzSbXGXLHGULcFm"}
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/organization
+    method: POST
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Fri, 01 Nov 2019 21:34:32 GMT
+      Location:
+      - /organization/87d99ccd-d1cc-4353-b862-35252f5b6d8a
+      Request-Id:
+      - 45UMYeQU32hs
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - 45UMYeQU32hs
+    status: 303 See Other
+    code: 303
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      Referer:
+      - http://10.51.54.42:5000/organization
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/organization/87d99ccd-d1cc-4353-b862-35252f5b6d8a
+    method: GET
+  response:
+    body: '{"builds":[],"created":"2019-11-01T21:34:32.248623Z","description":"aNpldCrjhEwhQlgbLnsgBHdoP","id":"87d99ccd-d1cc-4353-b862-35252f5b6d8a","name":"DTrkBjvuRtOzSbXGXLHGULcFm","users":[{"email":"conch@example.com","id":"1ebc992d-ced6-47fa-be0c-3f966a9eb42f","name":"Kosh","role":"admin"}],"workspaces":[]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "303"
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 01 Nov 2019 21:34:32 GMT
+      Request-Id:
+      - xXFZn0rvmYac
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-a8-0-gd0dc7f2e
+      X-Request-Id:
+      - xXFZn0rvmYac
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/organization
+    method: GET
+  response:
+    body: '[{"builds":[],"created":"2019-11-01T21:34:32.248623Z","description":"aNpldCrjhEwhQlgbLnsgBHdoP","id":"87d99ccd-d1cc-4353-b862-35252f5b6d8a","name":"DTrkBjvuRtOzSbXGXLHGULcFm","users":[{"email":"conch@example.com","id":"1ebc992d-ced6-47fa-be0c-3f966a9eb42f","name":"Kosh","role":"admin"}],"workspaces":[]},{"builds":[],"created":"2019-10-11T15:51:49.658646Z","description":"RsXzCQgZSaRzMdRaZbIHZtOrQ","id":"cc1f48dd-a1d4-4770-b5c3-f70d5a983230","name":"JvqCniFMdeXOrYBZRnoClgSRs","users":[{"email":"conch@example.com","id":"1ebc992d-ced6-47fa-be0c-3f966a9eb42f","name":"Kosh","role":"admin"}],"workspaces":[]},{"builds":[],"created":"2019-10-11T15:50:43.648304Z","description":"VNYmjmsURYwMtEkjXTetcDpdX","id":"e8220d7b-1df5-4d51-b0d1-825727b7b782","name":"sLfdmgoVarPSafRquDlosTPPw","users":[{"email":"conch@example.com","id":"1ebc992d-ced6-47fa-be0c-3f966a9eb42f","name":"Kosh","role":"admin"}],"workspaces":[]}]'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "913"
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 01 Nov 2019 21:34:32 GMT
+      Request-Id:
+      - +w3EZfW8fQwN
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-a8-0-gd0dc7f2e
+      X-Request-Id:
+      - +w3EZfW8fQwN
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/organization/87d99ccd-d1cc-4353-b862-35252f5b6d8a
+    method: GET
+  response:
+    body: '{"builds":[],"created":"2019-11-01T21:34:32.248623Z","description":"aNpldCrjhEwhQlgbLnsgBHdoP","id":"87d99ccd-d1cc-4353-b862-35252f5b6d8a","name":"DTrkBjvuRtOzSbXGXLHGULcFm","users":[{"email":"conch@example.com","id":"1ebc992d-ced6-47fa-be0c-3f966a9eb42f","name":"Kosh","role":"admin"}],"workspaces":[]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "303"
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 01 Nov 2019 21:34:32 GMT
+      Request-Id:
+      - sU1VN0RTevu+
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-a8-0-gd0dc7f2e
+      X-Request-Id:
+      - sU1VN0RTevu+
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/organization/87d99ccd-d1cc-4353-b862-35252f5b6d8a
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Date:
+      - Fri, 01 Nov 2019 21:34:32 GMT
+      Request-Id:
+      - z5TGzdcPTTFZ
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - z5TGzdcPTTFZ
+    status: 204 No Content
+    code: 204
+    duration: ""

@@ -10,7 +10,7 @@ import (
 )
 
 func setupAPIClient() {
-	Version += "-testing"
+	Version = "3.x-testing"
 	API.URL = os.Getenv("KOSH_URL")
 	API.Token = os.Getenv("KOSH_TOKEN")
 	API.StrictParsing = true
@@ -29,7 +29,7 @@ func setupAPIClient() {
 
 func setupRecorder(fixture string) func() {
 
-	// TODO: I need to re-think the test fixtures entirely
+	// TODO: we need to re-think the test fixtures entirely
 	r, err := recorder.New(fixture)
 	if err != nil {
 		panic(err)

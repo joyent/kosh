@@ -189,6 +189,10 @@ func (r *Racks) Get(id uuid.UUID) Rack {
 	return rack
 }
 
+func (r *Racks) CreateFromStruct(rack Rack) Rack {
+	return r.Create(rack.Name, rack.RoomID, rack.RoleID, rack.Phase)
+}
+
 func (r *Racks) Create(name string, roomID uuid.UUID, roleID uuid.UUID, phase string) Rack {
 	payload := make(map[string]string)
 	if name == "" {
@@ -319,13 +323,13 @@ func (r *Racks) Delete(id uuid.UUID) {
 
 /****/
 type RackLayoutSlot struct {
-	ID                uuid.UUID `json:"id"`
-	RackID            uuid.UUID `json:"rack_id"`
+	ID                uuid.UUID `json:"id" faker:"uuid"`
+	RackID            uuid.UUID `json:"rack_id" faker:"uuid"`
 	HardwareProductID uuid.UUID `json:"hardware_product_id" faker:"uuid"`
-	RackUnitStart     int       `json:"rack_unit_start"`
-	RackUnitSize      int       `json:"rack_unit_size"`
-	Created           time.Time `json:"created"`
-	Updated           time.Time `json:"updated"`
+	RackUnitStart     int       `json:"rack_unit_start", faker:"rack_unit_start"`
+	RackUnitSize      int       `json:"rack_unit_size", faker:"rack_unit_size"`
+	Created           time.Time `json:"created" faker:"-"`
+	Updated           time.Time `json:"updated" faker:"-"`
 }
 
 type RackLayout []RackLayoutSlot
@@ -424,24 +428,31 @@ func (rl RackLayout) Export() string {
 	return API.AsJSON(slots)
 }
 
-func (r *Racks) ImportLayout(rackID uuid.UUID, b []byte) RackLayout {
-	type Slot struct {
-		RU           int       `json:"ru_start"`
-		ProductID    uuid.UUID `json:"product_id,omitempty" faker:"uuid"`
-		ProductName  string    `json:"product_name,omitempty"`
-		ProductAlias string    `json:"product_alias,omitempty"`
-	}
+type RackLayoutSlotUpdate struct {
+	RU           int       `json:"ru_start"`
+	ProductID    uuid.UUID `json:"product_id,omitempty" faker:"uuid"`
+	ProductName  string    `json:"product_name,omitempty"`
+	ProductAlias string    `json:"product_alias,omitempty"`
+}
 
-	imported := make([]Slot, 0)
+type RackLayoutUpdates []RackLayoutSlotUpdate
+
+func (r *Racks) ImportLayout(rackID uuid.UUID, b []byte) RackLayout {
+
+	imported := make(RackLayoutUpdates, 0)
 	if err := json.Unmarshal(b, &imported); err != nil {
 		panic(err)
 	}
+	return r.CreateLayout(rackID, imported)
+}
+
+func (r *Racks) CreateLayout(rackID uuid.UUID, updates RackLayoutUpdates) RackLayout {
 
 	hpCache := make(map[string]HardwareProduct)
-	slots := make([]Slot, 0)
+	slots := make(RackLayoutUpdates, 0)
 
-	for _, row := range imported {
-		var slot Slot
+	for _, row := range updates {
+		var slot RackLayoutSlotUpdate
 
 		slot.RU = row.RU
 		slot.ProductID = row.ProductID
@@ -483,16 +494,6 @@ func (r *Racks) ImportLayout(rackID uuid.UUID, b []byte) RackLayout {
 	return r.Layouts(rackID)
 }
 
-type RackLayoutSlot struct {
-	ID                uuid.UUID `json:"id" faker:"uuid"`
-	RackID            uuid.UUID `json:"rack_id" faker:"uuid"`
-	HardwareProductID uuid.UUID `json:"hardware_product_id" faker:"uuid"`
-	RackUnitStart     int       `json:"rack_unit_start"`
-	RackUnitSize      int       `json:"rack_unit_size"`
-	Created           time.Time `json:"created"`
-	Updated           time.Time `json:"updated"`
-}
-
 func (r *Racks) Layouts(id uuid.UUID) RackLayout {
 	uri := fmt.Sprintf(
 		"/rack/%s/layouts",
@@ -515,7 +516,7 @@ func (r *Racks) DeleteLayoutSlot(id uuid.UUID) {
 		url.PathEscape(id.String()),
 	)
 
-	if res := r.Do(r.Sling().New().Delete(uri)); res.StatusCode() != 204 {
+	if res := r.DoBadly(r.Sling().New().Delete(uri)); res.StatusCode() != 204 {
 		panic(res)
 	}
 }
@@ -539,6 +540,14 @@ func (r *Racks) SaveLayoutSlot(rackID uuid.UUID, ruStart int, hardwareProductID 
 
 /****/
 
+type RackAssignment struct {
+	DeviceID            uuid.UUID `json:"device_id" faker:"uuid"`
+	DeviceAssetTag      string    `json:"device_asset_tag,omitempty"`
+	HardwareProductName string    `json:"hardware_product_name,omitempty"`
+	RackUnitStart       int       `json:"rack_unit_start" faker:"rack_unit_start"`
+	RackUnitSize        int       `json:"rack_unit_size" faker:"rack_unit_size"`
+}
+
 type RackAssignments []RackAssignment
 
 func (r RackAssignments) Len() int {
@@ -551,14 +560,6 @@ func (r RackAssignments) Swap(i, j int) {
 
 func (r RackAssignments) Less(i, j int) bool {
 	return r[i].RackUnitStart > r[j].RackUnitStart
-}
-
-type RackAssignment struct {
-	DeviceID            uuid.UUID `json:"device_id" faker:"uuid"`
-	DeviceAssetTag      string    `json:"device_asset_tag,omitempty"`
-	HardwareProductName string    `json:"hardware_product_name,omitempty"`
-	RackUnitStart       int       `json:"rack_unit_start"`
-	RackUnitSize        int       `json:"rack_unit_size"`
 }
 
 func (a RackAssignments) String() string {
@@ -613,18 +614,15 @@ func (r *Racks) Assignments(id uuid.UUID) RackAssignments {
 	return assignments
 }
 
-func (r *Racks) ImportAssignments(id uuid.UUID, b []byte) RackAssignments {
-	type Assignment struct {
-		DeviceID       uuid.UUID `json:"device_id" faker:"uuid"`
-		RackUnitStart  int       `json:"rack_unit_start"`
-		DeviceAssetTag string    `json:"device_asset_tag,omitempty"`
-	}
+type RackAssignmentUpdate struct {
+	DeviceID       uuid.UUID `json:"device_id" faker:"uuid"`
+	DeviceAssetTag string    `json:"device_asset_tag,omitempty"`
+	RackUnitStart  int       `json:"rack_unit_start" faker:"rack_unit_start"`
+}
 
-	imported := make([]Assignment, 0)
-	if err := json.Unmarshal(b, &imported); err != nil {
-		panic(err)
-	}
+type RackAssignmentUpdates []RackAssignmentUpdate
 
+func (r *Racks) UpdateAssignments(id uuid.UUID, updates RackAssignmentUpdates) RackAssignments {
 	uri := fmt.Sprintf(
 		"/rack/%s/assignment",
 		url.PathEscape(id.String()),
@@ -633,10 +631,19 @@ func (r *Racks) ImportAssignments(id uuid.UUID, b []byte) RackAssignments {
 	r.Do(
 		r.Sling().New().Post(uri).
 			Set("Content-Type", "application/json").
-			BodyJSON(imported),
+			BodyJSON(updates),
 	)
 
 	return r.Assignments(id)
+}
+
+// Import assignments from JSON
+func (r *Racks) ImportAssignments(id uuid.UUID, b []byte) RackAssignments {
+	imported := make(RackAssignmentUpdates, 0)
+	if err := json.Unmarshal(b, &imported); err != nil {
+		panic(err)
+	}
+	return r.UpdateAssignments(id, imported)
 }
 
 /****/

@@ -33,7 +33,7 @@ func (c *Conch) Hardware() *Hardware {
 }
 
 type HardwareProductProfile struct {
-	ID           uuid.UUID `json:"id"`
+	ID           uuid.UUID `json:"id" faker:"uuid"`
 	BiosFirmware string    `json:"bios_firmware"`
 	CpuNum       int       `json:"cpu_num"`
 	CpuType      string    `json:"cpu_type"`
@@ -71,20 +71,20 @@ type HardwareProductProfile struct {
 
 type HardwareProducts []HardwareProduct
 type HardwareProduct struct {
-	ID                     uuid.UUID              `json:"id"`
+	ID                     uuid.UUID              `json:"id" faker:"uuid"`
 	Name                   string                 `json:"name"`
 	Alias                  string                 `json:"alias"`
 	Prefix                 string                 `json:"prefix,omitempty"`
-	HardwareVendorID       uuid.UUID              `json:"hardware_vendor_id"`
+	HardwareVendorID       uuid.UUID              `json:"hardware_vendor_id" faker:"uuid"`
 	GenerationName         string                 `json:"generation_name,omitempty"`
 	LegacyProductName      string                 `json:"legacy_product_name,omitempty"`
 	SKU                    string                 `json:"sku,omitempty"`
 	Specification          string                 `json:"specification,omitempty"`
-	RackUnitSize           int                    `json:"rack_unit_size"`
+	RackUnitSize           int                    `json:"rack_unit_size" faker:"rack_unit_size"`
 	HardwareProductProfile HardwareProductProfile `json:"hardware_product_profile,omitempty"`
-	Created                time.Time              `json:"created"`
-	Updated                time.Time              `json:"updated"`
-	ValidationPlanID       uuid.UUID              `json:"validation_plan_id,omitempty"`
+	Created                time.Time              `json:"created" faker:"-"`
+	Updated                time.Time              `json:"updated" faker:"-"`
+	ValidationPlanID       uuid.UUID              `json:"validation_plan_id,omitempty" faker:"-"`
 }
 
 func (h *Hardware) GetProduct(id uuid.UUID) (hp HardwareProduct) {

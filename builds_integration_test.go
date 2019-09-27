@@ -4,32 +4,26 @@ import (
 	"testing"
 )
 
-var build Build
-
-func TestIntegrationBuildsCreate(t *testing.T) {
+func TestBuildAPIintegration(t *testing.T) {
 	setupAPIClient()
-	r := setupRecorder(t, "fixtures/conch-v3/builds/create")
-	defer r() // Make sure recorder is stopped once done with it
-	fake := newTestBuild()
-	build = API.Builds().Create(
-		fake.Name,
-		fake.Description,
-		[]map[string]string{{"email": "conch@example.com"}},
-	)
-}
-
-func TestIntegrationBuildsGetAll(t *testing.T) {
-	setupAPIClient()
-	r := setupRecorder(t, "fixtures/conch-v3/builds/get-all")
+	r := setupRecorder("fixtures/conch-v3/builds")
 	defer r() // Make sure recorder is stopped once done with it
 
-	_ = API.Builds().GetAll()
-}
+	var build Build
+	t.Run("create a build", func(t *testing.T) {
+		fake := newTestBuild()
+		build = API.Builds().Create(
+			fake.Name,
+			fake.Description,
+			[]map[string]string{{"email": "conch@example.com"}},
+		)
+	})
 
-func TestIntegrationBuildsGet(t *testing.T) {
-	setupAPIClient()
-	r := setupRecorder(t, "fixtures/conch-v3/builds/get")
-	defer r() // Make sure recorder is stopped once done with it
+	t.Run("get all builds", func(t *testing.T) {
+		_ = API.Builds().GetAll()
+	})
 
-	_ = API.Builds().Get(build.ID)
+	t.Run("get a specific build", func(t *testing.T) {
+		_ = API.Builds().Get(build.ID)
+	})
 }

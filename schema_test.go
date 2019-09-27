@@ -85,7 +85,7 @@ func assertJSONSchema(t *testing.T, got []byte, name string) {
 	t.Helper()
 	restoreURL := overrideURL(currentURL())
 	defer restoreURL()
-	restoreClient := setupRecorder(t, "fixtures/json-schema/"+name)
+	restoreClient := setupRecorder("fixtures/json-schema/" + name)
 	defer restoreClient()
 
 	rs := API.Schema().Get(name)

@@ -30,7 +30,7 @@ func (c *Conch) Datacenters() *Datacenters {
 }
 
 type Datacenter struct {
-	ID         uuid.UUID `json:"id"`
+	ID         uuid.UUID `json:"id" faker:"uuid"`
 	Vendor     string    `json:"vendor"`
 	VendorName string    `json:"vendor_name,omitempty"`
 	Region     string    `json:"region"`

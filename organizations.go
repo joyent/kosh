@@ -25,8 +25,10 @@ type Org struct {
 	Name        string            `json:"name"`
 	Description string            `json:"description"`
 	Created     time.Time         `json:"created" faker:"-"`
-	Admins      DetailedUsers     `json:"admins" faker:"-"`
+	Admins      UserAndRoles      `json:"admins" faker:"-"`
 	Workspaces  WorkspaceAndRoles `json:"workspaces" faker:"-"`
+	Builds      BuildList         `json:"builds" faker:"-"`
+	Users       UserAndRoles      `json:"users" faker:"-"`
 }
 
 type OrgAndRole struct {
@@ -190,8 +192,8 @@ func (o *Organizations) Delete(ID uuid.UUID) {
 }
 
 type OrganizationUser struct {
-	Email string    `json:"email"`
-	ID    uuid.UUID `json:"id"`
+	ID    uuid.UUID `json:"id" faker:"uuid"`
+	Email string    `json:"email" faker:"email"`
 	Name  string    `json:"name"`
 	Role  string    `json:"role"`
 }

@@ -1,0 +1,93 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/workspace
+    method: GET
+  response:
+    body: '[{"description":"Global workspace","id":"8bb8f3a8-0f1e-4f1d-92a9-3d108f5743c8","name":"GLOBAL","parent_workspace_id":null,"role":"admin"}]'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "138"
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 01 Nov 2019 21:34:38 GMT
+      Request-Id:
+      - 2P2DNADL8/Tb
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-a8-0-gd0dc7f2e
+      X-Request-Id:
+      - 2P2DNADL8/Tb
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/workspace/GLOBAL
+    method: GET
+  response:
+    body: '{"description":"Global workspace","id":"8bb8f3a8-0f1e-4f1d-92a9-3d108f5743c8","name":"GLOBAL","parent_workspace_id":null,"role":"admin"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "136"
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 01 Nov 2019 21:34:38 GMT
+      Request-Id:
+      - Gzn2wrxM4eU6
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-a8-0-gd0dc7f2e
+      X-Request-Id:
+      - Gzn2wrxM4eU6
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/workspace/GLOBAL
+    method: GET
+  response:
+    body: '{"description":"Global workspace","id":"8bb8f3a8-0f1e-4f1d-92a9-3d108f5743c8","name":"GLOBAL","parent_workspace_id":null,"role":"admin"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "136"
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 01 Nov 2019 21:34:38 GMT
+      Request-Id:
+      - 1gr9DxXVOO0W
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-a8-0-gd0dc7f2e
+      X-Request-Id:
+      - 1gr9DxXVOO0W
+    status: 200 OK
+    code: 200
+    duration: ""
