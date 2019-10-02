@@ -1,4 +1,4 @@
-VERSION ?= v0.0.0
+VERSION ?= v3.0.0-a1
 #VERSION ?= $(shell git describe --tags --abbrev=0 | sed 's/^v//')
 
 build: vendor clean test all ## Test and build binaries for local architecture
