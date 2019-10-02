@@ -75,7 +75,7 @@ type HardwareProduct struct {
 	Alias                  string                 `json:"alias"`
 	Prefix                 string                 `json:"prefix,omitempty"`
 	HardwareVendorID       uuid.UUID              `json:"hardware_vendor_id"`
-	GenerationName         string                 `json:"generate_name,omitempty"`
+	GenerationName         string                 `json:"generation_name,omitempty"`
 	LegacyProductName      string                 `json:"legacy_product_name,omitempty"`
 	SKU                    string                 `json:"sku,omitempty"`
 	Specification          string                 `json:"specification,omitempty"`
@@ -95,27 +95,32 @@ func (h *Hardware) GetProduct(id uuid.UUID) (hp HardwareProduct) {
 	return hp
 }
 
-// There are three string identifiers currently accepted by the API: name,
-// alias, sku. The calls all look exactly the same where we stick the string in
-// the url and hope for the best.
-func (h *Hardware) GetProductByString(wat string) (hp HardwareProduct) {
-	uri := fmt.Sprintf("/hardware_product/%s", url.PathEscape(wat))
+func (h *Hardware) GetProductByName(name string) (hp HardwareProduct) {
+	uri := fmt.Sprintf("/hardware_product/name=%s", url.PathEscape(name))
 	res := h.Do(h.Sling().New().Get(uri))
 	if ok := res.Parse(&hp); !ok {
-		panic(res)
+		panic(fmt.Sprintf("%v", res))
 	}
 
 	return hp
 }
 
-func (h *Hardware) GetProductByName(name string) HardwareProduct {
-	return h.GetProductByString(name)
+func (h *Hardware) GetProductByAlias(alias string) (hp HardwareProduct) {
+	uri := fmt.Sprintf("/hardware_product/alias=%s", url.PathEscape(alias))
+	res := h.Do(h.Sling().New().Get(uri))
+	if ok := res.Parse(&hp); !ok {
+		panic(fmt.Sprintf("%v", res))
+	}
+
+	return hp
 }
 
-func (h *Hardware) GetProductByAlias(alias string) HardwareProduct {
-	return h.GetProductByString(alias)
-}
+func (h *Hardware) GetProductBySku(sku string) (hp HardwareProduct) {
+	uri := fmt.Sprintf("/hardware_product/sku=%s", url.PathEscape(sku))
+	res := h.Do(h.Sling().New().Get(uri))
+	if ok := res.Parse(&hp); !ok {
+		panic(fmt.Sprintf("%v", res))
+	}
 
-func (h *Hardware) GetProductBySku(sku string) HardwareProduct {
-	return h.GetProductByString(sku)
+	return hp
 }

@@ -17,7 +17,7 @@ import (
 	"time"
 
 	"github.com/gofrs/uuid"
-	"github.com/jawher/mow.cli"
+	cli "github.com/jawher/mow.cli"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -52,7 +52,7 @@ type WorkspaceAndRole struct {
 	ID          uuid.UUID `json:"id"`
 	Name        string    `json:"name"`
 	Description string    `json:"description,omitempty"`
-	ParentID    uuid.UUID `json:"parent_id,omitempty"`
+	ParentID    uuid.UUID `json:"parent_workspace_id,omitempty"`
 	Role        string    `json:"role"`
 	RoleVia     uuid.UUID `json:"role_via"`
 
