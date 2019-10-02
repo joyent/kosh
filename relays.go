@@ -87,6 +87,7 @@ type Relay struct {
 	SshPort      int       `json:"ssh_port"`
 	Created      time.Time `json:"created"`
 	Updated      time.Time `json:"updated"`
+	LastSeen     time.Time `json:"last_seen,omitempty"`
 }
 
 func (r Relay) String() string {

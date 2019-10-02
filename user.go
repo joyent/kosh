@@ -17,7 +17,7 @@ import (
 	"time"
 
 	"github.com/gofrs/uuid"
-	"github.com/jawher/mow.cli"
+	cli "github.com/jawher/mow.cli"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -39,10 +39,12 @@ type DetailedUser struct {
 	Email               string            `json:"email"`
 	Created             time.Time         `json:"created"`
 	LastLogin           time.Time         `json:"last_login,omitempty"`
+	LastSeen            time.Time         `json:"last_seen,omitempty"`
 	RefuseSessionAuth   bool              `json:"refuse_session_auth"`
 	ForcePasswordChange bool              `json:"force_password_change"`
 	IsAdmin             bool              `json:"is_admin"`
 	Workspaces          WorkspaceAndRoles `json:"workspaces"`
+	Organizations       interface{}       `json:"organizations"`
 }
 
 func (u DetailedUser) String() string {
@@ -81,7 +83,7 @@ func (u DetailedUsers) Less(i, j int) bool {
 func (u *Users) Me() (user DetailedUser) {
 	res := u.Do(u.Sling().Get("/user/me"))
 	if ok := res.Parse(&user); !ok {
-		panic(res)
+		panic(fmt.Sprintf("%v", res))
 	}
 	ret := make(WorkspaceAndRoles, 0)
 	cache := make(map[uuid.UUID]string)
