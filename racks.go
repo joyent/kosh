@@ -22,7 +22,7 @@ import (
 	"time"
 
 	"github.com/gofrs/uuid"
-	"github.com/jawher/mow.cli"
+	cli "github.com/jawher/mow.cli"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -45,6 +45,7 @@ type Rack struct {
 	Phase        string    `json:"phase"`
 	Created      time.Time `json:"created"`
 	Updated      time.Time `json:"updated"`
+	BuildID      uuid.UUID `json:"build_id"` // TODO build support
 
 	Role RackRole `json:"-"`
 	Room Room     `json:"-"`
@@ -123,7 +124,7 @@ func (r *Racks) GetAll() RackList {
 
 	res := r.Do(r.Sling().Get("/rack"))
 	if ok := res.Parse(&rl); !ok {
-		panic(res)
+		panic(fmt.Sprintf("%v", res))
 	}
 
 	roles := make(map[uuid.UUID]RackRole)
