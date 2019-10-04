@@ -84,6 +84,7 @@ type HardwareProduct struct {
 	HardwareProductProfile HardwareProductProfile `json:"hardware_product_profile,omitempty"`
 	Created                time.Time              `json:"created"`
 	Updated                time.Time              `json:"updated"`
+	ValidationPlanID       uuid.UUID              `json:"validation_plan_id,omitempty"`
 }
 
 func (h *Hardware) GetProduct(id uuid.UUID) (hp HardwareProduct) {
@@ -120,13 +121,56 @@ func (h *Hardware) GetProductBySku(sku string) (hp HardwareProduct) {
 	uri := fmt.Sprintf("/hardware_product/sku=%s", url.PathEscape(sku))
 	res := h.Do(h.Sling().New().Get(uri))
 	if ok := res.Parse(&hp); !ok {
-		panic(fmt.Sprintf("%v", res))
+		panic(res)
 	}
 
 	return hp
 }
 
-func (h *Hardware) Create(name, alias string, vendorID uuid.UUID, SKU string, rackUnitSize int, validationPlanID uuid.UUID) (hp HardwareProduct) {
+type HardwareProductProfileUpdate struct {
+	BiosFirmware string `json:"bios_firmware"`
+	CpuNum       int    `json:"cpu_num"`
+	CpuType      string `json:"cpu_type"`
+	DimmsNum     int    `json:"dimms_num"`
+	HbaFirmware  string `json:"hba_firmware,omitempty"`
+	NicsNum      int    `json:"nics_num"`
+	Purpose      string `json:"purpose"`
+	RamTotal     int    `json:"ram_total"`
+	SasHddSlots  string `json:"sas_hdd_slots,omitempty"`
+	SataHddSlots string `json:"sata_hdd_slots,omitempty"`
+	SataSsdSlots string `json:"sata_ssd_slots,omitempty"`
+	SasSsdSlots  string `json:"sas_ssd_slots,omitempty"`
+	NvmeSsdSlots string `json:"nvme_ssd_slots,omitempty"`
+	UsbNum       int    `json:"usb_num"`
+
+	// NOTE the pointers. 0 is a valid value so zero values aren't
+	PsuTotal   *int `json:"psu_total,omitempty"`
+	RaidLunNum *int `json:"raid_lun_num,omitempty"`
+
+	SasHddNum  *int `json:"sas_hdd_num,omitempty"`
+	SasHddSize *int `json:"sas_hdd_size,omitempty"`
+
+	SataHddNum  *int `json:"sata_hdd_num,omitempty"`
+	SataHddSize *int `json:"sata_hdd_size,omitempty"`
+
+	SataSsdNum  *int `json:"sata_ssd_num,omitempty"`
+	SataSsdSize *int `json:"sata_ssd_size,omitempty"`
+
+	SasSsdNum  *int `json:"sas_ssd_num,omitempty"`
+	SasSsdSize *int `json:"sas_ssd_size,omitempty"`
+
+	NvmeSsdNum  *int `json:"nvme_ssd_num,omitempty"`
+	NvmeSsdSize *int `json:"nvme_ssd_size,omitempty"`
+}
+
+func (h *Hardware) Create(
+	name, alias string,
+	vendorID uuid.UUID,
+	SKU string,
+	rackUnitSize int,
+	validationPlanID uuid.UUID,
+	hardwareProductProfile HardwareProductProfileUpdate,
+) (hp HardwareProduct) {
 	payload := make(map[string]interface{})
 	payload["name"] = name
 	payload["alias"] = alias
@@ -134,6 +178,7 @@ func (h *Hardware) Create(name, alias string, vendorID uuid.UUID, SKU string, ra
 	payload["sku"] = SKU
 	payload["rack_unit_size"] = rackUnitSize
 	payload["validation_plan_id"] = validationPlanID
+	payload["hardware_product_profile"] = hardwareProductProfile
 
 	res := h.Do(h.Sling().New().Post("/hardware_product").
 		Set("Content-Type", "application/json").
@@ -160,7 +205,6 @@ func (h *Hardware) Delete(ID uuid.UUID) {
 		panic(res)
 	}
 
-	return
 }
 
 type HardwareVendor struct {
@@ -202,5 +246,4 @@ func (h *Hardware) DeleteVendor(name string) {
 		panic(res)
 	}
 
-	return
 }

@@ -76,21 +76,21 @@ func (o OrgAndRoles) String() string {
 	return tableString.String()
 }
 
-type Orgs []Org
+type OrgList []Org
 
-func (o Orgs) Len() int {
+func (o OrgList) Len() int {
 	return len(o)
 }
 
-func (o Orgs) Swap(i, j int) {
+func (o OrgList) Swap(i, j int) {
 	o[i], o[j] = o[j], o[i]
 }
 
-func (o Orgs) Less(i, j int) bool {
+func (o OrgList) Less(i, j int) bool {
 	return o[i].Name < o[j].Name
 }
 
-func (o Orgs) String() string {
+func (o OrgList) String() string {
 	sort.Sort(o)
 	if API.JsonOnly {
 		return API.AsJSON(o)
@@ -136,8 +136,7 @@ func (o Org) String() string {
 	return buf.String()
 }
 
-func (o *Organizations) GetAll() Orgs {
-	var list Orgs
+func (o *Organizations) GetAll() (list OrgList) {
 	res := o.Do(o.Sling().Get("/organization"))
 	if ok := res.Parse(&list); !ok {
 		panic(res)
@@ -227,6 +226,7 @@ func (o *Organizations) AddUser(orgID uuid.UUID, email, role string, sendEmail b
 			QueryStruct(q).
 			BodyJSON(payload),
 	)
+
 }
 
 // userID is a string because it may be a UUID or an Email, the API accepts both

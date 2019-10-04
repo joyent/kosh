@@ -58,6 +58,7 @@ func (dr RoomList) String() string {
 	TableToMarkdown(table)
 
 	table.SetHeader([]string{
+		"ID",
 		"Alias",
 		"AZ",
 		"Vendor Name",
@@ -68,6 +69,7 @@ func (dr RoomList) String() string {
 
 	for _, r := range dr {
 		table.Append([]string{
+			CutUUID(r.ID.String()),
 			r.Alias,
 			r.AZ,
 			r.VendorName,
@@ -183,6 +185,15 @@ func (r *Rooms) Create(datacenterID uuid.UUID, az string, alias string, vendorNa
 	}
 
 	return room
+}
+
+func (r *Rooms) CreateFromStruct(room Room) Room {
+	return r.Create(
+		room.DatacenterID,
+		room.AZ,
+		room.Alias,
+		room.VendorName,
+	)
 }
 
 func (r *Rooms) Update(id uuid.UUID, datacenterID uuid.UUID, az string, alias string, vendorName string) Room {

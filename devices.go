@@ -181,7 +181,7 @@ type DeviceLocation struct {
 		ID     uuid.UUID `json:"id"`
 		Name   string    `json:"name"`
 		Alias  string    `json:"alias"`
-		Vendor string    `json:"vendor"`
+		Vendor string    `json:"hardware_vendor_id"`
 	} `json:"target_hardware_product"`
 }
 
@@ -211,6 +211,15 @@ func (ds *Devices) GetLocation(id string) (l DeviceLocation) {
 		panic(res)
 	}
 	return l
+}
+
+func (ds *Devices) DeleteLocation(id string) {
+	uri := fmt.Sprintf("/device/%s/location", url.PathEscape(id))
+
+	res := ds.Do(ds.Sling().New().Delete(uri))
+	if res.StatusCode() != 204 {
+		panic(res)
+	}
 }
 
 /***/

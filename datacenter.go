@@ -17,7 +17,7 @@ import (
 	"time"
 
 	"github.com/gofrs/uuid"
-	"github.com/jawher/mow.cli"
+	cli "github.com/jawher/mow.cli"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -204,6 +204,15 @@ func (d *Datacenters) Create(region string, vendor string, location string, vend
 	}
 
 	return dc
+}
+
+func (d *Datacenters) CreateFromStruct(newDC Datacenter) Datacenter {
+	return d.Create(
+		newDC.Region,
+		newDC.Vendor,
+		newDC.Location,
+		newDC.VendorName,
+	)
 }
 
 func (d *Datacenters) Delete(id uuid.UUID) {

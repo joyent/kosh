@@ -192,6 +192,13 @@ func (r *RackRoles) Create(name string, rackSize int) RackRole {
 	return role
 }
 
+func (r *RackRoles) CreateFromStruct(role RackRole) RackRole {
+	return r.Create(
+		role.Name,
+		role.RackSize,
+	)
+}
+
 func (r *RackRoles) Update(id uuid.UUID, newName string, rackSize int) RackRole {
 	payload := make(map[string]interface{})
 	if newName != "" {

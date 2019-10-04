@@ -318,6 +318,15 @@ func (r *Racks) Delete(id uuid.UUID) {
 }
 
 /****/
+type RackLayoutSlot struct {
+	ID                uuid.UUID `json:"id"`
+	RackID            uuid.UUID `json:"rack_id"`
+	HardwareProductID uuid.UUID `json:"hardware_product_id" faker:"uuid"`
+	RackUnitStart     int       `json:"rack_unit_start"`
+	RackUnitSize      int       `json:"rack_unit_size"`
+	Created           time.Time `json:"created"`
+	Updated           time.Time `json:"updated"`
+}
 
 type RackLayout []RackLayoutSlot
 

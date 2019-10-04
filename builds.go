@@ -256,6 +256,25 @@ func (b *Builds) GetDevices(ID uuid.UUID) (list DeviceList) {
 	return
 }
 
+func (b *Builds) CreateDevice(ID uuid.UUID, deviceID, sku string) {
+	type BDC struct {
+		Serial string `json:"serial_number"`
+		SKU    string `json:"sku"`
+	}
+
+	type BDCList []BDC
+
+	list := BDCList{{deviceID, sku}}
+
+	uri := fmt.Sprintf("/build/%s/device", url.PathEscape(ID.String()))
+
+	_ = b.Do(
+		b.Sling().Post(uri).
+			Set("Content-Type", "application/json").
+			BodyJSON(list),
+	)
+}
+
 func (b *Builds) AddDevice(ID uuid.UUID, deviceID string) {
 	uri := fmt.Sprintf("/build/%s/device/%s", url.PathEscape(ID.String()), url.PathEscape(deviceID))
 

@@ -8,6 +8,7 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"net/url"
 	"sort"
@@ -15,6 +16,8 @@ import (
 	"time"
 
 	"github.com/gofrs/uuid"
+	cli "github.com/jawher/mow.cli"
+
 	// "github.com/jawher/mow.cli"
 	"github.com/olekukonko/tablewriter"
 )
@@ -35,7 +38,73 @@ type ValidationPlan struct {
 	Created     time.Time `json:"created"`
 }
 
-// type ValidationPlans []ValidationPlan
+func (v ValidationPlan) String() string {
+	if API.JsonOnly {
+		return API.AsJSON(v)
+	}
+
+	t, err := NewTemplate().Parse(validationPlanTemplate)
+	if err != nil {
+		panic(err)
+	}
+
+	buf := new(bytes.Buffer)
+
+	if err := t.Execute(buf, v); err != nil {
+		panic(err)
+	}
+
+	return buf.String()
+
+}
+
+type ValidationPlans []ValidationPlan
+
+func (v ValidationPlans) Len() int {
+	return len(v)
+}
+
+func (v ValidationPlans) Swap(i, j int) {
+	v[i], v[j] = v[j], v[i]
+}
+
+func (v ValidationPlans) Less(i, j int) bool {
+	return v[i].Name < v[j].Name
+}
+
+func (v ValidationPlans) String() string {
+	sort.Sort(v)
+	if API.JsonOnly {
+		return API.AsJSON(v)
+	}
+	if len(v) == 0 {
+		return ""
+	}
+
+	tableString := &strings.Builder{}
+	table := tablewriter.NewWriter(tableString)
+	TableToMarkdown(table)
+	table.SetRowLine(true)
+
+	table.SetHeader([]string{
+		"ID",
+		"Name",
+		"Description",
+		"Created",
+	})
+
+	for _, p := range v {
+		table.Append([]string{
+			CutUUID(p.ID.String()),
+			p.Name,
+			p.Description,
+			p.Created.String(),
+		})
+	}
+
+	table.Render()
+	return tableString.String()
+}
 
 func (v Validations) GetPlan(id uuid.UUID) (vp ValidationPlan) {
 	if (id == uuid.UUID{}) {
@@ -43,6 +112,36 @@ func (v Validations) GetPlan(id uuid.UUID) (vp ValidationPlan) {
 	}
 
 	uri := fmt.Sprintf("/validation_plan/%s", url.PathEscape(id.String()))
+	res := v.Do(v.Sling().New().Get(uri))
+	if ok := res.Parse(&vp); !ok {
+		panic(res)
+	}
+
+	return vp
+}
+
+func (v Validations) GetAllPlans() (list ValidationPlans) {
+
+	res := v.Do(v.Sling().New().Get("/validation_plan"))
+	if ok := res.Parse(&list); !ok {
+		panic(res)
+	}
+
+	return
+}
+
+func (v Validations) FindPlanID(id string) (bool, uuid.UUID) {
+	ids := make([]uuid.UUID, 0)
+	for _, vp := range v.GetAllPlans() {
+		ids = append(ids, vp.ID)
+	}
+
+	return FindUUID(id, ids)
+}
+
+func (v Validations) GetPlanByName(name string) (vp ValidationPlan) {
+
+	uri := fmt.Sprintf("/validation_plan/%s", url.PathEscape(name))
 	res := v.Do(v.Sling().New().Get(uri))
 	if ok := res.Parse(&vp); !ok {
 		panic(res)
@@ -172,4 +271,41 @@ func (vs ValidationStatesWithResults) String() string {
 	}
 
 	return buf.String()
+}
+
+func init() {
+
+	App.Command("validation", "Work with validations", func(cmd *cli.Cmd) {
+		v := API.Validations()
+		cmd.Command("plans", "Work with validation plans", func(cmd *cli.Cmd) {
+			cmd.Command("get ls", "Get a list of all plans", func(cmd *cli.Cmd) {
+				cmd.Action = func() {
+					fmt.Println(v.GetAllPlans())
+				}
+			})
+
+		})
+		cmd.Command("plan", "Work with a specific validation plan", func(cmd *cli.Cmd) {
+			var p ValidationPlan
+			idArg := cmd.StringArg("UUID", "", "UUID of the Validation Plan, Short IDs accepted")
+
+			cmd.Spec = "UUID"
+			cmd.Before = func() {
+				ok, planID := v.FindPlanID(*idArg)
+				if !ok {
+					panic(errors.New("could not find the validation plan"))
+				}
+				p = v.GetPlan(planID)
+			}
+
+			cmd.Command("get", "Get information about a single build by its name", func(cmd *cli.Cmd) {
+
+				cmd.Action = func() {
+					fmt.Println(p)
+				}
+			})
+
+		})
+	})
+
 }
