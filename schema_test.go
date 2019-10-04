@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 )
 
@@ -65,5 +66,30 @@ func TestJSONSchemaGet(t *testing.T) {
 
 	if errors, _ := rs.ValidateBytes(valid); len(errors) > 0 {
 		t.Errorf("Couldn't validate valid JSON: %v", errors)
+	}
+}
+
+func overrideURL(newURL string) func() {
+	oldURL := API.URL
+	API.URL = newURL
+	return func() { API.URL = oldURL }
+}
+
+func currentURL() string {
+	if os.Getenv("KOSH_URL") != "" {
+		return os.Getenv("KOSH_URL")
+	}
+	return "https://edge.conch.joyent.us"
+}
+func assertJSONSchema(t *testing.T, got []byte, name string) {
+	t.Helper()
+	restoreURL := overrideURL(currentURL())
+	defer restoreURL()
+	restoreClient := setupRecorder(t, "fixtures/json-schema/"+name)
+	defer restoreClient()
+
+	rs := API.Schema().Get(name)
+	if errors, _ := rs.ValidateBytes(got); len(errors) > 0 {
+		t.Errorf("Errors validating: %v", errors)
 	}
 }
