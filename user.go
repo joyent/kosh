@@ -45,6 +45,7 @@ type DetailedUser struct {
 	IsAdmin             bool              `json:"is_admin"`
 	Workspaces          WorkspaceAndRoles `json:"workspaces"`
 	Organizations       interface{}       `json:"organizations"`
+	Builds              interface{}       `json:"builds"` // TODO build support
 }
 
 func (u DetailedUser) String() string {

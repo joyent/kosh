@@ -17,7 +17,7 @@ import (
 	"time"
 
 	"github.com/gofrs/uuid"
-	"github.com/jawher/mow.cli"
+	cli "github.com/jawher/mow.cli"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -284,22 +284,25 @@ type deviceCore struct {
 	UptimeSince       time.Time `json:"uptime_since,omitempty"`
 	Validated         time.Time `json:"validated,omitempty"`
 	Phase             string    `json:"phase"`
+
+	BuildID uuid.UUID `json:"build_id"`
 }
 
 type Disk struct {
-	ID           uuid.UUID `json:"id"`
-	SerialNumber string    `json:"serial_number"`
-	Slot         int       `json:"slot,omitempty"`
-	Size         int       `json:"size,omitempty"`
-	Vendor       string    `json:"vendor,omitempty"`
-	Model        string    `json:"model,omitempty"`
-	Firmware     string    `json:"firmware,omitempty"`
-	Transport    string    `json:"transport,omitempty"`
-	Health       string    `json:"health,omitempty"`
-	DriveType    string    `json:"drive_type,omitempty"`
-	Enclosure    int       `json:"enclosure,omitempty"`
-	Created      time.Time `json:"created"`
-	Updated      time.Time `json:"updated"`
+	ID           uuid.UUID   `json:"id"`
+	SerialNumber string      `json:"serial_number"`
+	Slot         int         `json:"slot,omitempty"`
+	Size         int         `json:"size,omitempty"`
+	Vendor       string      `json:"vendor,omitempty"`
+	Model        string      `json:"model,omitempty"`
+	Firmware     string      `json:"firmware,omitempty"`
+	Transport    string      `json:"transport,omitempty"`
+	Health       string      `json:"health,omitempty"`
+	DriveType    string      `json:"drive_type,omitempty"`
+	Enclosure    int         `json:"enclosure,omitempty"`
+	Created      time.Time   `json:"created"`
+	Updated      time.Time   `json:"updated"`
+	HBA          interface{} `json:"hba"` // TODO figure out where this belongs
 }
 type Disks []Disk
 
@@ -313,7 +316,8 @@ type DetailedDevice struct {
 		InterfaceVendor string `json:"iface_vendor"`
 		InterfaceType   string `json:"iface_type"`
 		PeerMac         string `json:"peer_mac,omitempty"`
-		PeerSwitch      string `json:"peer_switch,omitempty`
+		PeerSwitch      string `json:"peer_switch,omitempty"`
+		PeerPort        string `json:"peer_port,omitempty"`
 	} `json:"nics"`
 	Disks        Disks        `json:"disks"`
 	LatestReport DeviceReport `json:"latest_report,omitempty"`
@@ -441,7 +445,7 @@ func (ds *Devices) Get(id string) (d DetailedDevice) {
 	uri := fmt.Sprintf("/device/%s", url.PathEscape(id))
 	res := ds.Do(ds.Sling().New().Get(uri))
 	if ok := res.Parse(&d); !ok {
-		panic(res)
+		panic(fmt.Sprintf("%v", res))
 	}
 	return d
 }
