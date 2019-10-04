@@ -1,0 +1,37 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/
+    url: https://edge.conch.joyent.us/schema/request/OrganizationCreate
+    method: GET
+  response:
+    body: '{"$id":"urn:request.OrganizationCreate.schema.json","$schema":"http:\/\/json-schema.org\/draft-07\/schema#","additionalProperties":false,"definitions":{"email_address":{"allOf":[{"format":"email","type":"string"},{"$ref":"\/definitions\/mojo_relaxed_placeholder"}]},"mojo_relaxed_placeholder":{"description":"see
+      https:\/\/metacpan.org\/pod\/Mojolicious::Guides::Routing#Relaxed-placeholders","pattern":"^[^\/]+$","type":"string"},"mojo_standard_placeholder":{"description":"see
+      https:\/\/metacpan.org\/pod\/Mojolicious::Guides::Routing#Standard-placeholders","pattern":"^[^\/.]+$","type":"string"},"uuid":{"pattern":"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$","type":"string"}},"properties":{"admins":{"items":{"additionalProperties":false,"oneOf":[{"required":["user_id"]},{"required":["email"]}],"properties":{"email":{"$ref":"\/definitions\/email_address"},"user_id":{"$ref":"\/definitions\/uuid"}},"type":"object"},"minItems":1,"type":"array","uniqueItems":true},"description":{"type":"string"},"name":{"$ref":"\/definitions\/mojo_standard_placeholder"}},"required":["name","admins"],"title":"OrganizationCreate","type":"object"}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - "true"
+      Access-Control-Allow-Origin:
+      - https://edge.conch.joyent.us
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 04 Oct 2019 23:37:18 GMT
+      Request-Id:
+      - CCcfKhOCaNdz
+      Server:
+      - nginx
+      Vary:
+      - Accept-Encoding
+      X-Conch-Api:
+      - v3.0.0-a6-0-g546d5e19
+      X-Request-Id:
+      - CCcfKhOCaNdz
+    status: 200 OK
+    code: 200
+    duration: ""

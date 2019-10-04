@@ -2,6 +2,17 @@
 
 
 [[projects]]
+  digest = "1:c952f10089bb57d6e6d56d8880bcbb4d444b1d40b091354cb25b10a6c23b211a"
+  name = "github.com/bxcodec/faker"
+  packages = [
+    ".",
+    "support/slice",
+  ]
+  pruneopts = "UT"
+  revision = "bfe096fd9e446fc441f79f1aa53cf1c9b5594179"
+  version = "v2.0.1"
+
+[[projects]]
   digest = "1:ffe9824d294da03b391f44e1ae8281281b4afc1bdaa9588c9097785e3af10cec"
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
@@ -16,6 +27,17 @@
   pruneopts = "UT"
   revision = "5a2946623f885d0cfcd7085b039baec12ad53fdd"
   version = "v1.3.0"
+
+[[projects]]
+  digest = "1:052aa482c25b2d76f432c16c4b404a6a3cb9cc205a95818c7680fcec501a43b7"
+  name = "github.com/dnaeon/go-vcr"
+  packages = [
+    "cassette",
+    "recorder",
+  ]
+  pruneopts = "UT"
+  revision = "b3f5a17c396f1f45e232e36c6eed2577da52d22a"
+  version = "v1.0.1"
 
 [[projects]]
   digest = "1:bed9d72d596f94e65fff37f4d6c01398074a6bb1c3f3ceff963516bd01db6ff5"
@@ -82,12 +104,23 @@
   revision = "b244d4b99401d163bd9e382fd58698794259d091"
   version = "v0.1.1"
 
+[[projects]]
+  digest = "1:59f10c1537d2199d9115d946927fe31165959a95190849c82ff11e05803528b0"
+  name = "gopkg.in/yaml.v2"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "f221b8435cfb71e54062f6c6e99e9ade30b124d5"
+  version = "v2.2.4"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/bxcodec/faker",
     "github.com/davecgh/go-spew/spew",
     "github.com/dghubble/sling",
+    "github.com/dnaeon/go-vcr/cassette",
+    "github.com/dnaeon/go-vcr/recorder",
     "github.com/gofrs/uuid",
     "github.com/jawher/mow.cli",
     "github.com/olekukonko/tablewriter",

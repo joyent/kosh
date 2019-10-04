@@ -44,7 +44,7 @@ type DetailedUser struct {
 	ForcePasswordChange bool              `json:"force_password_change"`
 	IsAdmin             bool              `json:"is_admin"`
 	Workspaces          WorkspaceAndRoles `json:"workspaces"`
-	Organizations       interface{}       `json:"organizations"`
+	Organizations       OrgAndRoles       `json:"organizations"`
 	Builds              interface{}       `json:"builds"` // TODO build support
 }
 
