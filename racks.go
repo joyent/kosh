@@ -36,19 +36,19 @@ func (c *Conch) Racks() *Racks {
 
 type RackList []Rack
 type Rack struct {
-	ID           uuid.UUID `json:"id"`
+	ID           uuid.UUID `json:"id" faker:"uuid"`
 	Name         string    `json:"name"`
-	RoomID       uuid.UUID `json:"datacenter_room_id"`
-	RoleID       uuid.UUID `json:"rack_role_id"`
+	RoomID       uuid.UUID `json:"datacenter_room_id" faker:"uuid"`
+	RoleID       uuid.UUID `json:"rack_role_id" faker:"uuid"`
 	SerialNumber string    `json:"serial_number,omitempty"`
 	AssetTag     string    `json:"asset_tag,omitempty"`
 	Phase        string    `json:"phase"`
-	Created      time.Time `json:"created"`
-	Updated      time.Time `json:"updated"`
-	BuildID      uuid.UUID `json:"build_id"` // TODO build support
+	Created      time.Time `json:"created" faker:"-"`
+	Updated      time.Time `json:"updated" faker:"-"`
+	BuildID      uuid.UUID `json:"build_id" faker:"uuid"`
 
-	Role RackRole `json:"-"`
-	Room Room     `json:"-"`
+	Role RackRole `json:"-" faker:"-"`
+	Room Room     `json:"-" faker:"-"`
 }
 
 func (rl RackList) String() string {
@@ -389,7 +389,7 @@ func (rl RackLayout) String() string {
 func (rl RackLayout) Export() string {
 	type Slot struct {
 		RU           int       `json:"ru_start"`
-		ProductID    uuid.UUID `json:"product_id,omitempty"`
+		ProductID    uuid.UUID `json:"product_id,omitempty" faker:"uuid"`
 		ProductName  string    `json:"product_name,omitempty"`
 		ProductAlias string    `json:"product_alias,omitempty"`
 	}
@@ -418,7 +418,7 @@ func (rl RackLayout) Export() string {
 func (r *Racks) ImportLayout(rackID uuid.UUID, b []byte) RackLayout {
 	type Slot struct {
 		RU           int       `json:"ru_start"`
-		ProductID    uuid.UUID `json:"product_id,omitempty"`
+		ProductID    uuid.UUID `json:"product_id,omitempty" faker:"uuid"`
 		ProductName  string    `json:"product_name,omitempty"`
 		ProductAlias string    `json:"product_alias,omitempty"`
 	}
@@ -475,9 +475,9 @@ func (r *Racks) ImportLayout(rackID uuid.UUID, b []byte) RackLayout {
 }
 
 type RackLayoutSlot struct {
-	ID                uuid.UUID `json:"id"`
-	RackID            uuid.UUID `json:"rack_id"`
-	HardwareProductID uuid.UUID `json:"hardware_product_id"`
+	ID                uuid.UUID `json:"id" faker:"uuid"`
+	RackID            uuid.UUID `json:"rack_id" faker:"uuid"`
+	HardwareProductID uuid.UUID `json:"hardware_product_id" faker:"uuid"`
 	RackUnitStart     int       `json:"rack_unit_start"`
 	RackUnitSize      int       `json:"rack_unit_size"`
 	Created           time.Time `json:"created"`
@@ -545,7 +545,7 @@ func (r RackAssignments) Less(i, j int) bool {
 }
 
 type RackAssignment struct {
-	DeviceID            uuid.UUID `json:"device_id"`
+	DeviceID            uuid.UUID `json:"device_id" faker:"uuid"`
 	DeviceAssetTag      string    `json:"device_asset_tag,omitempty"`
 	HardwareProductName string    `json:"hardware_product_name,omitempty"`
 	RackUnitStart       int       `json:"rack_unit_start"`
@@ -606,7 +606,7 @@ func (r *Racks) Assignments(id uuid.UUID) RackAssignments {
 
 func (r *Racks) ImportAssignments(id uuid.UUID, b []byte) RackAssignments {
 	type Assignment struct {
-		DeviceID       uuid.UUID `json:"device_id"`
+		DeviceID       uuid.UUID `json:"device_id" faker:"uuid"`
 		RackUnitStart  int       `json:"rack_unit_start"`
 		DeviceAssetTag string    `json:"device_asset_tag,omitempty"`
 	}

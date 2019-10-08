@@ -1,0 +1,34 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/-testing-testing-testing
+    url: http://10.51.54.42:5000/schema/request/BuildAddOrganization
+    method: GET
+  response:
+    body: '{"$id":"urn:request.BuildAddOrganization.schema.json","$schema":"http:\/\/json-schema.org\/draft-07\/schema#","additionalProperties":false,"definitions":{"role":{"description":"corresponds
+      to role_enum in the database","enum":["ro","rw","admin"],"type":"string"},"uuid":{"pattern":"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$","type":"string"}},"properties":{"organization_id":{"$ref":"\/definitions\/uuid"},"role":{"$ref":"\/definitions\/role"}},"required":["organization_id","role"],"title":"BuildAddOrganization","type":"object"}'
+    headers:
+      Content-Length:
+      - "551"
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 10 Oct 2019 03:09:21 GMT
+      Last-Modified:
+      - Wed, 09 Oct 2019 17:56:52 GMT
+      Request-Id:
+      - QnEIj801pgwF
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-a6-32-g21ca82b9
+      X-Request-Id:
+      - QnEIj801pgwF
+    status: 200 OK
+    code: 200
+    duration: ""

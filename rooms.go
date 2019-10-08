@@ -18,7 +18,7 @@ import (
 	"time"
 
 	"github.com/gofrs/uuid"
-	"github.com/jawher/mow.cli"
+	cli "github.com/jawher/mow.cli"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -84,13 +84,13 @@ func (dr RoomList) String() string {
 
 // This is called DatacenterRoomDetailed in the json schema
 type Room struct {
-	ID           uuid.UUID `json:"id"`
+	ID           uuid.UUID `json:"id" faker:"uuid"`
 	AZ           string    `json:"az"`
 	Alias        string    `json:"alias"`
 	VendorName   string    `json:"vendor_name,omitempty"`
-	DatacenterID uuid.UUID `json:"datacenter_id"`
-	Created      time.Time `json:"created"`
-	Updated      time.Time `json:"updated"`
+	DatacenterID uuid.UUID `json:"datacenter_id" faker:"uuid"`
+	Created      time.Time `json:"created" faker:"-"`
+	Updated      time.Time `json:"updated" faker:"-"`
 }
 
 func (r Room) String() string {
