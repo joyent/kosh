@@ -1,0 +1,62 @@
+---
+version: 1
+interactions:
+- request:
+    body: |
+      {"admins":[{"email":"conch@example.com"}],"description":"sohChCccrJWRJzjljPuIEXBit","name":"dBwYBMfqTwWVEdvdbWUncQXSE"}
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Conch/-testing
+    url: http://10.51.54.42:5000/organization
+    method: POST
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 07 Oct 2019 15:48:23 GMT
+      Location:
+      - /organization/7292a6d6-532c-49eb-a964-465c01b2bb12
+      Request-Id:
+      - 888Vm6rfAA/v
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - 888Vm6rfAA/v
+    status: 303 See Other
+    code: 303
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      Referer:
+      - http://10.51.54.42:5000/organization
+      User-Agent:
+      - Conch/-testing
+    url: http://10.51.54.42:5000/organization/7292a6d6-532c-49eb-a964-465c01b2bb12
+    method: GET
+  response:
+    body: '{"admins":[{"email":"conch@example.com","id":"4ae1e7a9-7d61-4a09-aeaf-f175c42cea07","name":"conch"}],"created":"2019-10-07T15:48:23.203897Z","description":"sohChCccrJWRJzjljPuIEXBit","id":"7292a6d6-532c-49eb-a964-465c01b2bb12","name":"dBwYBMfqTwWVEdvdbWUncQXSE","workspaces":[]}'
+    headers:
+      Content-Length:
+      - "278"
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 07 Oct 2019 15:48:23 GMT
+      Request-Id:
+      - qcIde84MizH8
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - qcIde84MizH8
+    status: 200 OK
+    code: 200
+    duration: ""

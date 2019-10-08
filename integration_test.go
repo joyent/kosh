@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
+	"net/url"
 	"os"
 	"testing"
 
@@ -16,10 +18,15 @@ func setupAPIClient() {
 	API.StrictParsing = true
 	API.DevelMode = true
 
-	if API.Token == "" {
-		panic("Must supply a token in KOSH_TOKEN")
+	if _, err := os.Stat("fixtures/conch-v3"); err == nil {
+		return
+	} else if os.IsNotExist(err) {
+		if API.Token == "" {
+			panic("Must supply a token in KOSH_TOKEN")
+		}
+	} else {
+		panic(fmt.Sprintf("%v", err))
 	}
-
 }
 
 func setupRecorder(t *testing.T, fixture string) func() {
@@ -29,9 +36,16 @@ func setupRecorder(t *testing.T, fixture string) func() {
 		t.Fatal(err)
 	}
 
+	// strip out our authentication headers
 	r.AddFilter(func(i *cassette.Interaction) error {
 		delete(i.Request.Headers, "Authorization")
 		return nil
+	})
+
+	// ignore hostnames when fetching from the casset
+	r.SetMatcher(func(r *http.Request, i cassette.Request) bool {
+		iURL, _ := url.Parse(i.URL)
+		return r.Method == i.Method && r.URL.Path == iURL.Path
 	})
 
 	oldClient := API.HTTP
