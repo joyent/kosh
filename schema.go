@@ -18,10 +18,9 @@ func (s *Schema) Get(name string) *jsonschema.RootSchema {
 	uri := fmt.Sprintf("/schema/%s", name)
 	rs := &jsonschema.RootSchema{}
 
-	// for now we completely skip our internal HTTP handling and just use sling directly
-	_, err := s.Sling().Get(uri).Receive(&rs, nil)
-	if err != nil {
-		panic(err)
+	res := s.Do(s.Sling().Get(uri))
+	if ok := res.Parse(&rs); !ok {
+		panic(res)
 	}
 	return rs
 }

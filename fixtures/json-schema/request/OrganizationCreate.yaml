@@ -1,0 +1,31 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/-testing-testing-testing-testing
+    url: http://10.51.54.42:5000/schema/request/OrganizationCreate
+    method: GET
+  response:
+    body: '{"$id":"urn:request.OrganizationCreate.schema.json","$schema":"http:\/\/json-schema.org\/draft-07\/schema#","additionalProperties":false,"definitions":{"email_address":{"allOf":[{"format":"email","type":"string"},{"$ref":"\/definitions\/mojo_relaxed_placeholder"}]},"mojo_relaxed_placeholder":{"description":"see
+      https:\/\/metacpan.org\/pod\/Mojolicious::Guides::Routing#Relaxed-placeholders","pattern":"^[^\/]+$","type":"string"},"mojo_standard_placeholder":{"description":"see
+      https:\/\/metacpan.org\/pod\/Mojolicious::Guides::Routing#Standard-placeholders","pattern":"^[^\/.]+$","type":"string"},"uuid":{"pattern":"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$","type":"string"}},"properties":{"admins":{"items":{"additionalProperties":false,"oneOf":[{"properties":{},"required":["user_id"]},{"properties":{},"required":["email"]}],"properties":{"email":{"$ref":"\/definitions\/email_address"},"user_id":{"$ref":"\/definitions\/uuid"}},"type":"object"},"minItems":1,"type":"array","uniqueItems":true},"description":{"type":"string"},"name":{"$ref":"\/definitions\/mojo_standard_placeholder"}},"required":["name","admins"],"title":"OrganizationCreate","type":"object"}'
+    headers:
+      Content-Length:
+      - "1187"
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 07 Oct 2019 15:48:23 GMT
+      Request-Id:
+      - mtvYGDVB5y3T
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - mtvYGDVB5y3T
+    status: 200 OK
+    code: 200
+    duration: ""

@@ -101,7 +101,7 @@ Last Seen: {{ TimeStr .LastSeen }}
 IP Address: {{ .IpAddr }}
 SSH Port: {{ .SshPort }}
 
-Location: 
+Location:
   AZ: {{ .Location.AZ }}
   Rack Name: {{ .Location.RackName }}
   Rack Unit: {{ .Location.RackUnitStart }}
@@ -150,6 +150,15 @@ Last Login: {{ if $.LastLogin.IsZero }}Never/Unknown{{ else }}{{ TimeStr .LastLo
 
 Workspaces:
 {{ .Workspaces }}
+
+Organizations:
+{{ .Organizations }}
+`
+
+const organizationTemplate = `
+Name: {{ .Name }}
+ID: {{ .ID }}
+Description: {{ .Description }}
 `
 
 const datacenterTemplate = `

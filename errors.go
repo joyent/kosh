@@ -24,6 +24,11 @@ func errorHandler() {
 			if reflect.TypeOf(r).String() == "*main.ConchResponse" {
 				res := r.(*ConchResponse)
 				fmt.Fprintf(os.Stderr,
+					"HTTP Request: %v",
+					res.Request,
+				)
+
+				fmt.Fprintf(os.Stderr,
 					"HTTP Status Code: %d\nHTTP Status: %s\nString Error: %s\n\n",
 					res.StatusCode(),
 					res.Status(),
