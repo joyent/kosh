@@ -31,7 +31,7 @@ type Org struct {
 
 type OrgAndRole struct {
 	Org
-	Role string `json:role`
+	Role string `json:"role"`
 }
 
 type OrgAndRoles []OrgAndRole

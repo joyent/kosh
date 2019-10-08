@@ -62,6 +62,5 @@ func newTestOrg(t *testing.T) TestOrg {
 	if err != nil {
 		t.Fatalf("%v", err)
 	}
-	t.Logf("using fake org: %+v", org)
 	return org
 }
