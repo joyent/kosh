@@ -19,7 +19,7 @@ import (
 	"time"
 
 	"github.com/gofrs/uuid"
-	"github.com/jawher/mow.cli"
+	cli "github.com/jawher/mow.cli"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -50,11 +50,11 @@ func (r RackRoleList) Less(i, j int) bool {
 /****/
 
 type RackRole struct {
-	ID       uuid.UUID `json:"id"`
+	ID       uuid.UUID `json:"id" faker:"uuid"`
 	Name     string    `json:"name"`
 	RackSize int       `json:"rack_size"`
-	Created  time.Time `json:"created"`
-	Updated  time.Time `json:"updated"`
+	Created  time.Time `json:"created" faker:"-"`
+	Updated  time.Time `json:"updated" faker:"-"`
 }
 
 func (rl RackRoleList) String() string {

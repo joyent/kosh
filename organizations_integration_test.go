@@ -2,7 +2,6 @@ package main
 
 import (
 	"testing"
-	"time"
 
 	"github.com/bxcodec/faker"
 )
@@ -47,21 +46,12 @@ func TestIntegrationOrganizatiosDelete(t *testing.T) {
 
 // ---
 
-type TestOrg struct {
-	Name        string
-	Description string
-	Created     time.Time
-	Admins      []map[string]string
-}
-
-func newTestOrg(t *testing.T) TestOrg {
+func newTestOrg(t *testing.T) (org Org) {
 	t.Helper()
 
-	org := TestOrg{}
 	err := faker.FakeData(&org)
 	if err != nil {
 		t.Fatalf("%v", err)
 	}
-	t.Logf("using fake org: %+v", org)
 	return org
 }

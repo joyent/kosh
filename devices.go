@@ -270,26 +270,26 @@ func (ds *Devices) GetIPMI(id string) string {
 /***/
 
 type deviceCore struct {
-	ID       uuid.UUID `json:"id"`
+	ID       uuid.UUID `json:"id" faker:"uuid"`
 	Serial   string    `json:"serial_number"`
 	AssetTag string    `json:"asset_tag,omitempty"`
-	Created  time.Time `json:"created"`
-	Updated  time.Time `json:"updated"`
-	LastSeen time.Time `json:"last_seen"`
+	Created  time.Time `json:"created" faker:"-"`
+	Updated  time.Time `json:"updated" faker:"-"`
+	LastSeen time.Time `json:"last_seen" faker:"-"`
 
-	HardwareProductID uuid.UUID `json:"hardware_product_id"`
+	HardwareProductID uuid.UUID `json:"hardware_product_id" faker:"uuid"`
 	Health            string    `json:"health"`
 	Hostname          string    `json:"hostname,omitempty"`
-	SystemUUID        uuid.UUID `json:"system_uuid"`
-	UptimeSince       time.Time `json:"uptime_since,omitempty"`
-	Validated         time.Time `json:"validated,omitempty"`
+	SystemUUID        uuid.UUID `json:"system_uuid" faker:"uuid"`
+	UptimeSince       time.Time `json:"uptime_since,omitempty" faker:"-"`
+	Validated         time.Time `json:"validated,omitempty" faker:"-"`
 	Phase             string    `json:"phase"`
 
-	BuildID uuid.UUID `json:"build_id"`
+	BuildID uuid.UUID `json:"build_id" faker:"-"`
 }
 
 type Disk struct {
-	ID           uuid.UUID   `json:"id"`
+	ID           uuid.UUID   `json:"id" faker:"uuid"`
 	SerialNumber string      `json:"serial_number"`
 	Slot         int         `json:"slot,omitempty"`
 	Size         int         `json:"size,omitempty"`
@@ -300,8 +300,8 @@ type Disk struct {
 	Health       string      `json:"health,omitempty"`
 	DriveType    string      `json:"drive_type,omitempty"`
 	Enclosure    int         `json:"enclosure,omitempty"`
-	Created      time.Time   `json:"created"`
-	Updated      time.Time   `json:"updated"`
+	Created      time.Time   `json:"created" faker:"-"`
+	Updated      time.Time   `json:"updated" faker:"-"`
 	HBA          interface{} `json:"hba"` // TODO figure out where this belongs
 }
 type Disks []Disk
@@ -380,7 +380,7 @@ func (d DetailedDevice) String() string {
 
 type Device struct {
 	deviceCore
-	RackID        uuid.UUID `json:"rack_id,omitempty"`
+	RackID        uuid.UUID `json:"rack_id,omitempty" faker:"-"`
 	RackUnitStart int       `json:"rack_unit_start,omitempty"`
 }
 

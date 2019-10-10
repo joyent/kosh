@@ -240,3 +240,12 @@ State: {{ .State }}
 
 Device ID: {{ .DeviceID }}
 `
+
+const buildTemplate = `
+Name: {{ .Name }}
+Description: {{ .Description }}
+Created: {{ .Created }}
+Started: {{ .Started }}
+Completed: {{ .Completed }}
+Marked Complete By: {{ .CompletedUser.Email }}
+`

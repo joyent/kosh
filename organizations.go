@@ -21,17 +21,17 @@ func (c *Conch) Organizations() *Organizations {
 }
 
 type Org struct {
-	ID          uuid.UUID         `json:"id"`
+	ID          uuid.UUID         `json:"id" faker:"uuid"`
 	Name        string            `json:"name"`
 	Description string            `json:"description"`
-	Created     time.Time         `json:"created"`
-	Admins      DetailedUsers     `json:"admins"`
-	Workspaces  WorkspaceAndRoles `json:"workspaces"`
+	Created     time.Time         `json:"created" faker:"-"`
+	Admins      DetailedUsers     `json:"admins" faker:"-"`
+	Workspaces  WorkspaceAndRoles `json:"workspaces" faker:"-"`
 }
 
 type OrgAndRole struct {
 	Org
-	Role string `json:role`
+	Role string `json:"role"`
 }
 
 type OrgAndRoles []OrgAndRole
@@ -221,7 +221,6 @@ func (o *Organizations) AddUser(orgID uuid.UUID, email, role string, sendEmail b
 		SendEmail int `url:"send_mail"`
 	}{send}
 
-	fmt.Printf("%v\n", payload)
 	_ = o.Do(
 		o.Sling().Post(uri).
 			Set("Content-Type", "application/json").
@@ -254,13 +253,13 @@ func (o *Organizations) RemoveUser(orgID uuid.UUID, userID string, sendEmail boo
 func init() {
 
 	App.Command("organizations orgs", "Work with organizations", func(cmd *cli.Cmd) {
-		cmd.Command("get", "Get a list of all organizations", func(cmd *cli.Cmd) {
+		cmd.Command("get ls", "Get a list of all organizations", func(cmd *cli.Cmd) {
 			cmd.Action = func() {
 				fmt.Println(API.Organizations().GetAll())
 			}
 		})
 
-		cmd.Command("create", "Create a new subworkspace", func(cmd *cli.Cmd) {
+		cmd.Command("create", "Create a new organization", func(cmd *cli.Cmd) {
 			nameArg := cmd.StringArg("NAME", "", "Name of the new organization")
 
 			descOpt := cmd.StringOpt("description", "", "A description of the organization")
@@ -318,7 +317,7 @@ func init() {
 				userEmailArg := cmd.StringArg(
 					"EMAIL",
 					"",
-					"The email of the user to add to the workspace. Does *not* create the user",
+					"The email of the user to add to the organization. Does *not* create the user",
 				)
 
 				roleOpt := cmd.StringOpt(
@@ -341,7 +340,6 @@ func init() {
 							prettyWorkspaceRoleList(),
 						))
 					}
-					fmt.Printf("%v\n", *userEmailArg)
 					API.Organizations().AddUser(
 						o.ID,
 						*userEmailArg,

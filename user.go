@@ -29,12 +29,63 @@ func (c *Conch) Users() *Users {
 	return &Users{c}
 }
 
+type UserAndRole struct {
+	ID    uuid.UUID `json:"id" faker:"uuid"`
+	Name  string    `json:"name"`
+	Email string    `json:"email" faker:"email"`
+	Role  string    `json:"role"`
+}
+
+type UserAndRoles []UserAndRole
+
+func (u UserAndRoles) Len() int {
+	return len(u)
+}
+
+func (u UserAndRoles) Swap(i, j int) {
+	u[i], u[j] = u[j], u[i]
+}
+
+func (u UserAndRoles) Less(i, j int) bool {
+	return u[i].Name < u[j].Name
+}
+
+func (ur UserAndRoles) String() string {
+	sort.Sort(ur)
+	if API.JsonOnly {
+		return API.AsJSON(ur)
+	}
+
+	tableString := &strings.Builder{}
+	table := tablewriter.NewWriter(tableString)
+	TableToMarkdown(table)
+
+	table.SetHeader([]string{
+		"ID",
+		"Name",
+		"Email",
+		"Role",
+	})
+
+	for _, u := range ur {
+		table.Append([]string{
+			u.ID.String(),
+			u.Name,
+			u.Email,
+			u.Role,
+		})
+	}
+
+	table.Render()
+	return tableString.String()
+}
+
 /*****/
 
 // In the json schema, DetailedUser is UserDetailed and DetailedUsers is UsersDetailed
 
 type DetailedUser struct {
-	ID                  uuid.UUID         `json:"id"`
+	ID                  uuid.UUID         `json:"id" faker:"uuid"`
 	Name                string            `json:"name"`
 	Email               string            `json:"email"`
 	Created             time.Time         `json:"created"`
