@@ -445,7 +445,7 @@ func (ds *Devices) Get(id string) (d DetailedDevice) {
 	uri := fmt.Sprintf("/device/%s", url.PathEscape(id))
 	res := ds.Do(ds.Sling().New().Get(uri))
 	if ok := res.Parse(&d); !ok {
-		panic(fmt.Sprintf("%v", res))
+		panic(res)
 	}
 	return d
 }

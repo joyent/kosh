@@ -135,7 +135,7 @@ func (u DetailedUsers) Less(i, j int) bool {
 func (u *Users) Me() (user DetailedUser) {
 	res := u.Do(u.Sling().Get("/user/me"))
 	if ok := res.Parse(&user); !ok {
-		panic(fmt.Sprintf("%v", res))
+		panic(res)
 	}
 	ret := make(WorkspaceAndRoles, 0)
 	cache := make(map[uuid.UUID]string)

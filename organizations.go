@@ -179,7 +179,7 @@ func (o *Organizations) Create(name, description string, admins []map[string]str
 	)
 
 	if ok := res.Parse(&org); !ok {
-		panic(fmt.Sprintf("%v", res))
+		panic(res)
 	}
 
 	return

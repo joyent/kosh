@@ -124,7 +124,7 @@ func (r *Racks) GetAll() RackList {
 
 	res := r.Do(r.Sling().Get("/rack"))
 	if ok := res.Parse(&rl); !ok {
-		panic(fmt.Sprintf("%v", res))
+		panic(res)
 	}
 
 	roles := make(map[uuid.UUID]RackRole)

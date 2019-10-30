@@ -1,11 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"net/url"
 	"os"
-	"testing"
 
 	"github.com/dnaeon/go-vcr/cassette"
 	"github.com/dnaeon/go-vcr/recorder"
@@ -25,15 +23,16 @@ func setupAPIClient() {
 			panic("Must supply a token in KOSH_TOKEN")
 		}
 	} else {
-		panic(fmt.Sprintf("%v", err))
+		panic(err)
 	}
 }
 
-func setupRecorder(t *testing.T, fixture string) func() {
-	t.Helper()
+func setupRecorder(fixture string) func() {
+
+	// TODO: I need to re-think the test fixtures entirely
 	r, err := recorder.New(fixture)
 	if err != nil {
-		t.Fatal(err)
+		panic(err)
 	}
 
 	// strip out our authentication headers
