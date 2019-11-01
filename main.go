@@ -18,7 +18,7 @@ import (
 	"time"
 
 	"github.com/gofrs/uuid"
-	"github.com/jawher/mow.cli"
+	cli "github.com/jawher/mow.cli"
 	"github.com/olekukonko/tablewriter"
 )
 

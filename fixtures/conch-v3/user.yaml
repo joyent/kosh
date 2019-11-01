@@ -1,0 +1,64 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/user/me
+    method: GET
+  response:
+    body: '{"builds":[],"created":"2019-10-09T17:21:43.700385Z","email":"conch@exmaple.com","force_password_change":false,"id":"c3d2c2e6-e3c0-48ca-a8b0-f97e842888f5","is_admin":true,"last_login":null,"last_seen":"2019-11-01T21:34:38.256117Z","name":"conch","organizations":[],"refuse_session_auth":false,"workspaces":[{"description":"Global
+      workspace","id":"8bb8f3a8-0f1e-4f1d-92a9-3d108f5743c8","name":"GLOBAL","parent_workspace_id":null,"role":"admin"}]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "445"
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 01 Nov 2019 21:34:38 GMT
+      Request-Id:
+      - TjhHINxz7dAi
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-a8-0-gd0dc7f2e
+      X-Request-Id:
+      - TjhHINxz7dAi
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/user/me/settings
+    method: GET
+  response:
+    body: '{}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "2"
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 01 Nov 2019 21:34:38 GMT
+      Request-Id:
+      - WkzTQcEtDVWe
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-a8-0-gd0dc7f2e
+      X-Request-Id:
+      - WkzTQcEtDVWe
+    status: 200 OK
+    code: 200
+    duration: ""

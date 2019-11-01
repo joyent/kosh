@@ -7,11 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
-	"reflect"
 	"testing"
-
-	"github.com/bxcodec/faker"
-	"github.com/gofrs/uuid"
 )
 
 func TestBuildsGetAll(t *testing.T) {
@@ -201,7 +197,7 @@ func TestBuildsGetOrgs(t *testing.T) {
 func TestBuildsAddOrg(t *testing.T) {
 	spy := requestSpy{}
 	build := newTestBuild()
-	org := newTestOrg(t)
+	org := newTestOrganization()
 	var got OrgAndRole
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -226,7 +222,7 @@ func TestBuildsAddOrg(t *testing.T) {
 func TestBuildsRemoveOrg(t *testing.T) {
 	spy := requestSpy{}
 	build := newTestBuild()
-	org := newTestOrg(t)
+	org := newTestOrganization()
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		spy.onRequest(r)
@@ -275,6 +271,7 @@ func TestBuildsAddDevice(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		spy.onRequest(r)
 		body, _ := ioutil.ReadAll(r.Body)
+		assertJSONSchema(t, body, "request/BuildCreateDevice")
 		json.NewDecoder(bytes.NewBuffer(body)).Decode(&got)
 	}))
 	defer server.Close()
@@ -375,66 +372,4 @@ func TestBuildsRemoveRack(t *testing.T) {
 	assertRequestMethod(t, spy.requestMethod, "DELETE")
 	assertRequestCount(t, spy.requestCount, 1)
 	assertRequestPath(t, spy.requestPath, fmt.Sprintf("/build/%s/rack/%s", build.ID, rack.ID))
-}
-
-// ----
-
-func setupFaker() {
-	faker.AddProvider("uuid", func(v reflect.Value) (interface{}, error) {
-		return uuid.NewV4()
-	})
-}
-
-func newTestBuildList() (list BuildList) {
-	setupFaker()
-	_ = faker.FakeData(&list)
-	return
-}
-
-func newTestBuild() (build Build) {
-	setupFaker()
-	_ = faker.FakeData(&build)
-	return
-}
-
-func newTestUser() (user UserAndRole) {
-	setupFaker()
-	_ = faker.FakeData(&user)
-	return
-}
-
-func newTestUserAndRoles() (list UserAndRoles) {
-	setupFaker()
-	_ = faker.FakeData(&list)
-	return
-}
-
-func newTestOrgAndRoles() (list OrgAndRoles) {
-	setupFaker()
-	_ = faker.FakeData(&list)
-	return
-}
-
-func newTestDevice() (device Device) {
-	setupFaker()
-	_ = faker.FakeData(&device)
-	return
-}
-
-func newTestDeviceList() (list DeviceList) {
-	setupFaker()
-	_ = faker.FakeData(&list)
-	return
-}
-
-func newTestRack() (rack Rack) {
-	setupFaker()
-	_ = faker.FakeData(&rack)
-	return
-}
-
-func newTestRackList() (list RackList) {
-	setupFaker()
-	_ = faker.FakeData(&list)
-	return
 }

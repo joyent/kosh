@@ -6,30 +6,30 @@ interactions:
     form: {}
     headers:
       User-Agent:
-      - Conch/-testing-testing-testing
+      - Conch/3.x-testing
     url: http://10.51.54.42:5000/schema/request/BuildCreate
     method: GET
   response:
     body: '{"$id":"urn:request.BuildCreate.schema.json","$schema":"http:\/\/json-schema.org\/draft-07\/schema#","additionalProperties":false,"definitions":{"email_address":{"allOf":[{"format":"email","type":"string"},{"$ref":"\/definitions\/mojo_relaxed_placeholder"}]},"mojo_relaxed_placeholder":{"description":"see
       https:\/\/metacpan.org\/pod\/Mojolicious::Guides::Routing#Relaxed-placeholders","pattern":"^[^\/]+$","type":"string"},"mojo_standard_placeholder":{"description":"see
-      https:\/\/metacpan.org\/pod\/Mojolicious::Guides::Routing#Standard-placeholders","pattern":"^[^\/.]+$","type":"string"},"uuid":{"pattern":"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$","type":"string"}},"properties":{"admins":{"items":{"additionalProperties":false,"oneOf":[{"properties":{},"required":["user_id"]},{"properties":{},"required":["email"]}],"properties":{"email":{"$ref":"\/definitions\/email_address"},"user_id":{"$ref":"\/definitions\/uuid"}},"type":"object"},"minItems":1,"type":"array","uniqueItems":true},"description":{"type":"string"},"name":{"$ref":"\/definitions\/mojo_standard_placeholder"}},"required":["name","admins"],"title":"BuildCreate","type":"object"}'
+      https:\/\/metacpan.org\/pod\/Mojolicious::Guides::Routing#Standard-placeholders","pattern":"^[^\/.]+$","type":"string"},"uuid":{"pattern":"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$","type":"string"}},"properties":{"admins":{"items":{"additionalProperties":false,"oneOf":[{"required":["user_id"]},{"required":["email"]}],"properties":{"email":{"$ref":"\/definitions\/email_address"},"user_id":{"$ref":"\/definitions\/uuid"}},"type":"object"},"minItems":1,"type":"array","uniqueItems":true},"description":{"type":"string"},"name":{"$ref":"\/definitions\/mojo_standard_placeholder"}},"required":["name","admins"],"title":"BuildCreate","type":"object"}'
     headers:
       Content-Length:
-      - "1173"
+      - "1141"
       Content-Type:
       - application/json
       Date:
-      - Wed, 09 Oct 2019 22:52:05 GMT
+      - Fri, 01 Nov 2019 21:34:30 GMT
       Last-Modified:
-      - Wed, 09 Oct 2019 17:56:52 GMT
+      - Fri, 01 Nov 2019 20:19:12 GMT
       Request-Id:
-      - fWV9AH5Rf5vU
+      - fIWA5RekJuec
       Server:
       - Mojolicious (Perl)
       X-Conch-Api:
-      - v3.0.0-a6-32-g21ca82b9
+      - v3.0.0-a8-0-gd0dc7f2e
       X-Request-Id:
-      - fWV9AH5Rf5vU
+      - fIWA5RekJuec
     status: 200 OK
     code: 200
     duration: ""

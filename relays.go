@@ -17,7 +17,7 @@ import (
 	"time"
 
 	"github.com/gofrs/uuid"
-	"github.com/jawher/mow.cli"
+	cli "github.com/jawher/mow.cli"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -79,11 +79,11 @@ func (rl RelayList) String() string {
 }
 
 type Relay struct {
-	ID           uuid.UUID `json:"id"`
+	ID           uuid.UUID `json:"id" faker:"uuid"`
 	SerialNumber string    `json:"serial_number"`
 	Name         string    `json:"name,omitempty"`
 	Version      string    `json:"version,omitempty"`
-	IpAddr       string    `json:"ipaddr,omitempty"`
+	IpAddr       string    `json:"ipaddr,omitempty" faker:"ipv4"`
 	SshPort      int       `json:"ssh_port"`
 	Created      time.Time `json:"created"`
 	Updated      time.Time `json:"updated"`
@@ -149,7 +149,7 @@ func (r *Relays) Register(
 		Serial  string `json:"serial"`
 		Version string `json:"version,omitempty"`
 		IpAddr  string `json:"ipaddr,omitempty"`
-		Name    string `json:"alias,omitempty"`
+		Name    string `json:"name,omitempty"`
 		SshPort int    `json:"ssh_port,omitempty"`
 	}{
 		serial,

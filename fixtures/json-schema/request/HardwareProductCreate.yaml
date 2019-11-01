@@ -1,0 +1,35 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/schema/request/HardwareProductCreate
+    method: GET
+  response:
+    body: '{"$id":"urn:request.HardwareProductCreate.schema.json","$schema":"http:\/\/json-schema.org\/draft-07\/schema#","allOf":[{"$ref":"\/definitions\/HardwareProductUpdate"},{"properties":{},"required":["name","alias","hardware_vendor_id","sku","rack_unit_size","validation_plan_id"]},{"properties":{"hardware_product_profile":{"$ref":"\/definitions\/HardwareProductProfileCreate"}},"type":"object"}],"definitions":{"HardwareProductProfileCreate":{"allOf":[{"$ref":"\/definitions\/HardwareProductProfileUpdate"},{"properties":{},"required":["purpose","bios_firmware","cpu_num","cpu_type","dimms_num","ram_total","nics_num","usb_num"]}]},"HardwareProductProfileUpdate":{"additionalProperties":false,"minProperties":1,"properties":{"bios_firmware":{"type":"string"},"cpu_num":{"type":"integer"},"cpu_type":{"type":"string"},"dimms_num":{"type":"integer"},"hba_firmware":{"oneOf":[{"type":"string"},{"type":"null"}]},"nics_num":{"type":"integer"},"nvme_ssd_num":{"oneOf":[{"type":"integer"},{"type":"null"}]},"nvme_ssd_size":{"oneOf":[{"type":"integer"},{"type":"null"}]},"nvme_ssd_slots":{"oneOf":[{"type":"string"},{"type":"null"}]},"psu_total":{"oneOf":[{"type":"integer"},{"type":"null"}]},"purpose":{"type":"string"},"raid_lun_num":{"oneOf":[{"type":"integer"},{"type":"null"}]},"ram_total":{"type":"integer"},"sas_hdd_num":{"oneOf":[{"type":"integer"},{"type":"null"}]},"sas_hdd_size":{"oneOf":[{"type":"integer"},{"type":"null"}]},"sas_hdd_slots":{"oneOf":[{"type":"string"},{"type":"null"}]},"sas_ssd_num":{"oneOf":[{"type":"integer"},{"type":"null"}]},"sas_ssd_size":{"oneOf":[{"type":"integer"},{"type":"null"}]},"sas_ssd_slots":{"oneOf":[{"type":"string"},{"type":"null"}]},"sata_hdd_num":{"oneOf":[{"type":"integer"},{"type":"null"}]},"sata_hdd_size":{"oneOf":[{"type":"integer"},{"type":"null"}]},"sata_hdd_slots":{"oneOf":[{"type":"string"},{"type":"null"}]},"sata_ssd_num":{"oneOf":[{"type":"integer"},{"type":"null"}]},"sata_ssd_size":{"oneOf":[{"type":"integer"},{"type":"null"}]},"sata_ssd_slots":{"oneOf":[{"type":"string"},{"type":"null"}]},"usb_num":{"type":"integer"}},"type":"object"},"HardwareProductUpdate":{"additionalProperties":false,"minProperties":1,"properties":{"alias":{"$ref":"\/definitions\/mojo_standard_placeholder"},"generation_name":{"$ref":"\/definitions\/non_empty_string"},"hardware_product_profile":{"$ref":"\/definitions\/HardwareProductProfileUpdate"},"hardware_vendor_id":{"$ref":"\/definitions\/uuid"},"legacy_product_name":{"oneOf":[{"$ref":"\/definitions\/non_empty_string"},{"type":"null"}]},"name":{"$ref":"\/definitions\/mojo_standard_placeholder"},"prefix":{"oneOf":[{"$ref":"\/definitions\/non_empty_string"},{"type":"null"}]},"rack_unit_size":{"$ref":"\/definitions\/positive_integer"},"sku":{"$ref":"\/definitions\/mojo_standard_placeholder"},"specification":{"description":"json
+      blob of additional data","oneOf":[{"type":"string"},{"type":"null"}]},"validation_plan_id":{"$ref":"\/definitions\/uuid"}},"type":"object"},"mojo_standard_placeholder":{"description":"see
+      https:\/\/metacpan.org\/pod\/Mojolicious::Guides::Routing#Standard-placeholders","pattern":"^[^\/.]+$","type":"string"},"non_empty_string":{"minLength":1,"type":"string"},"positive_integer":{"minimum":1,"type":"integer"},"uuid":{"pattern":"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$","type":"string"}},"title":"HardwareProductCreate"}'
+    headers:
+      Content-Length:
+      - "3369"
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 01 Nov 2019 21:34:32 GMT
+      Last-Modified:
+      - Fri, 01 Nov 2019 20:19:12 GMT
+      Request-Id:
+      - oYAvxhYm04fq
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-a8-0-gd0dc7f2e
+      X-Request-Id:
+      - oYAvxhYm04fq
+    status: 200 OK
+    code: 200
+    duration: ""

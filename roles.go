@@ -52,7 +52,7 @@ func (r RackRoleList) Less(i, j int) bool {
 type RackRole struct {
 	ID       uuid.UUID `json:"id" faker:"uuid"`
 	Name     string    `json:"name"`
-	RackSize int       `json:"rack_size"`
+	RackSize int       `json:"rack_size" faker:"rack_size"`
 	Created  time.Time `json:"created" faker:"-"`
 	Updated  time.Time `json:"updated" faker:"-"`
 }
@@ -190,6 +190,13 @@ func (r *RackRoles) Create(name string, rackSize int) RackRole {
 	}
 
 	return role
+}
+
+func (r *RackRoles) CreateFromStruct(role RackRole) RackRole {
+	return r.Create(
+		role.Name,
+		role.RackSize,
+	)
 }
 
 func (r *RackRoles) Update(id uuid.UUID, newName string, rackSize int) RackRole {

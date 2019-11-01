@@ -173,6 +173,7 @@ Updated: {{ TimeStr .Updated }}
 `
 
 const roomTemplate = `
+ID: {{ .ID }}
 Alias: {{ .Alias }}
 AZ: {{ .AZ }}
 Vendor Name: {{ .VendorName }}
@@ -248,4 +249,11 @@ Created: {{ .Created }}
 Started: {{ .Started }}
 Completed: {{ .Completed }}
 Marked Complete By: {{ .CompletedUser.Email }}
+`
+
+const validationPlanTemplate = `
+ID: {{ .ID }}
+Name: {{ .Name }}
+Description: {{ .Description }}
+Created: {{ .Created }}
 `

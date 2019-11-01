@@ -176,12 +176,12 @@ type DeviceLocation struct {
 	Datacenter            Datacenter `json:"datacenter"`
 	Room                  Room       `json:"datacenter_room"`
 	Rack                  Rack       `json:"rack"`
-	RackUnitStart         int        `json:"rack_unit_start"`
+	RackUnitStart         int        `json:"rack_unit_start" faker:"rack_unit_start"`
 	TargetHardwareProduct struct {
-		ID     uuid.UUID `json:"id"`
+		ID     uuid.UUID `json:"id" faker"uuid"`
 		Name   string    `json:"name"`
 		Alias  string    `json:"alias"`
-		Vendor string    `json:"vendor"`
+		Vendor string    `json:"hardware_vendor_id"`
 	} `json:"target_hardware_product"`
 }
 
@@ -213,10 +213,19 @@ func (ds *Devices) GetLocation(id string) (l DeviceLocation) {
 	return l
 }
 
+func (ds *Devices) DeleteLocation(id string) {
+	uri := fmt.Sprintf("/device/%s/location", url.PathEscape(id))
+
+	res := ds.Do(ds.Sling().New().Delete(uri))
+	if res.StatusCode() != 204 {
+		panic(res)
+	}
+}
+
 /***/
 
 type DeviceNic struct {
-	DeviceID        uuid.UUID `json:"device_id"`
+	DeviceID        uuid.UUID `json:"device_id" faker:"uuid"`
 	MAC             string    `json:"mac"`
 	InterfaceName   string    `json:"iface_name"`
 	InterfaceVendor string    `json:"iface_vendor"`
@@ -272,14 +281,14 @@ func (ds *Devices) GetIPMI(id string) string {
 type deviceCore struct {
 	ID       uuid.UUID `json:"id" faker:"uuid"`
 	Serial   string    `json:"serial_number"`
-	AssetTag string    `json:"asset_tag,omitempty"`
+	AssetTag string    `json:"asset_tag,omitempty" faker:"-"`
 	Created  time.Time `json:"created" faker:"-"`
 	Updated  time.Time `json:"updated" faker:"-"`
 	LastSeen time.Time `json:"last_seen" faker:"-"`
 
 	HardwareProductID uuid.UUID `json:"hardware_product_id" faker:"uuid"`
 	Health            string    `json:"health"`
-	Hostname          string    `json:"hostname,omitempty"`
+	Hostname          string    `json:"hostname,omitempty" faker:"-"`
 	SystemUUID        uuid.UUID `json:"system_uuid" faker:"uuid"`
 	UptimeSince       time.Time `json:"uptime_since,omitempty" faker:"-"`
 	Validated         time.Time `json:"validated,omitempty" faker:"-"`
@@ -291,36 +300,36 @@ type deviceCore struct {
 type Disk struct {
 	ID           uuid.UUID   `json:"id" faker:"uuid"`
 	SerialNumber string      `json:"serial_number"`
-	Slot         int         `json:"slot,omitempty"`
-	Size         int         `json:"size,omitempty"`
-	Vendor       string      `json:"vendor,omitempty"`
-	Model        string      `json:"model,omitempty"`
-	Firmware     string      `json:"firmware,omitempty"`
-	Transport    string      `json:"transport,omitempty"`
-	Health       string      `json:"health,omitempty"`
-	DriveType    string      `json:"drive_type,omitempty"`
-	Enclosure    int         `json:"enclosure,omitempty"`
+	Slot         int         `json:"slot,omitempty" faker:"-"`
+	Size         int         `json:"size,omitempty" faker:"-"`
+	Vendor       string      `json:"vendor,omitempty" faker:"-"`
+	Model        string      `json:"model,omitempty" faker:"-"`
+	Firmware     string      `json:"firmware,omitempty" faker:"-"`
+	Transport    string      `json:"transport,omitempty" faker:"-"`
+	Health       string      `json:"health,omitempty" faker:"-"`
+	DriveType    string      `json:"drive_type,omitempty" faker:"-"`
+	Enclosure    int         `json:"enclosure,omitempty" faker:"-"`
 	Created      time.Time   `json:"created" faker:"-"`
 	Updated      time.Time   `json:"updated" faker:"-"`
-	HBA          interface{} `json:"hba"` // TODO figure out where this belongs
+	HBA          interface{} `json:"hba" faker:"-"` // TODO figure out where this belongs
 }
 type Disks []Disk
 
 type DetailedDevice struct {
 	deviceCore
 	Links    []string       `json:"links"`
-	Location DeviceLocation `json:"location,omitempty"`
+	Location DeviceLocation `json:"location,omitempty" faker:"-"`
 	Nics     []struct {
 		Mac             string `json:"mac"`
 		InterfaceName   string `json:"iface_name"`
 		InterfaceVendor string `json:"iface_vendor"`
 		InterfaceType   string `json:"iface_type"`
-		PeerMac         string `json:"peer_mac,omitempty"`
-		PeerSwitch      string `json:"peer_switch,omitempty"`
-		PeerPort        string `json:"peer_port,omitempty"`
+		PeerMac         string `json:"peer_mac,omitempty" faker:"-"`
+		PeerSwitch      string `json:"peer_switch,omitempty" faker:"-"`
+		PeerPort        string `json:"peer_port,omitempty" faker:"-"`
 	} `json:"nics"`
 	Disks        Disks        `json:"disks"`
-	LatestReport DeviceReport `json:"latest_report,omitempty"`
+	LatestReport DeviceReport `json:"latest_report,omitempty" faker:"-"`
 }
 
 func (d DetailedDevice) String() string {
@@ -381,7 +390,7 @@ func (d DetailedDevice) String() string {
 type Device struct {
 	deviceCore
 	RackID        uuid.UUID `json:"rack_id,omitempty" faker:"-"`
-	RackUnitStart int       `json:"rack_unit_start,omitempty"`
+	RackUnitStart int       `json:"rack_unit_start,omitempty" faker:"rack_unit_start"`
 }
 
 type DeviceList []Device
@@ -445,7 +454,7 @@ func (ds *Devices) Get(id string) (d DetailedDevice) {
 	uri := fmt.Sprintf("/device/%s", url.PathEscape(id))
 	res := ds.Do(ds.Sling().New().Get(uri))
 	if ok := res.Parse(&d); !ok {
-		panic(fmt.Sprintf("%v", res))
+		panic(res)
 	}
 	return d
 }

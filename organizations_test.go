@@ -9,19 +9,10 @@ import (
 	"net/http/httptest"
 	"reflect"
 	"testing"
-
-	"github.com/gofrs/uuid"
 )
 
-func newOrgList() Orgs {
-	return Orgs{
-		newStubOrg("A", "An Example Organization"),
-		newStubOrg("B", "Another Example Organization"),
-	}
-}
-
 func TestOrganizationsGet(t *testing.T) {
-	orgList := newOrgList()
+	orgList := newTestOrgList()
 	spy := requestSpy{}
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -53,7 +44,7 @@ func TestOrganizationsGet(t *testing.T) {
 }
 
 func TestOrganizationsGetByName(t *testing.T) {
-	orgList := newOrgList()
+	orgList := newTestOrgList()
 	spy := requestSpy{}
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -85,7 +76,7 @@ func TestOrganizationsGetByName(t *testing.T) {
 }
 
 func TestOrganizationsGetAll(t *testing.T) {
-	orgList := newOrgList()
+	orgList := newTestOrgList()
 	spy := requestSpy{}
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -136,7 +127,7 @@ func TestOrganizationsCreate(t *testing.T) {
 }
 
 func TestOrganizationsDelete(t *testing.T) {
-	orgList := newOrgList()
+	orgList := newTestOrgList()
 	org := orgList[0]
 	spy := requestSpy{}
 
@@ -158,9 +149,9 @@ func TestOrganizationsDelete(t *testing.T) {
 
 func TestOrganizationsGetUsers(t *testing.T) {
 	spy := requestSpy{}
-	org := newStubOrg("A", "An Organization")
+	org := newTestOrganization()
 	userList := []OrganizationUser{
-		newOrgUser("Timmy"),
+		newTestOrganizationUser(),
 	}
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -183,8 +174,8 @@ func TestOrganizationsGetUsers(t *testing.T) {
 
 func TestOrganizationsAddUser(t *testing.T) {
 	spy := requestSpy{}
-	org := newStubOrg("A", "An Organization")
-	user := newOrgUser("Timmy")
+	org := newTestOrganization()
+	user := newTestOrganizationUser()
 	var got OrganizationUser
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -208,8 +199,8 @@ func TestOrganizationsAddUser(t *testing.T) {
 
 func TestOrganizationsRemoveUser(t *testing.T) {
 	spy := requestSpy{}
-	user := newOrgUser("Timmy")
-	org := newStubOrg("A", "An Organization")
+	org := newTestOrganization()
+	user := newTestOrganizationUser()
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		spy.onRequest(r)
@@ -258,29 +249,6 @@ func assertRequestPath(t *testing.T, got, want string) {
 	}
 }
 
-func newStubOrg(name, description string) Org {
-	uuid, _ := uuid.NewV4()
-
-	return Org{
-		ID:          uuid,
-		Name:        name,
-		Description: description,
-		//Created:     time.Now(),
-		Admins:     DetailedUsers{},
-		Workspaces: WorkspaceAndRoles{},
-	}
-}
-
-func newOrgUser(name string) OrganizationUser {
-	uuid, _ := uuid.NewV4()
-	return OrganizationUser{
-		ID:    uuid,
-		Name:  name,
-		Email: fmt.Sprintf("%s@example.com", name),
-		Role:  "",
-	}
-}
-
 func assertRequestCount(t *testing.T, got, want int) {
 	t.Helper()
 	if got != want {
@@ -291,6 +259,6 @@ func assertRequestCount(t *testing.T, got, want int) {
 func assertData(t *testing.T, got, want interface{}) {
 	t.Helper()
 	if !reflect.DeepEqual(got, want) {
-		t.Errorf("Got wrong results, got %v wanted %v", got, want)
+		t.Fatalf("Got wrong results, got %v wanted %v", got, want)
 	}
 }

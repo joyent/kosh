@@ -1,0 +1,146 @@
+---
+version: 1
+interactions:
+- request:
+    body: |
+      {"serial":"sAWCXAbDHumkCUsrvQpvjFJwv","version":"QLWVzQbMQAIlGSHXEDmpugbFA","ipaddr":"217.190.241.212","name":"mIStyIIVOvTBesJencgwUQIKG","ssh_port":49}
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/relay/sAWCXAbDHumkCUsrvQpvjFJwv/register
+    method: POST
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Date:
+      - Fri, 01 Nov 2019 21:34:37 GMT
+      Location:
+      - /relay/f8b83ad9-881e-4f9c-a311-0377d3a44297
+      Request-Id:
+      - IX9kXmpDqRYM
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - IX9kXmpDqRYM
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/relay/f8b83ad9-881e-4f9c-a311-0377d3a44297
+    method: GET
+  response:
+    body: '{"created":"2019-10-15T18:43:58.909438Z","id":"f8b83ad9-881e-4f9c-a311-0377d3a44297","ipaddr":"217.190.241.212","last_seen":"2019-11-01T21:34:37.714251Z","name":"mIStyIIVOvTBesJencgwUQIKG","serial_number":"sAWCXAbDHumkCUsrvQpvjFJwv","ssh_port":49,"updated":"2019-11-01T21:34:37.714251Z","version":"QLWVzQbMQAIlGSHXEDmpugbFA"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "325"
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 01 Nov 2019 21:34:37 GMT
+      Request-Id:
+      - ylU5sRkLQMXS
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-a8-0-gd0dc7f2e
+      X-Request-Id:
+      - ylU5sRkLQMXS
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/relay/?no_devices=1
+    method: GET
+  response:
+    body: '[{"created":"2019-10-15T18:41:10.671455Z","id":"230dda21-39a4-4488-bcbf-779dcece2e4a","ipaddr":"173.178.209.86","last_seen":"2019-10-15T18:41:10.671455Z","name":"nPcQEWgOjWboENGaASZLyXVqv","serial_number":"AVFmNCiKRQisJqnDFHRtpMOKv","ssh_port":55,"updated":"2019-10-15T18:41:10.671455Z","version":"iVUlRjcNsiAiicGbhacvQFwWh"},{"created":"2019-10-15T18:40:14.601549Z","id":"ed399b4e-2ac6-407c-b29d-475581c21ff2","ipaddr":"134.164.88.148","last_seen":"2019-10-15T18:40:14.601549Z","name":"nYcfCwRsbIHWsYDXdeBNcRBhZ","serial_number":"LifyUKqvoNYrpsBrEiNYtrmdA","ssh_port":50,"updated":"2019-10-15T18:40:14.601549Z","version":"nePPjjYXATrrhgDqpvqfaGlNV"},{"created":"2019-10-15T18:39:12.640376Z","id":"01b48135-3b07-431d-b00e-98560712b53b","ipaddr":"235.36.102.200","last_seen":"2019-10-15T18:39:12.640376Z","name":"UzzsTQIlQPFtqNYOONSBUYbvb","serial_number":"PdixqhYWvwXknoXeFHqoTKQaZ","ssh_port":69,"updated":"2019-10-15T18:39:12.640376Z","version":"iUTNbqrHwGbJyukNhfiWPqXzI"},{"created":"2019-10-15T18:38:56.300094Z","id":"7ff08b49-d320-411d-aa55-29e577b80a25","ipaddr":"248.35.101.7","last_seen":"2019-10-15T18:38:56.300094Z","name":"iHFOubTsquazhQJyDMncBOHpT","serial_number":"QcEorjHAnAoJKmgebqqpXqQhI","ssh_port":9,"updated":"2019-10-15T18:38:56.300094Z","version":"UOgDYiDzoFMDaICbvYCCFdmXT"},{"created":"2019-10-15T18:39:36.442122Z","id":"77adce84-1118-4769-ac73-b6568f560d4c","ipaddr":"77.251.115.244","last_seen":"2019-10-15T18:39:36.442122Z","name":"SkqVyFMMIAQROlagJzqiVYEDw","serial_number":"XipLGCccigFdqAyKRRqUPRbRq","ssh_port":96,"updated":"2019-10-15T18:39:36.442122Z","version":"XxVaxPgxqOwJrzSmcjEUPnBhb"},{"created":"2019-10-15T18:42:52.540622Z","id":"d20f070d-1ab5-4cfe-9d44-c67c2123a313","ipaddr":"187.241.91.120","last_seen":"2019-10-15T18:42:52.540622Z","name":"ZrmMabDfEWTsRpKxOJUuMHfND","serial_number":"mhZgglbszIOJblBDPDscKNsMA","ssh_port":22,"updated":"2019-10-15T18:42:52.540622Z","version":"woxUkttahhLsMkDTXuqfBYiZG"},{"created":"2019-10-15T18:43:58.909438Z","id":"f8b83ad9-881e-4f9c-a311-0377d3a44297","ipaddr":"217.190.241.212","last_seen":"2019-11-01T21:34:37.714251Z","name":"mIStyIIVOvTBesJencgwUQIKG","serial_number":"sAWCXAbDHumkCUsrvQpvjFJwv","ssh_port":49,"updated":"2019-11-01T21:34:37.714251Z","version":"QLWVzQbMQAIlGSHXEDmpugbFA"}]'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "2274"
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 01 Nov 2019 21:34:37 GMT
+      Request-Id:
+      - batoKBI9sDh0
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-a8-0-gd0dc7f2e
+      X-Request-Id:
+      - batoKBI9sDh0
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/relay/sAWCXAbDHumkCUsrvQpvjFJwv
+    method: GET
+  response:
+    body: '{"created":"2019-10-15T18:43:58.909438Z","id":"f8b83ad9-881e-4f9c-a311-0377d3a44297","ipaddr":"217.190.241.212","last_seen":"2019-11-01T21:34:37.714251Z","name":"mIStyIIVOvTBesJencgwUQIKG","serial_number":"sAWCXAbDHumkCUsrvQpvjFJwv","ssh_port":49,"updated":"2019-11-01T21:34:37.714251Z","version":"QLWVzQbMQAIlGSHXEDmpugbFA"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "325"
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 01 Nov 2019 21:34:37 GMT
+      Request-Id:
+      - HA8/56vucBlb
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-a8-0-gd0dc7f2e
+      X-Request-Id:
+      - HA8/56vucBlb
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/relay/sAWCXAbDHumkCUsrvQpvjFJwv
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Date:
+      - Fri, 01 Nov 2019 21:34:37 GMT
+      Request-Id:
+      - FLoiY7wm2xoi
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - FLoiY7wm2xoi
+    status: 204 No Content
+    code: 204
+    duration: ""

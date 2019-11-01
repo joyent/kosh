@@ -11,6 +11,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"net/http/httputil"
 	"os"
 	"reflect"
 	"runtime/debug"
@@ -21,11 +22,17 @@ import (
 func errorHandler() {
 	if r := recover(); r != nil {
 		if API.DevelMode {
+
 			if reflect.TypeOf(r).String() == "*main.ConchResponse" {
 				res := r.(*ConchResponse)
+
+				reqDump, err := httputil.DumpRequest(res.Request, true)
+				if err != nil {
+					fmt.Println(err)
+				}
 				fmt.Fprintf(os.Stderr,
-					"HTTP Request: %v",
-					res.Request,
+					"HTTP Request: %s",
+					reqDump,
 				)
 
 				fmt.Fprintf(os.Stderr,

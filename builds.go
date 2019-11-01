@@ -100,7 +100,7 @@ func (c *Conch) Builds() *Builds {
 func (b *Builds) GetAll() (list BuildList) {
 	res := b.Do(b.Sling().Get("/build"))
 	if ok := res.Parse(&list); !ok {
-		panic(fmt.Sprintf("%v", res))
+		panic(res)
 	}
 	return
 }
@@ -109,7 +109,7 @@ func (b *Builds) Get(ID uuid.UUID) (build Build) {
 	uri := fmt.Sprintf("/build/%s", url.PathEscape(ID.String()))
 	res := b.Do(b.Sling().Get(uri))
 	if ok := res.Parse(&build); !ok {
-		panic(fmt.Sprintf("%v", res))
+		panic(res)
 	}
 	return
 }
@@ -118,7 +118,7 @@ func (b *Builds) GetByName(name string) (build Build) {
 	uri := fmt.Sprintf("/build/%s", url.PathEscape(name))
 	res := b.Do(b.Sling().Get(uri))
 	if ok := res.Parse(&build); !ok {
-		panic(fmt.Sprintf("%v", res))
+		panic(res)
 	}
 	return
 
@@ -138,7 +138,7 @@ func (b *Builds) Create(name, description string, admins []map[string]string) (b
 	)
 
 	if ok := res.Parse(&build); !ok {
-		panic(fmt.Sprintf("%v", res))
+		panic(res)
 	}
 
 	return
@@ -147,7 +147,7 @@ func (b *Builds) Create(name, description string, admins []map[string]string) (b
 func (b *Builds) GetUsers(ID uuid.UUID) (list UserAndRoles) {
 	res := b.Do(b.Sling().Get(fmt.Sprintf("/build/%s/user", ID.String())))
 	if ok := res.Parse(&list); !ok {
-		panic(fmt.Sprintf("%v", res))
+		panic(res)
 	}
 	return
 }
@@ -199,7 +199,7 @@ func (b *Builds) RemoveUser(ID uuid.UUID, userID string, sendEmail bool) bool {
 func (b *Builds) GetOrgs(ID uuid.UUID) (list OrgAndRoles) {
 	res := b.Do(b.Sling().Get(fmt.Sprintf("/build/%s/organization", ID.String())))
 	if ok := res.Parse(&list); !ok {
-		panic(fmt.Sprintf("%v", res))
+		panic(res)
 	}
 	return
 }
@@ -251,9 +251,28 @@ func (b *Builds) RemoveOrg(ID uuid.UUID, orgID string, sendEmail bool) bool {
 func (b *Builds) GetDevices(ID uuid.UUID) (list DeviceList) {
 	res := b.Do(b.Sling().Get(fmt.Sprintf("/build/%s/device", ID.String())))
 	if ok := res.Parse(&list); !ok {
-		panic(fmt.Sprintf("%v", res))
+		panic(res)
 	}
 	return
+}
+
+func (b *Builds) CreateDevice(ID uuid.UUID, deviceID, sku string) {
+	type BDC struct {
+		Serial string `json:"serial_number"`
+		SKU    string `json:"sku"`
+	}
+
+	type BDCList []BDC
+
+	list := BDCList{{deviceID, sku}}
+
+	uri := fmt.Sprintf("/build/%s/device", url.PathEscape(ID.String()))
+
+	_ = b.Do(
+		b.Sling().Post(uri).
+			Set("Content-Type", "application/json").
+			BodyJSON(list),
+	)
 }
 
 func (b *Builds) AddDevice(ID uuid.UUID, deviceID string) {
@@ -277,7 +296,7 @@ func (b *Builds) RemoveDevice(ID uuid.UUID, deviceID string) bool {
 func (b *Builds) GetRacks(ID uuid.UUID) (list RackList) {
 	res := b.Do(b.Sling().Get(fmt.Sprintf("/build/%s/rack", ID.String())))
 	if ok := res.Parse(&list); !ok {
-		panic(fmt.Sprintf("%v", res))
+		panic(res)
 	}
 	return
 }
