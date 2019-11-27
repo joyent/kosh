@@ -106,7 +106,6 @@ func (f *Fixture) setupHardwareProducts() *Fixture {
 	f.setupHardwareVendor()
 	f.setupValidationPlan()
 
-	mhpp := newTestHardwareProductProfile()
 	mswp := newTestHardwareProduct()
 	f.switchProduct = API.Hardware().Create(
 		mswp.Name,
@@ -115,7 +114,9 @@ func (f *Fixture) setupHardwareProducts() *Fixture {
 		mswp.SKU,
 		mswp.RackUnitSize,
 		f.validationPlan.ID,
-		mhpp,
+		mswp.Purpose,
+		mswp.BiosFirmware,
+		mswp.CpuType,
 	)
 
 	msvp := newTestHardwareProduct()
@@ -126,7 +127,9 @@ func (f *Fixture) setupHardwareProducts() *Fixture {
 		msvp.SKU,
 		msvp.RackUnitSize,
 		f.validationPlan.ID,
-		mhpp,
+		msvp.Purpose,
+		msvp.BiosFirmware,
+		msvp.CpuType,
 	)
 
 	return f.addReset(func() {
@@ -378,13 +381,4 @@ func newTestDevice() (d deviceCore) {
 		panic(err)
 	}
 	return
-}
-
-func newTestHardwareProductProfile() (hpp HardwareProductProfileUpdate) {
-	err := faker.FakeData(&hpp)
-	if err != nil {
-		panic(err)
-	}
-	return
-
 }
