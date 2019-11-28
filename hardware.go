@@ -41,7 +41,7 @@ type HardwareProduct struct {
 	HardwareVendorID       uuid.UUID              `json:"hardware_vendor_id" faker:"uuid"`
 	GenerationName         string                 `json:"generation_name,omitempty"`
 	LegacyProductName      string                 `json:"legacy_product_name,omitempty"`
-	SKU                    string                 `json:"sku,omitempty"`
+	SKU                    string                 `json:"sku"`
 	Specification          string                 `json:"specification,omitempty"`
 	RackUnitSize           int                    `json:"rack_unit_size" faker:"rack_unit_size"`
 
