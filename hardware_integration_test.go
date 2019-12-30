@@ -32,7 +32,9 @@ func TestHarwareProductAPIIntegration(t *testing.T) {
 			mock.SKU,
 			mock.RackUnitSize,
 			f.validationPlan.ID,
-			newTestHardwareProductProfile(),
+			mock.Purpose,
+			mock.BiosFirmware,
+			mock.CpuType,
 		)
 	})
 

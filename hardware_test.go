@@ -34,8 +34,10 @@ func TestHardwareProductCreate(t *testing.T) {
 		mock.HardwareVendorID,
 		mock.SKU,
 		mock.RackUnitSize+1,
-		mock.ID,
-		newTestHardwareProductProfile(),
+		mock.ValidationPlanID,
+		mock.Purpose,
+		mock.BiosFirmware,
+		mock.CpuType,
 	)
 
 	assertRequestCount(t, spy.requestCount, 1)
