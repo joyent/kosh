@@ -23,7 +23,7 @@ func TestHarwareProductAPIIntegration(t *testing.T) {
 	var testHardwareProduct HardwareProduct
 
 	t.Run("create", func(t *testing.T) {
-
+		defer errorHandler()
 		mock := newTestHardwareProduct()
 		testHardwareProduct = API.Hardware().Create(
 			mock.Name,
@@ -38,11 +38,17 @@ func TestHarwareProductAPIIntegration(t *testing.T) {
 		)
 	})
 
+	/*	t.Run("get-all-products", func(t *testing.T) {
+			_ = API.Hardware().GetAllProducts()
+		})
+	*/
 	t.Run("get-product-by-name", func(t *testing.T) {
+		defer errorHandler()
 		_ = API.Hardware().GetProductByName(testHardwareProduct.Name)
 	})
 
 	t.Run("delete", func(t *testing.T) {
+		defer errorHandler()
 		API.Hardware().Delete(testHardwareProduct.ID)
 	})
 }

@@ -28,7 +28,7 @@ func setupAPIClient() {
 }
 
 func setupRecorder(fixture string) func() {
-
+	defer errorHandler()
 	// TODO: we need to re-think the test fixtures entirely
 	r, err := recorder.New(fixture)
 	if err != nil {

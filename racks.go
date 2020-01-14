@@ -38,14 +38,18 @@ type RackList []Rack
 type Rack struct {
 	ID           uuid.UUID `json:"id" faker:"uuid"`
 	Name         string    `json:"name"`
+	FullName     string    `json:"full_rack_name"`
 	RoomID       uuid.UUID `json:"datacenter_room_id" faker:"uuid"`
+	RoomAlias    string    `json:"datacenter_room_alias"`
 	RoleID       uuid.UUID `json:"rack_role_id" faker:"uuid"`
+	RoleName     string    `json:"rack_role_name"`
 	SerialNumber string    `json:"serial_number,omitempty"`
 	AssetTag     string    `json:"asset_tag,omitempty"`
 	Phase        string    `json:"phase"`
 	Created      time.Time `json:"created" faker:"-"`
 	Updated      time.Time `json:"updated" faker:"-"`
 	BuildID      uuid.UUID `json:"build_id" faker:"uuid"`
+	BuildName    string    `json:"build_name"`
 
 	Role RackRole `json:"-" faker:"-"`
 	Room Room     `json:"-" faker:"-"`
@@ -119,51 +123,32 @@ func (r Rack) String() string {
 	return buf.String()
 }
 
-func (r *Racks) GetAll() RackList {
-	rl := make(RackList, 0)
+func (r *Racks) FindID(id string) (bool, uuid.UUID) {
+	rack := r.GetByName(id)
+	return true, rack.ID
+}
 
-	res := r.Do(r.Sling().Get("/rack"))
-	if ok := res.Parse(&rl); !ok {
+func (r *Racks) GetByName(name string) Rack {
+	var rack Rack
+	uri := fmt.Sprintf(
+		"/rack/%s",
+		url.PathEscape(name),
+	)
+
+	res := r.Do(r.Sling().Get(uri))
+	if ok := res.Parse(&rack); !ok {
 		panic(res)
 	}
 
-	roles := make(map[uuid.UUID]RackRole)
-	rooms := make(map[uuid.UUID]Room)
-
-	list := make(RackList, 0)
-
-	for _, rack := range rl {
-		if (rack.RoleID != uuid.UUID{}) {
-			if role, ok := roles[rack.RoleID]; ok {
-				rack.Role = role
-			} else {
-				rack.Role = API.RackRoles().Get(rack.RoleID)
-				roles[rack.RoleID] = rack.Role
-			}
-		}
-
-		if (rack.RoomID != uuid.UUID{}) {
-			if room, ok := rooms[rack.RoomID]; ok {
-				rack.Room = room
-			} else {
-				rack.Room = API.Rooms().Get(rack.RoomID)
-				rooms[rack.RoomID] = rack.Room
-			}
-		}
-
-		list = append(list, rack)
+	if (rack.RoleID != uuid.UUID{}) {
+		rack.Role = API.RackRoles().Get(rack.RoleID)
 	}
 
-	return list
-}
-
-func (r *Racks) FindID(id string) (bool, uuid.UUID) {
-	ids := make([]uuid.UUID, 0)
-	for _, rack := range r.GetAll() {
-		ids = append(ids, rack.ID)
+	if (rack.RoomID != uuid.UUID{}) {
+		rack.Room = API.Rooms().Get(rack.RoomID)
 	}
 
-	return FindUUID(id, ids)
+	return rack
 }
 
 func (r *Racks) Get(id uuid.UUID) Rack {
@@ -190,10 +175,10 @@ func (r *Racks) Get(id uuid.UUID) Rack {
 }
 
 func (r *Racks) CreateFromStruct(rack Rack) Rack {
-	return r.Create(rack.Name, rack.RoomID, rack.RoleID, rack.Phase)
+	return r.Create(rack.Name, rack.RoomID, rack.RoleID, rack.Phase, rack.BuildID)
 }
 
-func (r *Racks) Create(name string, roomID uuid.UUID, roleID uuid.UUID, phase string) Rack {
+func (r *Racks) Create(name string, roomID uuid.UUID, roleID uuid.UUID, phase string, buildID uuid.UUID) Rack {
 	payload := make(map[string]string)
 	if name == "" {
 		panic(errors.New("'name' cannot be empty"))
@@ -209,6 +194,11 @@ func (r *Racks) Create(name string, roomID uuid.UUID, roleID uuid.UUID, phase st
 		panic(errors.New("'roleID' cannot be empty"))
 	}
 	payload["rack_role_id"] = roleID.String()
+
+	if (buildID == uuid.UUID{}) {
+		panic(errors.New("'buildID' cannot be empty'"))
+	}
+	payload["build_id"] = buildID.String()
 
 	if phase != "" {
 		payload["phase"] = phase
@@ -325,6 +315,8 @@ func (r *Racks) Delete(id uuid.UUID) {
 type RackLayoutSlot struct {
 	ID                uuid.UUID `json:"id" faker:"uuid"`
 	RackID            uuid.UUID `json:"rack_id" faker:"uuid"`
+	RackName          string    `json:"rack_name"`
+	SKU               string    `json:"sku"`
 	HardwareProductID uuid.UUID `json:"hardware_product_id" faker:"uuid"`
 	RackUnitStart     int       `json:"rack_unit_start", faker:"rack_unit_start"`
 	RackUnitSize      int       `json:"rack_unit_size", faker:"rack_unit_size"`
@@ -496,7 +488,7 @@ func (r *Racks) CreateLayout(rackID uuid.UUID, updates RackLayoutUpdates) RackLa
 
 func (r *Racks) Layouts(id uuid.UUID) RackLayout {
 	uri := fmt.Sprintf(
-		"/rack/%s/layouts",
+		"/rack/%s/layout",
 		url.PathEscape(id.String()),
 	)
 
@@ -542,6 +534,7 @@ func (r *Racks) SaveLayoutSlot(rackID uuid.UUID, ruStart int, hardwareProductID 
 
 type RackAssignment struct {
 	DeviceID            uuid.UUID `json:"device_id" faker:"uuid"`
+	SKU                 string    `json:"sku"`
 	DeviceAssetTag      string    `json:"device_asset_tag,omitempty"`
 	HardwareProductName string    `json:"hardware_product_name,omitempty"`
 	RackUnitStart       int       `json:"rack_unit_start" faker:"rack_unit_start"`
@@ -651,26 +644,23 @@ func (r *Racks) ImportAssignments(id uuid.UUID, b []byte) RackAssignments {
 func init() {
 	App.Command("racks", "Work with datacenter racks", func(cmd *cli.Cmd) {
 		cmd.Before = RequireSysAdmin
-		cmd.Command("get", "Get a list of all racks", func(cmd *cli.Cmd) {
-			cmd.Action = func() {
-				fmt.Println(API.Racks().GetAll())
-			}
-		})
 
 		cmd.Command("create", "Create a new rack", func(cmd *cli.Cmd) {
 			var (
 				nameOpt      = cmd.StringOpt("name", "", "Name of the rack")
 				roomAliasOpt = cmd.StringOpt("room", "", "Alias of the datacenter room")
 				roleNameOpt  = cmd.StringOpt("role", "", "Name of the role")
+				buildNameOpt = cmd.StringOpt("build", "", "Build for the rack")
 				phaseOpt     = cmd.StringOpt("phase", "", "Optional phase for the rack")
 			)
 
 			cmd.Spec = "--name --room --role [OPTIONS]"
 			cmd.Action = func() {
 				var (
-					roomID uuid.UUID
-					roleID uuid.UUID
-					ok     bool
+					roomID  uuid.UUID
+					roleID  uuid.UUID
+					buildID uuid.UUID
+					ok      bool
 				)
 
 				// The user can be very silly and supply something like
@@ -696,11 +686,18 @@ func init() {
 					}
 				}
 
+				if *buildNameOpt == "" {
+					panic(errors.New("--build is required"))
+				} else {
+					build := API.Builds().GetByName(*buildNameOpt)
+					buildID = build.ID
+				}
 				fmt.Println(API.Racks().Create(
 					*nameOpt,
 					roomID,
 					roleID,
 					*phaseOpt,
+					buildID,
 				))
 			}
 		})
@@ -812,10 +809,7 @@ func init() {
 			cmd.Before = RequireSysAdmin
 			cmd.Action = func() {
 				API.Racks().Delete(rackID)
-				// BUG(sungo): for sysadmins or GLOBAL admins, this is a lot of
-				// data. Maybe should find a better return value here that is
-				// still somehow informative
-				fmt.Println(API.Racks().GetAll())
+				fmt.Println("Done.")
 			}
 		})
 

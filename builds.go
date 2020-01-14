@@ -121,7 +121,6 @@ func (b *Builds) GetByName(name string) (build Build) {
 		panic(res)
 	}
 	return
-
 }
 
 func (b *Builds) Create(name, description string, admins []map[string]string) (build Build) {

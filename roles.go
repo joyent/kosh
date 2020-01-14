@@ -136,7 +136,7 @@ func (r *RackRoles) GetByName(name string) RackRole {
 	var role RackRole
 
 	uri := fmt.Sprintf(
-		"/rack_role/name=%s",
+		"/rack_role/%s",
 		url.PathEscape(name),
 	)
 
@@ -151,7 +151,7 @@ func (r *RackRoles) FindID(name string) (bool, uuid.UUID) {
 	var role RackRole
 
 	uri := fmt.Sprintf(
-		"/rack_role/name=%s",
+		"/rack_role/%s",
 		url.PathEscape(name),
 	)
 

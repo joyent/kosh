@@ -19,15 +19,17 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 01 Nov 2019 21:34:38 GMT
+      - Mon, 13 Jan 2020 23:16:24 GMT
       Request-Id:
-      - 2P2DNADL8/Tb
+      - 0ErQNS638ElE
       Server:
       - Mojolicious (Perl)
       X-Conch-Api:
-      - v3.0.0-a8-0-gd0dc7f2e
+      - v3.0.0-b4-0-gb99fbfff
+      X-Deprecated:
+      - this endpoint is deprecated and will be removed in api v3.1
       X-Request-Id:
-      - 2P2DNADL8/Tb
+      - 0ErQNS638ElE
     status: 200 OK
     code: 200
     duration: ""
@@ -49,15 +51,18 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 01 Nov 2019 21:34:38 GMT
+      - Mon, 13 Jan 2020 23:16:24 GMT
       Request-Id:
-      - Gzn2wrxM4eU6
+      - Zd1SZOkQjgdK
       Server:
       - Mojolicious (Perl)
       X-Conch-Api:
-      - v3.0.0-a8-0-gd0dc7f2e
+      - v3.0.0-b4-0-gb99fbfff
+      X-Deprecated:
+      - this endpoint is deprecated and will be removed in api v3.1
+      - this endpoint is deprecated and will be removed in api v3.1
       X-Request-Id:
-      - Gzn2wrxM4eU6
+      - Zd1SZOkQjgdK
     status: 200 OK
     code: 200
     duration: ""
@@ -79,15 +84,18 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 01 Nov 2019 21:34:38 GMT
+      - Mon, 13 Jan 2020 23:16:24 GMT
       Request-Id:
-      - 1gr9DxXVOO0W
+      - Db+S7nWfY+Zx
       Server:
       - Mojolicious (Perl)
       X-Conch-Api:
-      - v3.0.0-a8-0-gd0dc7f2e
+      - v3.0.0-b4-0-gb99fbfff
+      X-Deprecated:
+      - this endpoint is deprecated and will be removed in api v3.1
+      - this endpoint is deprecated and will be removed in api v3.1
       X-Request-Id:
-      - 1gr9DxXVOO0W
+      - Db+S7nWfY+Zx
     status: 200 OK
     code: 200
     duration: ""

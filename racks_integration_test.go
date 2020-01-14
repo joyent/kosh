@@ -15,9 +15,9 @@ func TestRacksAPIIntegration(t *testing.T) {
 
 	f := newFixture()
 	f.setupRackRole()
-	f.setupRackRole()
 	f.setupRoom()
 	f.setupHardwareProducts()
+	f.setupBuild()
 	defer f.reset()
 
 	var testRack Rack
@@ -29,15 +29,18 @@ func TestRacksAPIIntegration(t *testing.T) {
 			f.room.ID,
 			f.role.ID,
 			"integration",
+			f.build.ID,
 		)
 	})
 
-	t.Run("fetch all Racks", func(t *testing.T) {
-		list := API.Racks().GetAll()
-		t.Logf("got %v", list)
-	})
-
+	/*	t.Run("fetch all Racks", func(t *testing.T) {
+			defer errorHandler()
+			list := API.Racks().GetAll()
+			t.Logf("got %v", list)
+		})
+	*/
 	t.Run("fetch a single rack", func(t *testing.T) {
+		defer errorHandler()
 		list := API.Racks().Get(testRack.ID)
 		t.Logf("got %v", list)
 	})
@@ -81,9 +84,11 @@ func TestRacksAPIIntegration(t *testing.T) {
 
 	// other tests
 	t.Run("create a new Rack from struct", func(t *testing.T) {
+		defer errorHandler()
 		mock := newTestRack()
 		mock.RoomID = f.room.ID
 		mock.RoleID = f.role.ID
+		mock.BuildID = f.build.ID
 		mock.Phase = "integration"
 		testRack := API.Racks().CreateFromStruct(mock)
 		API.Racks().Delete(testRack.ID)

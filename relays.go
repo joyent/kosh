@@ -88,6 +88,7 @@ type Relay struct {
 	Created      time.Time `json:"created"`
 	Updated      time.Time `json:"updated"`
 	LastSeen     time.Time `json:"last_seen,omitempty"`
+	UserID       uuid.UUID `json:"user_id,omitempty" faker:"uuid"`
 }
 
 func (r Relay) String() string {
