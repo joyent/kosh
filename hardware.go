@@ -9,18 +9,14 @@ package main
 //lint:file-ignore U1000 WIP
 
 import (
-	// "bytes"
-	// "errors"
+	"bytes"
 	"fmt"
 	"net/url"
 
-	// "sort"
-	// "strconv"
-	// "strings"
 	"time"
 
 	"github.com/gofrs/uuid"
-	// "github.com/jawher/mow.cli"
+	cli "github.com/jawher/mow.cli"
 	// "github.com/olekukonko/tablewriter"
 )
 
@@ -33,32 +29,37 @@ func (c *Conch) Hardware() *Hardware {
 }
 
 type HardwareProducts []HardwareProduct
-type HardwareProduct struct {
-	ID                     uuid.UUID              `json:"id" faker:"uuid"`
-	Name                   string                 `json:"name"`
-	Alias                  string                 `json:"alias"`
-	Prefix                 string                 `json:"prefix,omitempty"`
-	HardwareVendorID       uuid.UUID              `json:"hardware_vendor_id" faker:"uuid"`
-	GenerationName         string                 `json:"generation_name,omitempty"`
-	LegacyProductName      string                 `json:"legacy_product_name,omitempty"`
-	SKU                    string                 `json:"sku"`
-	Specification          string                 `json:"specification,omitempty"`
-	RackUnitSize           int                    `json:"rack_unit_size" faker:"rack_unit_size"`
 
-	BiosFirmware           string                 `json:"bios_firmware"`
-	CpuNum                 int                    `json:"cpu_num"`
-	CpuType                string                 `json:"cpu_type"`
-	DimmsNum               int                    `json:"dimms_num"`
-	HbaFirmware            string                 `json:"hba_firmware,omitempty"`
-	NicsNum                int                    `json:"nics_num"`
-	Purpose                string                 `json:"purpose"`
-	RamTotal               int                    `json:"ram_total"`
-	SasHddSlots            string                 `json:"sas_hdd_slots,omitempty"`
-	SataHddSlots           string                 `json:"sata_hdd_slots,omitempty"`
-	SataSsdSlots           string                 `json:"sata_ssd_slots,omitempty"`
-	SasSsdSlots            string                 `json:"sas_ssd_slots,omitempty"`
-	NvmeSsdSlots           string                 `json:"nvme_ssd_slots,omitempty"`
-	UsbNum                 int                    `json:"usb_num"`
+func (hps HardwareProducts) String() string {
+	return API.AsJSON(hps)
+}
+
+type HardwareProduct struct {
+	ID                uuid.UUID `json:"id" faker:"uuid"`
+	Name              string    `json:"name"`
+	Alias             string    `json:"alias"`
+	Prefix            string    `json:"prefix,omitempty"`
+	HardwareVendorID  uuid.UUID `json:"hardware_vendor_id" faker:"uuid"`
+	GenerationName    string    `json:"generation_name,omitempty"`
+	LegacyProductName string    `json:"legacy_product_name,omitempty"`
+	SKU               string    `json:"sku"`
+	Specification     string    `json:"specification,omitempty"`
+	RackUnitSize      int       `json:"rack_unit_size" faker:"rack_unit_size"`
+
+	BiosFirmware string `json:"bios_firmware"`
+	CpuNum       int    `json:"cpu_num"`
+	CpuType      string `json:"cpu_type"`
+	DimmsNum     int    `json:"dimms_num"`
+	HbaFirmware  string `json:"hba_firmware,omitempty"`
+	NicsNum      int    `json:"nics_num"`
+	Purpose      string `json:"purpose"`
+	RamTotal     int    `json:"ram_total"`
+	SasHddSlots  string `json:"sas_hdd_slots,omitempty"`
+	SataHddSlots string `json:"sata_hdd_slots,omitempty"`
+	SataSsdSlots string `json:"sata_ssd_slots,omitempty"`
+	SasSsdSlots  string `json:"sas_ssd_slots,omitempty"`
+	NvmeSsdSlots string `json:"nvme_ssd_slots,omitempty"`
+	UsbNum       int    `json:"usb_num"`
 
 	// NOTE the pointers. 0 is a valid value so zero values aren't
 	PsuTotal   *int `json:"psu_total,omitempty"`
@@ -79,9 +80,35 @@ type HardwareProduct struct {
 	NvmeSsdNum  *int `json:"nvme_ssd_num,omitempty"`
 	NvmeSsdSize *int `json:"nvme_ssd_size,omitempty"`
 
-	Created                time.Time              `json:"created" faker:"-"`
-	Updated                time.Time              `json:"updated" faker:"-"`
-	ValidationPlanID       uuid.UUID              `json:"validation_plan_id,omitempty" faker:"-"`
+	Created          time.Time `json:"created" faker:"-"`
+	Updated          time.Time `json:"updated" faker:"-"`
+	ValidationPlanID uuid.UUID `json:"validation_plan_id,omitempty" faker:"-"`
+}
+
+func (hp HardwareProduct) String() string {
+	if API.JsonOnly {
+		return API.AsJSON(hp)
+	}
+	t, err := NewTemplate().Parse(hardwareProductTemplate)
+	if err != nil {
+		panic(err)
+	}
+
+	buf := new(bytes.Buffer)
+	if err := t.Execute(buf, hp); err != nil {
+		panic(err)
+	}
+
+	return buf.String()
+}
+
+func (h *Hardware) GetAllProducts() (hps HardwareProducts) {
+	res := h.Do(h.Sling().New().Get("/hardware_product"))
+	if ok := res.Parse(&hps); !ok {
+		panic(res)
+	}
+
+	return hps
 }
 
 func (h *Hardware) GetProduct(id uuid.UUID) (hp HardwareProduct) {
@@ -95,7 +122,7 @@ func (h *Hardware) GetProduct(id uuid.UUID) (hp HardwareProduct) {
 }
 
 func (h *Hardware) GetProductByName(name string) (hp HardwareProduct) {
-	uri := fmt.Sprintf("/hardware_product/name=%s", url.PathEscape(name))
+	uri := fmt.Sprintf("/hardware_product/%s", url.PathEscape(name))
 	res := h.Do(h.Sling().New().Get(uri))
 	if ok := res.Parse(&hp); !ok {
 		panic(res)
@@ -105,7 +132,7 @@ func (h *Hardware) GetProductByName(name string) (hp HardwareProduct) {
 }
 
 func (h *Hardware) GetProductByAlias(alias string) (hp HardwareProduct) {
-	uri := fmt.Sprintf("/hardware_product/alias=%s", url.PathEscape(alias))
+	uri := fmt.Sprintf("/hardware_product/%s", url.PathEscape(alias))
 	res := h.Do(h.Sling().New().Get(uri))
 	if ok := res.Parse(&hp); !ok {
 		panic(res)
@@ -115,7 +142,7 @@ func (h *Hardware) GetProductByAlias(alias string) (hp HardwareProduct) {
 }
 
 func (h *Hardware) GetProductBySku(sku string) (hp HardwareProduct) {
-	uri := fmt.Sprintf("/hardware_product/sku=%s", url.PathEscape(sku))
+	uri := fmt.Sprintf("/hardware_product/%s", url.PathEscape(sku))
 	res := h.Do(h.Sling().New().Get(uri))
 	if ok := res.Parse(&hp); !ok {
 		panic(res)
@@ -130,9 +157,9 @@ func (h *Hardware) Create(
 	SKU string,
 	rackUnitSize int,
 	validationPlanID uuid.UUID,
-	Purpose      string,
+	Purpose string,
 	BiosFirmware string,
-	CpuType      string,
+	CpuType string,
 ) (hp HardwareProduct) {
 	payload := make(map[string]interface{})
 	payload["name"] = name
@@ -179,6 +206,15 @@ type HardwareVendor struct {
 	Updated time.Time `json:"updated"`
 }
 
+func (h *Hardware) GetAllVendors() (hvs []HardwareVendor) {
+	res := h.Do(h.Sling().Get("/hardware_vendor/"))
+	if ok := res.Parse(&hvs); !ok {
+		panic(res)
+	}
+
+	return
+}
+
 func (h *Hardware) GetVendor(name string) (hv HardwareVendor) {
 	uri := fmt.Sprintf("/hardware_vendor/%s", url.PathEscape(name))
 
@@ -211,4 +247,79 @@ func (h *Hardware) DeleteVendor(name string) {
 		panic(res)
 	}
 
+}
+
+func init() {
+	App.Command("hardware", "Work with hardware profiles and vendors", func(cmd *cli.Cmd) {
+		cmd.Command("products", "Work with hardware products", func(cmd *cli.Cmd) {
+			cmd.Command("get ls", "Get a list of all hardware products", func(cmd *cli.Cmd) {
+				cmd.Action = func() { API.Hardware().GetAllProducts() }
+			})
+			cmd.Command("create", "Create a hardware product", func(cmd *cli.Cmd) {
+				var (
+					name                = cmd.StringOpt("name", "", "Name of the hardware product")
+					alias               = cmd.StringOpt("alias", "", "Alias for the hardware product")
+					vendor              = cmd.StringOpt("vendor", "", "Vendor of the hardware product")
+					SKU                 = cmd.StringOpt("sku", "", "SKU for the hardware product")
+					rackUnitSize        = cmd.IntOpt("rack-unit-size", 2, "RU size of the hardware product")
+					validationPlanIDOpt = cmd.StringOpt("validation-plan-id", "", "ID of the plan to validate the product against")
+					purpose             = cmd.StringOpt("purpose", "", "Purpose of the product")
+					biosFirmware        = cmd.StringOpt("bios-firmware", "", "BIOS firmware version for the product")
+					cpuType             = cmd.StringOpt("cpu-type", "", "CPU type for the product")
+				)
+				cmd.Spec = "--sku --name --alias --rack-unit-size --validation-plan-id --rack-unit-size --purpose --bios-firmware --cpu-type [OPTIONS]"
+
+				cmd.Action = func() {
+					_, validationPlanID := API.Validations().FindPlanID(*validationPlanIDOpt)
+
+					fmt.Println(API.Hardware().Create(
+						*name,
+						*alias,
+						API.Hardware().GetVendor(*vendor).ID,
+						*SKU,
+						*rackUnitSize,
+						validationPlanID,
+						*purpose,
+						*biosFirmware,
+						*cpuType,
+					))
+				}
+			})
+		})
+
+		cmd.Command("product", "Work with a hardware product", func(cmd *cli.Cmd) {
+			var hp HardwareProduct
+			// TODO replace this with something that will take a generic ID and fetch the right product
+			idArg := cmd.StringArg("SKU", "", "The SKU of the hardware product.")
+			cmd.Before = func() {
+				hp = API.Hardware().GetProductBySku(*idArg)
+			}
+			cmd.Command("get", "Show a hardware vendor's details", func(cmd *cli.Cmd) {
+				cmd.Action = func() { fmt.Println(hp) }
+			})
+			cmd.Command("delete rm", "Remove a hardware product", func(cmd *cli.Cmd) {
+				API.Hardware().Delete(hp.ID)
+			})
+		})
+		cmd.Command("vendors", "Work with hardware vendors", func(cmd *cli.Cmd) {
+			cmd.Command("get ls", "Get a list of all hardware vendors", func(cmd *cli.Cmd) {
+				API.Hardware().GetAllVendors()
+			})
+			cmd.Command("create", "Create a hardware vendor", func(cmd *cli.Cmd) {})
+		})
+		cmd.Command("vendor", "Work a specific hardware vendor", func(cmd *cli.Cmd) {
+			var hv HardwareVendor
+			idArg := cmd.StringArg("NAME", "", "The name of the hardware vendor.")
+			cmd.Before = func() {
+				hv = API.Hardware().GetVendor(*idArg)
+			}
+
+			cmd.Command("get", "Show a hardware vendor's details", func(cmd *cli.Cmd) {
+				fmt.Println(hv)
+			})
+			cmd.Command("delete rm", "Remove a hardware vendor", func(cmd *cli.Cmd) {
+				API.Hardware().DeleteVendor(hv.ID.String())
+			})
+		})
+	})
 }
