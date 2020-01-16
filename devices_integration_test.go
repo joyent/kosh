@@ -15,7 +15,6 @@ func TestDeviceAPIIntegration(t *testing.T) {
 	defer r() // Make sure recorder is stopped once done with it
 
 	f := newFixture()
-	f.setupBuild()
 	f.setupRackLayout()
 	defer f.reset()
 

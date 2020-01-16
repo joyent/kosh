@@ -7,7 +7,7 @@ interactions:
     headers:
       User-Agent:
       - Conch/3.x-testing
-    url: http://10.51.54.42:5000/hardware_vendor/MyBigVendor
+    url: http://10.51.54.42:5000/hardware_vendor/MyNewVendor
     method: POST
   response:
     body: ""
@@ -17,15 +17,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 01 Nov 2019 21:34:31 GMT
+      - Mon, 13 Jan 2020 23:16:22 GMT
       Location:
-      - /hardware_vendor/MyBigVendor
+      - /hardware_vendor/MyNewVendor
       Request-Id:
-      - 3l+Nlq6DcLxw
+      - rLIoOr12vaFV
       Server:
       - Mojolicious (Perl)
       X-Request-Id:
-      - 3l+Nlq6DcLxw
+      - rLIoOr12vaFV
     status: 303 See Other
     code: 303
     duration: ""
@@ -34,13 +34,13 @@ interactions:
     form: {}
     headers:
       Referer:
-      - http://10.51.54.42:5000/hardware_vendor/MyBigVendor
+      - http://10.51.54.42:5000/hardware_vendor/MyNewVendor
       User-Agent:
       - Conch/3.x-testing
-    url: http://10.51.54.42:5000/hardware_vendor/MyBigVendor
+    url: http://10.51.54.42:5000/hardware_vendor/MyNewVendor
     method: GET
   response:
-    body: '{"created":"2019-11-01T21:34:31.996424Z","id":"ba491d2e-469e-46b8-954c-ecdaedbb4655","name":"MyBigVendor","updated":"2019-11-01T21:34:31.996424Z"}'
+    body: '{"created":"2020-01-13T23:16:22.201334Z","id":"ffa02983-7bc1-42d4-b5d9-165c3025b033","name":"MyNewVendor","updated":"2020-01-13T23:16:22.201334Z"}'
     headers:
       Cache-Control:
       - no-cache
@@ -49,15 +49,15 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 01 Nov 2019 21:34:32 GMT
+      - Mon, 13 Jan 2020 23:16:22 GMT
       Request-Id:
-      - xNxPnJHrLd54
+      - McIeo7l21RYP
       Server:
       - Mojolicious (Perl)
       X-Conch-Api:
-      - v3.0.0-a8-0-gd0dc7f2e
+      - v3.0.0-b4-0-gb99fbfff
       X-Request-Id:
-      - xNxPnJHrLd54
+      - McIeo7l21RYP
     status: 200 OK
     code: 200
     duration: ""
@@ -67,10 +67,10 @@ interactions:
     headers:
       User-Agent:
       - Conch/3.x-testing
-    url: http://10.51.54.42:5000/hardware_vendor/MyBigVendor
+    url: http://10.51.54.42:5000/hardware_vendor/MyNewVendor
     method: GET
   response:
-    body: '{"created":"2019-11-01T21:34:31.996424Z","id":"ba491d2e-469e-46b8-954c-ecdaedbb4655","name":"MyBigVendor","updated":"2019-11-01T21:34:31.996424Z"}'
+    body: '{"created":"2020-01-13T23:16:22.201334Z","id":"ffa02983-7bc1-42d4-b5d9-165c3025b033","name":"MyNewVendor","updated":"2020-01-13T23:16:22.201334Z"}'
     headers:
       Cache-Control:
       - no-cache
@@ -79,15 +79,15 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 01 Nov 2019 21:34:32 GMT
+      - Mon, 13 Jan 2020 23:16:22 GMT
       Request-Id:
-      - rehVXes0FWJi
+      - /zvmeJ4jTAV+
       Server:
       - Mojolicious (Perl)
       X-Conch-Api:
-      - v3.0.0-a8-0-gd0dc7f2e
+      - v3.0.0-b4-0-gb99fbfff
       X-Request-Id:
-      - rehVXes0FWJi
+      - /zvmeJ4jTAV+
     status: 200 OK
     code: 200
     duration: ""
@@ -111,20 +111,21 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 01 Nov 2019 21:34:32 GMT
+      - Mon, 13 Jan 2020 23:16:22 GMT
       Request-Id:
-      - Apfr9/jMPDHv
+      - Id0lmrh+IMt0
       Server:
       - Mojolicious (Perl)
       X-Conch-Api:
-      - v3.0.0-a8-0-gd0dc7f2e
+      - v3.0.0-b4-0-gb99fbfff
       X-Request-Id:
-      - Apfr9/jMPDHv
+      - Id0lmrh+IMt0
     status: 200 OK
     code: 200
     duration: ""
 - request:
-    body: '{"alias":"dzUbBAHNxklInUfunJLjIRrRq","bios_firmware":"bzzOOZNkbXYNimiIarOWsyNNi","cpu_num":59,"cpu_type":"lVNmudeLQAvRLumPsexTGlBND","dimms_num":53,"hba_firmware":"fNRBveypwVsVPDmkIBekJYZSq","nics_num":82,"purpose":"HRVaRIIokTvxwakfWIePuUaPr","ram_total":34,"sas_hdd_slots":"cimZtuTOacACRosLnmqchBRqn","sata_hdd_slots":"cBWLviByTSPVcHWDpiSyUyaVq","sata_ssd_slots":"wdNLXFwKravQhWKPweiJoMBJH","sas_ssd_slots":"QjWAbdZWDJzIhlCrAfMfrNHZJ","nvme_ssd_slots":"nRVpcTeFxouGPqDnurOcIKHjG","usb_num":26,"psu_total":67,"raid_lun_num":48,"sas_hdd_num":40,"sas_hdd_size":67,"sata_hdd_num":79,"sata_hdd_size":7,"sata_ssd_num":28,"sata_ssd_size":23,"sas_ssd_num":26,"sas_ssd_size":31,"nvme_ssd_num":20,"nvme_ssd_size":10,"hardware_vendor_id":"ba491d2e-469e-46b8-954c-ecdaedbb4655","name":"WZZeXIwjZQdOFjGweWJnkepoK","rack_unit_size":1,"sku":"wazBOkptktYGYSJqxseDYmlDw","validation_plan_id":"a30ab8b2-8a9e-4e51-8bb0-92862abd8b54"}'
+    body: |
+      {"alias":"HBwPfXkwBWcrGTEmKcfgcEAOQ","bios_firmware":"qksKNLZtEswqYITlEKWccPyAQ","cpu_type":"oVUponksFiJKAJzrpTptQPcPt","hardware_vendor_id":"ffa02983-7bc1-42d4-b5d9-165c3025b033","name":"dDAMUHVqGPGwhDuxMhUyArVcO","purpose":"epzmPvcsBoPlmoCxUuTfqyGdL","rack_unit_size":1,"sku":"LzAEPlUOObtGROufYxyILdKaJ","validation_plan_id":"a30ab8b2-8a9e-4e51-8bb0-92862abd8b54"}
     form: {}
     headers:
       Content-Type:
@@ -141,15 +142,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 01 Nov 2019 21:34:32 GMT
+      - Mon, 13 Jan 2020 23:16:22 GMT
       Location:
-      - /hardware_product/837e050e-89b6-4ab9-8352-08ed8dac45b6
+      - /hardware_product/1627da5b-db7e-4b62-b66c-2d7a0c380f50
       Request-Id:
-      - AP++RjAYvlSv
+      - V24LVCElR7zy
       Server:
       - Mojolicious (Perl)
       X-Request-Id:
-      - AP++RjAYvlSv
+      - V24LVCElR7zy
     status: 303 See Other
     code: 303
     duration: ""
@@ -163,27 +164,29 @@ interactions:
       - http://10.51.54.42:5000/hardware_product
       User-Agent:
       - Conch/3.x-testing
-    url: http://10.51.54.42:5000/hardware_product/837e050e-89b6-4ab9-8352-08ed8dac45b6
+    url: http://10.51.54.42:5000/hardware_product/1627da5b-db7e-4b62-b66c-2d7a0c380f50
     method: GET
   response:
-    body: '{"alias":"dzUbBAHNxklInUfunJLjIRrRq","created":"2019-11-01T21:34:32.083245Z","generation_name":null,"bios_firmware":"bzzOOZNkbXYNimiIarOWsyNNi","cpu_num":59,"cpu_type":"lVNmudeLQAvRLumPsexTGlBND","dimms_num":53,"hba_firmware":"fNRBveypwVsVPDmkIBekJYZSq","id":"3cf626b4-21e3-43b5-a465-cd2f3f25af7a","nics_num":82,"nvme_ssd_num":20,"nvme_ssd_size":10,"nvme_ssd_slots":"nRVpcTeFxouGPqDnurOcIKHjG","psu_total":67,"purpose":"HRVaRIIokTvxwakfWIePuUaPr","raid_lun_num":48,"ram_total":34,"sas_hdd_num":40,"sas_hdd_size":67,"sas_hdd_slots":"cimZtuTOacACRosLnmqchBRqn","sas_ssd_num":26,"sas_ssd_size":31,"sas_ssd_slots":"QjWAbdZWDJzIhlCrAfMfrNHZJ","sata_hdd_num":79,"sata_hdd_size":7,"sata_hdd_slots":"cBWLviByTSPVcHWDpiSyUyaVq","sata_ssd_num":28,"sata_ssd_size":23,"sata_ssd_slots":"wdNLXFwKravQhWKPweiJoMBJH","usb_num":26,"hardware_vendor_id":"ba491d2e-469e-46b8-954c-ecdaedbb4655","id":"837e050e-89b6-4ab9-8352-08ed8dac45b6","legacy_product_name":null,"name":"WZZeXIwjZQdOFjGweWJnkepoK","prefix":null,"rack_unit_size":1,"sku":"wazBOkptktYGYSJqxseDYmlDw","specification":null,"updated":"2019-11-01T21:34:32.083245Z","validation_plan_id":"a30ab8b2-8a9e-4e51-8bb0-92862abd8b54"}'
+    body: '{"alias":"HBwPfXkwBWcrGTEmKcfgcEAOQ","bios_firmware":"qksKNLZtEswqYITlEKWccPyAQ","cpu_num":0,"cpu_type":"oVUponksFiJKAJzrpTptQPcPt","created":"2020-01-13T23:16:22.286225Z","dimms_num":0,"generation_name":null,"hardware_vendor_id":"ffa02983-7bc1-42d4-b5d9-165c3025b033","hba_firmware":null,"id":"1627da5b-db7e-4b62-b66c-2d7a0c380f50","legacy_product_name":null,"name":"dDAMUHVqGPGwhDuxMhUyArVcO","nics_num":0,"nvme_ssd_num":0,"nvme_ssd_size":null,"nvme_ssd_slots":null,"prefix":null,"psu_total":0,"purpose":"epzmPvcsBoPlmoCxUuTfqyGdL","rack_unit_size":1,"raid_lun_num":0,"ram_total":0,"sas_hdd_num":0,"sas_hdd_size":null,"sas_hdd_slots":null,"sas_ssd_num":0,"sas_ssd_size":null,"sas_ssd_slots":null,"sata_hdd_num":0,"sata_hdd_size":null,"sata_hdd_slots":null,"sata_ssd_num":0,"sata_ssd_size":null,"sata_ssd_slots":null,"sku":"LzAEPlUOObtGROufYxyILdKaJ","specification":null,"updated":"2020-01-13T23:16:22.286225Z","usb_num":0,"validation_plan_id":"a30ab8b2-8a9e-4e51-8bb0-92862abd8b54"}'
     headers:
       Cache-Control:
       - no-cache
       Content-Length:
-      - "1197"
+      - "985"
       Content-Type:
       - application/json
       Date:
-      - Fri, 01 Nov 2019 21:34:32 GMT
+      - Mon, 13 Jan 2020 23:16:22 GMT
+      Location:
+      - /hardware_product/1627da5b-db7e-4b62-b66c-2d7a0c380f50
       Request-Id:
-      - LjIo9A9urYqb
+      - d4cv+xbQG9aM
       Server:
       - Mojolicious (Perl)
       X-Conch-Api:
-      - v3.0.0-a8-0-gd0dc7f2e
+      - v3.0.0-b4-0-gb99fbfff
       X-Request-Id:
-      - LjIo9A9urYqb
+      - d4cv+xbQG9aM
     status: 200 OK
     code: 200
     duration: ""
@@ -193,27 +196,29 @@ interactions:
     headers:
       User-Agent:
       - Conch/3.x-testing
-    url: http://10.51.54.42:5000/hardware_product/name=WZZeXIwjZQdOFjGweWJnkepoK
+    url: http://10.51.54.42:5000/hardware_product/dDAMUHVqGPGwhDuxMhUyArVcO
     method: GET
   response:
-    body: '{"alias":"dzUbBAHNxklInUfunJLjIRrRq","created":"2019-11-01T21:34:32.083245Z","generation_name":null,"bios_firmware":"bzzOOZNkbXYNimiIarOWsyNNi","cpu_num":59,"cpu_type":"lVNmudeLQAvRLumPsexTGlBND","dimms_num":53,"hba_firmware":"fNRBveypwVsVPDmkIBekJYZSq","id":"3cf626b4-21e3-43b5-a465-cd2f3f25af7a","nics_num":82,"nvme_ssd_num":20,"nvme_ssd_size":10,"nvme_ssd_slots":"nRVpcTeFxouGPqDnurOcIKHjG","psu_total":67,"purpose":"HRVaRIIokTvxwakfWIePuUaPr","raid_lun_num":48,"ram_total":34,"sas_hdd_num":40,"sas_hdd_size":67,"sas_hdd_slots":"cimZtuTOacACRosLnmqchBRqn","sas_ssd_num":26,"sas_ssd_size":31,"sas_ssd_slots":"QjWAbdZWDJzIhlCrAfMfrNHZJ","sata_hdd_num":79,"sata_hdd_size":7,"sata_hdd_slots":"cBWLviByTSPVcHWDpiSyUyaVq","sata_ssd_num":28,"sata_ssd_size":23,"sata_ssd_slots":"wdNLXFwKravQhWKPweiJoMBJH","usb_num":26,"hardware_vendor_id":"ba491d2e-469e-46b8-954c-ecdaedbb4655","id":"837e050e-89b6-4ab9-8352-08ed8dac45b6","legacy_product_name":null,"name":"WZZeXIwjZQdOFjGweWJnkepoK","prefix":null,"rack_unit_size":1,"sku":"wazBOkptktYGYSJqxseDYmlDw","specification":null,"updated":"2019-11-01T21:34:32.083245Z","validation_plan_id":"a30ab8b2-8a9e-4e51-8bb0-92862abd8b54"}'
+    body: '{"alias":"HBwPfXkwBWcrGTEmKcfgcEAOQ","bios_firmware":"qksKNLZtEswqYITlEKWccPyAQ","cpu_num":0,"cpu_type":"oVUponksFiJKAJzrpTptQPcPt","created":"2020-01-13T23:16:22.286225Z","dimms_num":0,"generation_name":null,"hardware_vendor_id":"ffa02983-7bc1-42d4-b5d9-165c3025b033","hba_firmware":null,"id":"1627da5b-db7e-4b62-b66c-2d7a0c380f50","legacy_product_name":null,"name":"dDAMUHVqGPGwhDuxMhUyArVcO","nics_num":0,"nvme_ssd_num":0,"nvme_ssd_size":null,"nvme_ssd_slots":null,"prefix":null,"psu_total":0,"purpose":"epzmPvcsBoPlmoCxUuTfqyGdL","rack_unit_size":1,"raid_lun_num":0,"ram_total":0,"sas_hdd_num":0,"sas_hdd_size":null,"sas_hdd_slots":null,"sas_ssd_num":0,"sas_ssd_size":null,"sas_ssd_slots":null,"sata_hdd_num":0,"sata_hdd_size":null,"sata_hdd_slots":null,"sata_ssd_num":0,"sata_ssd_size":null,"sata_ssd_slots":null,"sku":"LzAEPlUOObtGROufYxyILdKaJ","specification":null,"updated":"2020-01-13T23:16:22.286225Z","usb_num":0,"validation_plan_id":"a30ab8b2-8a9e-4e51-8bb0-92862abd8b54"}'
     headers:
       Cache-Control:
       - no-cache
       Content-Length:
-      - "1197"
+      - "985"
       Content-Type:
       - application/json
       Date:
-      - Fri, 01 Nov 2019 21:34:32 GMT
+      - Mon, 13 Jan 2020 23:16:22 GMT
+      Location:
+      - /hardware_product/1627da5b-db7e-4b62-b66c-2d7a0c380f50
       Request-Id:
-      - 5dCVh0Wc7f1j
+      - Qe7iINLBBucn
       Server:
       - Mojolicious (Perl)
       X-Conch-Api:
-      - v3.0.0-a8-0-gd0dc7f2e
+      - v3.0.0-b4-0-gb99fbfff
       X-Request-Id:
-      - 5dCVh0Wc7f1j
+      - Qe7iINLBBucn
     status: 200 OK
     code: 200
     duration: ""
@@ -223,7 +228,7 @@ interactions:
     headers:
       User-Agent:
       - Conch/3.x-testing
-    url: http://10.51.54.42:5000/hardware_product/837e050e-89b6-4ab9-8352-08ed8dac45b6
+    url: http://10.51.54.42:5000/hardware_product/1627da5b-db7e-4b62-b66c-2d7a0c380f50
     method: DELETE
   response:
     body: ""
@@ -231,13 +236,13 @@ interactions:
       Cache-Control:
       - no-cache
       Date:
-      - Fri, 01 Nov 2019 21:34:32 GMT
+      - Mon, 13 Jan 2020 23:16:22 GMT
       Request-Id:
-      - +PvEc+i+xvc1
+      - j8tQSWrcQoGD
       Server:
       - Mojolicious (Perl)
       X-Request-Id:
-      - +PvEc+i+xvc1
+      - j8tQSWrcQoGD
     status: 204 No Content
     code: 204
     duration: ""
@@ -247,7 +252,7 @@ interactions:
     headers:
       User-Agent:
       - Conch/3.x-testing
-    url: http://10.51.54.42:5000/hardware_vendor/MyBigVendor
+    url: http://10.51.54.42:5000/hardware_vendor/MyNewVendor
     method: DELETE
   response:
     body: ""
@@ -255,13 +260,13 @@ interactions:
       Cache-Control:
       - no-cache
       Date:
-      - Fri, 01 Nov 2019 21:34:32 GMT
+      - Mon, 13 Jan 2020 23:16:22 GMT
       Request-Id:
-      - joFKVM2sBMXO
+      - Ctg+cAJvu8Ee
       Server:
       - Mojolicious (Perl)
       X-Request-Id:
-      - joFKVM2sBMXO
+      - Ctg+cAJvu8Ee
     status: 204 No Content
     code: 204
     duration: ""

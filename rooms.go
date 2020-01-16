@@ -250,7 +250,7 @@ func (r *Rooms) Delete(id uuid.UUID) {
 }
 
 func (r *Rooms) Racks(id uuid.UUID) RackList {
-	uri := fmt.Sprintf("/room/%s/racks", url.PathEscape(id.String()))
+	uri := fmt.Sprintf("/room/%s/rack", url.PathEscape(id.String()))
 
 	rl := make(RackList, 0)
 	res := r.Do(r.Sling().New().Get(uri))

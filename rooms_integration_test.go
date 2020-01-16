@@ -25,21 +25,25 @@ func TestRoomsAPIIntegration(t *testing.T) {
 	})
 
 	t.Run("Get all rooms", func(t *testing.T) {
+		defer errorHandler()
 		list := API.Rooms().GetAll()
 		t.Logf("got %v", list)
 	})
 
 	t.Run("Get one room", func(t *testing.T) {
+		defer errorHandler()
 		list := API.Rooms().Get(testRoom.ID)
 		t.Logf("got %v", list)
 	})
 
 	t.Run("List all racks in a room", func(t *testing.T) {
+		defer errorHandler()
 		list := API.Rooms().Racks(testRoom.ID)
 		t.Logf("got %v", list)
 	})
 
 	t.Run("Remove a room", func(t *testing.T) {
+		defer errorHandler()
 		API.Rooms().Delete(testRoom.ID)
 	})
 }

@@ -83,8 +83,8 @@ func (f *Fixture) setupHardwareVendor() *Fixture {
 		return f
 	}
 
-	//mock := newTestHardwareVendor()
-	f.hardwareVendor = API.Hardware().CreateVendor("MyBigVendor")
+	//	mock := newTestHardwareVendor()
+	f.hardwareVendor = API.Hardware().CreateVendor("MyNewVendor")
 
 	return f.addReset(func() {
 		API.Hardware().DeleteVendor(f.hardwareVendor.Name)
@@ -185,12 +185,14 @@ func (f *Fixture) setupRack() *Fixture {
 	}
 
 	f.setupRoom()
+	f.setupBuild()
 	f.setupRackRole()
 
 	mock := newTestRack()
 	mock.RoomID = f.room.ID
 	mock.RoleID = f.role.ID
 	mock.Phase = "integration"
+	mock.BuildID = f.build.ID
 	f.rack = API.Racks().CreateFromStruct(mock)
 
 	return f.addReset(func() {

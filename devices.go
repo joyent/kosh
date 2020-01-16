@@ -174,14 +174,17 @@ type DeviceReport map[string]interface{}
 
 type DeviceLocation struct {
 	Datacenter            Datacenter `json:"datacenter"`
-	Room                  Room       `json:"datacenter_room"`
-	Rack                  Rack       `json:"rack"`
-	RackUnitStart         int        `json:"rack_unit_start" faker:"rack_unit_start"`
+	AZ                    string     `json:"az"`
+	RoomName              string     `json:"datacenter_room"`
+	Rack                  Rack
+	RackName              string `json:"rack"`
+	RackUnitStart         int    `json:"rack_unit_start" faker:"rack_unit_start"`
 	TargetHardwareProduct struct {
 		ID     uuid.UUID `json:"id" faker"uuid"`
 		Name   string    `json:"name"`
 		Alias  string    `json:"alias"`
 		Vendor string    `json:"hardware_vendor_id"`
+		SKU    string    `json:"sku,omitempty"`
 	} `json:"target_hardware_product"`
 }
 
@@ -217,7 +220,7 @@ func (ds *Devices) DeleteLocation(id string) {
 	uri := fmt.Sprintf("/device/%s/location", url.PathEscape(id))
 
 	res := ds.Do(ds.Sling().New().Delete(uri))
-	if res.StatusCode() != 204 {
+	if res.IsError() {
 		panic(res)
 	}
 }
@@ -294,7 +297,9 @@ type deviceCore struct {
 	Validated         time.Time `json:"validated,omitempty" faker:"-"`
 	Phase             string    `json:"phase"`
 
-	BuildID uuid.UUID `json:"build_id" faker:"-"`
+	BuildID   uuid.UUID `json:"build_id" faker:"-"`
+	BuildName string    `json:"build_name"`
+	SKU       string    `json:"sku"`
 }
 
 type Disk struct {
@@ -352,6 +357,9 @@ func (d DetailedDevice) String() string {
 	}
 
 	var rackRole RackRole
+	if (d.Location.Rack == Rack{}) {
+		d.Location.Rack = API.Racks().GetByName(d.Location.RackName)
+	}
 	if (d.Location.Rack.RoleID != uuid.UUID{}) {
 		rackRole = API.RackRoles().Get(d.Location.Rack.RoleID)
 	}

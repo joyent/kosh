@@ -257,3 +257,10 @@ Name: {{ .Name }}
 Description: {{ .Description }}
 Created: {{ .Created }}
 `
+
+const hardwareProductTemplate = `
+ID: {{ .ID }}
+
+Created: {{ TimeStr .Created }}
+Updated: {{ TimeStr .Updated }}
+`

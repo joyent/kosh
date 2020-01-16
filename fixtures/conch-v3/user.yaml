@@ -10,7 +10,7 @@ interactions:
     url: http://10.51.54.42:5000/user/me
     method: GET
   response:
-    body: '{"builds":[],"created":"2019-10-09T17:21:43.700385Z","email":"conch@exmaple.com","force_password_change":false,"id":"c3d2c2e6-e3c0-48ca-a8b0-f97e842888f5","is_admin":true,"last_login":null,"last_seen":"2019-11-01T21:34:38.256117Z","name":"conch","organizations":[],"refuse_session_auth":false,"workspaces":[{"description":"Global
+    body: '{"builds":[],"created":"2019-10-09T17:21:43.700385Z","email":"conch@exmaple.com","force_password_change":false,"id":"c3d2c2e6-e3c0-48ca-a8b0-f97e842888f5","is_admin":true,"last_login":null,"last_seen":"2020-01-13T23:16:24.355614Z","name":"conch","organizations":[],"refuse_session_auth":false,"workspaces":[{"description":"Global
       workspace","id":"8bb8f3a8-0f1e-4f1d-92a9-3d108f5743c8","name":"GLOBAL","parent_workspace_id":null,"role":"admin"}]}'
     headers:
       Cache-Control:
@@ -20,15 +20,15 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 01 Nov 2019 21:34:38 GMT
+      - Mon, 13 Jan 2020 23:16:24 GMT
       Request-Id:
-      - TjhHINxz7dAi
+      - ERrTZvln1emQ
       Server:
       - Mojolicious (Perl)
       X-Conch-Api:
-      - v3.0.0-a8-0-gd0dc7f2e
+      - v3.0.0-b4-0-gb99fbfff
       X-Request-Id:
-      - TjhHINxz7dAi
+      - ERrTZvln1emQ
     status: 200 OK
     code: 200
     duration: ""
@@ -50,15 +50,15 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 01 Nov 2019 21:34:38 GMT
+      - Mon, 13 Jan 2020 23:16:24 GMT
       Request-Id:
-      - WkzTQcEtDVWe
+      - WdbvPjzxwOqj
       Server:
       - Mojolicious (Perl)
       X-Conch-Api:
-      - v3.0.0-a8-0-gd0dc7f2e
+      - v3.0.0-b4-0-gb99fbfff
       X-Request-Id:
-      - WkzTQcEtDVWe
+      - WdbvPjzxwOqj
     status: 200 OK
     code: 200
     duration: ""

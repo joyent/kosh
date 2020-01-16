@@ -74,7 +74,7 @@ func TestRackLayout(t *testing.T) {
 		_ = API.Racks().CreateLayout(rack.ID, mrl)
 
 		assertRequestCount(t, spy.requestCount, 3)
-		assertRequestPath(t, spy.requestPath, fmt.Sprintf("/rack/%s/layouts", rack.ID))
+		assertRequestPath(t, spy.requestPath, fmt.Sprintf("/rack/%s/layout", rack.ID))
 	})
 
 }
