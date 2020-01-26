@@ -318,8 +318,8 @@ type RackLayoutSlot struct {
 	RackName          string    `json:"rack_name"`
 	SKU               string    `json:"sku"`
 	HardwareProductID uuid.UUID `json:"hardware_product_id" faker:"uuid"`
-	RackUnitStart     int       `json:"rack_unit_start", faker:"rack_unit_start"`
-	RackUnitSize      int       `json:"rack_unit_size", faker:"rack_unit_size"`
+	RackUnitStart     int       `json:"rack_unit_start" faker:"rack_unit_start"`
+	RackUnitSize      int       `json:"rack_unit_size" faker:"rack_unit_size"`
 	Created           time.Time `json:"created" faker:"-"`
 	Updated           time.Time `json:"updated" faker:"-"`
 }
