@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestRoomsCreateFromStruct(t *testing.T) {
@@ -31,5 +33,5 @@ func TestRoomsCreateFromStruct(t *testing.T) {
 	assertRequestCount(t, spy.requestCount, 1)
 	assertRequestPath(t, spy.requestPath, "/room")
 	assertRequestMethod(t, spy.requestMethod, "POST")
-	assertData(t, got, want)
+	assert.Equal(t, got, want)
 }

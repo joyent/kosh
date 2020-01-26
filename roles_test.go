@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestRackRoleCreateFromStruct(t *testing.T) {
@@ -31,5 +33,5 @@ func TestRackRoleCreateFromStruct(t *testing.T) {
 	assertRequestCount(t, spy.requestCount, 1)
 	assertRequestPath(t, spy.requestPath, "/rack_role")
 	assertRequestMethod(t, spy.requestMethod, "POST")
-	assertData(t, got, want)
+	assert.Equal(t, got, want)
 }

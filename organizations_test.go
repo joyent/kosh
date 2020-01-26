@@ -7,8 +7,9 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
-	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestOrganizationsGet(t *testing.T) {
@@ -37,7 +38,7 @@ func TestOrganizationsGet(t *testing.T) {
 			assertRequestMethod(t, spy.requestMethod, "GET")
 			assertRequestCount(t, spy.requestCount, i+1)
 			assertRequestPath(t, spy.requestPath, fmt.Sprintf("/organization/%s", org.ID))
-			assertData(t, got, org)
+			assert.Equal(t, got, org)
 		})
 	}
 
@@ -69,7 +70,7 @@ func TestOrganizationsGetByName(t *testing.T) {
 			assertRequestMethod(t, spy.requestMethod, "GET")
 			assertRequestCount(t, spy.requestCount, i+1)
 			assertRequestPath(t, spy.requestPath, fmt.Sprintf("/organization/%s", org.Name))
-			assertData(t, got, org)
+			assert.Equal(t, got, org)
 		})
 	}
 
@@ -93,7 +94,7 @@ func TestOrganizationsGetAll(t *testing.T) {
 
 	assertRequestCount(t, spy.requestCount, 1)
 	assertRequestPath(t, spy.requestPath, "/organization")
-	assertData(t, got, orgList)
+	assert.Equal(t, got, orgList)
 }
 
 func TestOrganizationsCreate(t *testing.T) {
@@ -123,7 +124,7 @@ func TestOrganizationsCreate(t *testing.T) {
 	}
 
 	// now let's check what we made in the server is what we got in the client
-	assertData(t, got, want)
+	assert.Equal(t, got, want)
 }
 
 func TestOrganizationsDelete(t *testing.T) {
@@ -169,7 +170,7 @@ func TestOrganizationsGetUsers(t *testing.T) {
 	assertRequestMethod(t, spy.requestMethod, "GET")
 	assertRequestCount(t, spy.requestCount, 1)
 	assertRequestPath(t, spy.requestPath, fmt.Sprintf("/organization/%s/user", org.ID))
-	assertData(t, got, userList)
+	assert.Equal(t, got, userList)
 }
 
 func TestOrganizationsAddUser(t *testing.T) {
@@ -253,12 +254,5 @@ func assertRequestCount(t *testing.T, got, want int) {
 	t.Helper()
 	if got != want {
 		t.Errorf("Wrong number of requests, got %d wanted %d", got, want)
-	}
-}
-
-func assertData(t *testing.T, got, want interface{}) {
-	t.Helper()
-	if !reflect.DeepEqual(got, want) {
-		t.Fatalf("Got wrong results, got %v wanted %v", got, want)
 	}
 }
