@@ -12,11 +12,13 @@ import (
 	"bytes"
 	"fmt"
 	"net/url"
+	"strings"
 
 	"time"
 
 	"github.com/gofrs/uuid"
 	cli "github.com/jawher/mow.cli"
+	"github.com/olekukonko/tablewriter"
 	// "github.com/olekukonko/tablewriter"
 )
 
@@ -31,7 +33,63 @@ func (c *Conch) Hardware() *Hardware {
 type HardwareProducts []HardwareProduct
 
 func (hps HardwareProducts) String() string {
-	return API.AsJSON(hps)
+	if API.JsonOnly {
+		return API.AsJSON(hps)
+	}
+
+	tableString := &strings.Builder{}
+	table := tablewriter.NewWriter(tableString)
+	TableToMarkdown(table)
+
+	table.SetHeader([]string{
+		"ID",
+		"SKU",
+		"Name",
+		"Alias",
+		"Purpose",
+		"BIOS",
+		"CPU Type",
+		"Vendor",
+		"Validation Plan",
+		"Created",
+		"Updated",
+	})
+
+	for _, hp := range hps {
+		/*var vendor string
+		if (hp.HardwareVendorID != uuid.UUID{}) {
+			vendor = hp.HardwareVendor().Name
+		}
+
+		var vp string
+		if (hp.ValidationPlanID != uuid.UUID{}) {
+			vp = hp.ValidationPlan().Name
+		}
+		*/
+		table.Append([]string{
+			CutUUID(hp.ID.String()),
+			hp.SKU,
+			hp.Name,
+			hp.Alias,
+			hp.Purpose,
+			hp.BiosFirmware,
+			hp.CpuType,
+			hp.HardwareVendorID.String(),
+			hp.ValidationPlanID.String(),
+			hp.Created.String(),
+			hp.Updated.String(),
+		})
+	}
+	table.Render()
+	return tableString.String()
+}
+
+func (hp HardwareProduct) HardwareVendor() HardwareVendor {
+	return API.Hardware().GetVendor(hp.HardwareVendorID.String())
+}
+
+func (hp HardwareProduct) ValidationPlan() ValidationPlan {
+	return API.Validations().GetPlan(hp.ValidationPlanID)
 }
 
 type HardwareProduct struct {
@@ -39,12 +97,14 @@ type HardwareProduct struct {
 	Name              string    `json:"name"`
 	Alias             string    `json:"alias"`
 	Prefix            string    `json:"prefix,omitempty"`
-	HardwareVendorID  uuid.UUID `json:"hardware_vendor_id" faker:"uuid"`
 	GenerationName    string    `json:"generation_name,omitempty"`
 	LegacyProductName string    `json:"legacy_product_name,omitempty"`
 	SKU               string    `json:"sku"`
 	Specification     string    `json:"specification,omitempty"`
 	RackUnitSize      int       `json:"rack_unit_size" faker:"rack_unit_size"`
+
+	HardwareVendorID uuid.UUID `json:"hardware_vendor_id" faker:"uuid"`
+	ValidationPlanID uuid.UUID `json:"validation_plan_id,omitempty" faker:"-"`
 
 	BiosFirmware string `json:"bios_firmware"`
 	CpuNum       int    `json:"cpu_num"`
@@ -80,9 +140,8 @@ type HardwareProduct struct {
 	NvmeSsdNum  *int `json:"nvme_ssd_num,omitempty"`
 	NvmeSsdSize *int `json:"nvme_ssd_size,omitempty"`
 
-	Created          time.Time `json:"created" faker:"-"`
-	Updated          time.Time `json:"updated" faker:"-"`
-	ValidationPlanID uuid.UUID `json:"validation_plan_id,omitempty" faker:"-"`
+	Created time.Time `json:"created" faker:"-"`
+	Updated time.Time `json:"updated" faker:"-"`
 }
 
 func (hp HardwareProduct) String() string {
@@ -107,12 +166,15 @@ func (h *Hardware) GetAllProducts() (hps HardwareProducts) {
 	if ok := res.Parse(&hps); !ok {
 		panic(res)
 	}
-
 	return hps
 }
 
 func (h *Hardware) GetProduct(id uuid.UUID) (hp HardwareProduct) {
-	uri := fmt.Sprintf("/hardware_product/%s", url.PathEscape(id.String()))
+	return h.GetProductByString(id.String())
+}
+
+func (h *Hardware) GetProductByString(s string) (hp HardwareProduct) {
+	uri := fmt.Sprintf("/hardware_product/%s", url.PathEscape(s))
 	res := h.Do(h.Sling().New().Get(uri))
 	if ok := res.Parse(&hp); !ok {
 		panic(res)
@@ -121,34 +183,16 @@ func (h *Hardware) GetProduct(id uuid.UUID) (hp HardwareProduct) {
 	return hp
 }
 
-func (h *Hardware) GetProductByName(name string) (hp HardwareProduct) {
-	uri := fmt.Sprintf("/hardware_product/%s", url.PathEscape(name))
-	res := h.Do(h.Sling().New().Get(uri))
-	if ok := res.Parse(&hp); !ok {
-		panic(res)
-	}
-
-	return hp
+func (h Hardware) GetProductByName(name string) HardwareProduct {
+	return h.GetProductByString(name)
 }
 
-func (h *Hardware) GetProductByAlias(alias string) (hp HardwareProduct) {
-	uri := fmt.Sprintf("/hardware_product/%s", url.PathEscape(alias))
-	res := h.Do(h.Sling().New().Get(uri))
-	if ok := res.Parse(&hp); !ok {
-		panic(res)
-	}
-
-	return hp
+func (h Hardware) GetProductBySku(sku string) HardwareProduct {
+	return h.GetProductByString(sku)
 }
 
-func (h *Hardware) GetProductBySku(sku string) (hp HardwareProduct) {
-	uri := fmt.Sprintf("/hardware_product/%s", url.PathEscape(sku))
-	res := h.Do(h.Sling().New().Get(uri))
-	if ok := res.Parse(&hp); !ok {
-		panic(res)
-	}
-
-	return hp
+func (h Hardware) GetProductByAlias(alias string) HardwareProduct {
+	return h.GetProductByString(alias)
 }
 
 func (h *Hardware) Create(
@@ -181,7 +225,7 @@ func (h *Hardware) Create(
 		panic(res)
 	}
 
-	return
+	return hp
 }
 
 func (h *Hardware) Delete(ID uuid.UUID) {
@@ -234,8 +278,20 @@ func (h *Hardware) CreateVendor(name string) (hv HardwareVendor) {
 	return h.GetVendor(name)
 }
 
-func (h *Hardware) DeleteVendor(name string) {
-	uri := fmt.Sprintf("/hardware_vendor/%s", url.PathEscape(name))
+func (h *Hardware) FindOrCreateVendor(name string) (hv HardwareVendor) {
+	// if we fail to Find the vendor we panic,
+	// really we  need to calm down and just create a new Vendor
+	defer func() {
+		if r := recover(); r != nil {
+			hv = h.CreateVendor(name)
+		}
+	}()
+	hv = h.GetVendor(name)
+	return
+}
+
+func (h *Hardware) DeleteVendor(id uuid.UUID) {
+	uri := fmt.Sprintf("/hardware_vendor/%s", url.PathEscape(id.String()))
 	res := h.Do(h.Sling().New().Delete(uri))
 
 	if res.StatusCode() != 204 {
@@ -249,77 +305,115 @@ func (h *Hardware) DeleteVendor(name string) {
 
 }
 
-func init() {
-	App.Command("hardware", "Work with hardware profiles and vendors", func(cmd *cli.Cmd) {
+/*
+	kosh hardware products create \
+		--name Foo \
+		--alias Bar \
+		--vendor MyBigVendor \
+		--SKU FooBle-001 \
+		--rack-unit-size 4 \
+		--validation-plan ServerPlan \
+		--purpose Server \
+		--biosFirmware firmware23.dat \
+		--cpuType Intel
+*/
+
+func cmdCreateProduct(cmd *cli.Cmd) {
+	var (
+		name              = cmd.StringOpt("name", "", "Name of the hardware product")
+		alias             = cmd.StringOpt("alias", "", "Alias for the hardware product")
+		vendor            = cmd.StringOpt("vendor", "", "Vendor of the hardware product")
+		SKU               = cmd.StringOpt("sku", "", "SKU for the hardware product")
+		rackUnitSize      = cmd.IntOpt("rack-unit-size", 2, "RU size of the hardware product")
+		validationPlanOpt = cmd.StringOpt("validation-plan", "", "Name of the plan to validate the product against")
+		purpose           = cmd.StringOpt("purpose", "", "Purpose of the product")
+		biosFirmware      = cmd.StringOpt("bios-firmware", "", "BIOS firmware version for the product")
+		cpuType           = cmd.StringOpt("cpu-type", "", "CPU type for the product")
+	)
+
+	cmd.Spec = "--sku --name --alias --vendor --validation-plan --purpose --bios-firmware --cpu-type [OPTIONS]"
+	cmd.Action = func() {
+		validationPlan := API.Validations().GetPlanByName(*validationPlanOpt)
+		vendor := API.Hardware().GetVendor(*vendor)
+		fmt.Println(API.Hardware().Create(
+			*name,
+			*alias,
+			vendor.ID,
+			*SKU,
+			*rackUnitSize,
+			validationPlan.ID,
+			*purpose,
+			*biosFirmware,
+			*cpuType,
+		))
+	}
+}
+
+// kosh hardware products get
+func cmdListProducts(cmd *cli.Cmd) {
+	cmd.Action = func() {
+		fmt.Println(API.Hardware().GetAllProducts())
+	}
+}
+
+func initHardwareCli(cmd *cli.Cli) {
+
+	cmd.Command("hardware", "Work with hardware profiles and vendors", func(cmd *cli.Cmd) {
 		cmd.Command("products", "Work with hardware products", func(cmd *cli.Cmd) {
-			cmd.Command("get ls", "Get a list of all hardware products", func(cmd *cli.Cmd) {
-				cmd.Action = func() { API.Hardware().GetAllProducts() }
-			})
-			cmd.Command("create", "Create a hardware product", func(cmd *cli.Cmd) {
-				var (
-					name                = cmd.StringOpt("name", "", "Name of the hardware product")
-					alias               = cmd.StringOpt("alias", "", "Alias for the hardware product")
-					vendor              = cmd.StringOpt("vendor", "", "Vendor of the hardware product")
-					SKU                 = cmd.StringOpt("sku", "", "SKU for the hardware product")
-					rackUnitSize        = cmd.IntOpt("rack-unit-size", 2, "RU size of the hardware product")
-					validationPlanIDOpt = cmd.StringOpt("validation-plan-id", "", "ID of the plan to validate the product against")
-					purpose             = cmd.StringOpt("purpose", "", "Purpose of the product")
-					biosFirmware        = cmd.StringOpt("bios-firmware", "", "BIOS firmware version for the product")
-					cpuType             = cmd.StringOpt("cpu-type", "", "CPU type for the product")
-				)
-				cmd.Spec = "--sku --name --alias --rack-unit-size --validation-plan-id --rack-unit-size --purpose --bios-firmware --cpu-type [OPTIONS]"
-
-				cmd.Action = func() {
-					_, validationPlanID := API.Validations().FindPlanID(*validationPlanIDOpt)
-
-					fmt.Println(API.Hardware().Create(
-						*name,
-						*alias,
-						API.Hardware().GetVendor(*vendor).ID,
-						*SKU,
-						*rackUnitSize,
-						validationPlanID,
-						*purpose,
-						*biosFirmware,
-						*cpuType,
-					))
-				}
-			})
+			cmd.Command("create", "Create a hardware product", cmdCreateProduct)
+			cmd.Command("get ls", "Get a list of all hardware products", cmdListProducts)
 		})
 
 		cmd.Command("product", "Work with a hardware product", func(cmd *cli.Cmd) {
 			var hp HardwareProduct
-			// TODO replace this with something that will take a generic ID and fetch the right product
-			idArg := cmd.StringArg("SKU", "", "The SKU of the hardware product.")
+			idArg := cmd.StringArg("PRODUCT", "", "The SKU, UUID, alias, or name of the hardware product.")
 			cmd.Before = func() {
-				hp = API.Hardware().GetProductBySku(*idArg)
+				hp = API.Hardware().GetProductByString(*idArg)
+				if (hp == HardwareProduct{}) {
+					panic("Hardware Product not found for " + *idArg)
+				}
 			}
 			cmd.Command("get", "Show a hardware vendor's details", func(cmd *cli.Cmd) {
 				cmd.Action = func() { fmt.Println(hp) }
 			})
 			cmd.Command("delete rm", "Remove a hardware product", func(cmd *cli.Cmd) {
-				API.Hardware().Delete(hp.ID)
+				cmd.Action = func() {
+					API.Hardware().Delete(hp.ID)
+					fmt.Println(API.Hardware().GetAllProducts())
+				}
 			})
 		})
+
 		cmd.Command("vendors", "Work with hardware vendors", func(cmd *cli.Cmd) {
 			cmd.Command("get ls", "Get a list of all hardware vendors", func(cmd *cli.Cmd) {
 				API.Hardware().GetAllVendors()
 			})
-			cmd.Command("create", "Create a hardware vendor", func(cmd *cli.Cmd) {})
+			cmd.Command("create", "Create a hardware vendor", func(cmd *cli.Cmd) {
+				name := cmd.StringArg("NAME", "", "The name of the hardware vendor.")
+				cmd.Action = func() { API.Hardware().FindOrCreateVendor(*name) }
+			})
 		})
+
 		cmd.Command("vendor", "Work a specific hardware vendor", func(cmd *cli.Cmd) {
 			var hv HardwareVendor
-			idArg := cmd.StringArg("NAME", "", "The name of the hardware vendor.")
+			idArg := cmd.StringArg("NAME", "", "The name, or UUID of the hardware vendor.")
+
+			// grab the Vendor for the given ID
 			cmd.Before = func() {
 				hv = API.Hardware().GetVendor(*idArg)
+				if (hv == HardwareVendor{}) {
+					panic("Hardware Vendor not found for " + *idArg)
+				}
 			}
 
 			cmd.Command("get", "Show a hardware vendor's details", func(cmd *cli.Cmd) {
-				fmt.Println(hv)
+				cmd.Action = func() { fmt.Println(hv) }
 			})
 			cmd.Command("delete rm", "Remove a hardware vendor", func(cmd *cli.Cmd) {
-				API.Hardware().DeleteVendor(hv.ID.String())
+				cmd.Action = func() { API.Hardware().DeleteVendor(hv.ID) }
 			})
 		})
 	})
 }
+
+func init() { initHardwareCli(App) }

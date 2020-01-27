@@ -180,7 +180,7 @@ type DeviceLocation struct {
 	RackName              string `json:"rack"`
 	RackUnitStart         int    `json:"rack_unit_start" faker:"rack_unit_start"`
 	TargetHardwareProduct struct {
-		ID     uuid.UUID `json:"id" faker"uuid"`
+		ID     uuid.UUID `json:"id" faker:"uuid"`
 		Name   string    `json:"name"`
 		Alias  string    `json:"alias"`
 		Vendor string    `json:"hardware_vendor_id"`

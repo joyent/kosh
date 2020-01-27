@@ -260,6 +260,8 @@ Created: {{ .Created }}
 
 const hardwareProductTemplate = `
 ID: {{ .ID }}
+Name: {{ .Name }}
+SKU: {{ .SKU }}
 
 Created: {{ TimeStr .Created }}
 Updated: {{ TimeStr .Updated }}

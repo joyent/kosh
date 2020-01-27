@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestHardwareProductCreate(t *testing.T) {
@@ -43,7 +45,7 @@ func TestHardwareProductCreate(t *testing.T) {
 	assertRequestCount(t, spy.requestCount, 1)
 	assertRequestPath(t, spy.requestPath, "/hardware_product")
 	assertRequestMethod(t, spy.requestMethod, "POST")
-	assertData(t, got, want)
+	assert.Equal(t, got, want)
 }
 
 func TestHardwareProductDelete(t *testing.T) {
@@ -104,7 +106,7 @@ func TestHardwareVendorDelete(t *testing.T) {
 	hv := newTestHardwareVendor()
 	h := API.Hardware()
 
-	h.DeleteVendor(hv.ID.String())
+	h.DeleteVendor(hv.ID)
 
 	assertRequestMethod(t, spy.requestMethod, "DELETE")
 	assertRequestCount(t, spy.requestCount, 1)

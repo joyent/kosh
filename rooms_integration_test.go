@@ -2,6 +2,8 @@ package main
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestRoomsAPIIntegration(t *testing.T) {
@@ -21,7 +23,8 @@ func TestRoomsAPIIntegration(t *testing.T) {
 			want.Alias,
 			want.VendorName,
 		)
-		//assertData(t, got, want)
+		assert.NotNil(t, testRoom.ID)
+		// TODO write a functional test here -- perigrin
 	})
 
 	t.Run("Get all rooms", func(t *testing.T) {

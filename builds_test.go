@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestBuildsGetAll(t *testing.T) {
@@ -28,7 +30,7 @@ func TestBuildsGetAll(t *testing.T) {
 
 	assertRequestCount(t, spy.requestCount, 1)
 	assertRequestPath(t, spy.requestPath, "/build")
-	assertData(t, got, buildList)
+	assert.Equal(t, got, buildList)
 }
 
 func TestBuildsGet(t *testing.T) {
@@ -49,7 +51,7 @@ func TestBuildsGet(t *testing.T) {
 	assertRequestMethod(t, spy.requestMethod, "GET")
 	assertRequestCount(t, spy.requestCount, 1)
 	assertRequestPath(t, spy.requestPath, fmt.Sprintf("/build/%s", build.ID))
-	assertData(t, got, build)
+	assert.Equal(t, got, build)
 }
 
 func TestBuildsGetByName(t *testing.T) {
@@ -70,7 +72,7 @@ func TestBuildsGetByName(t *testing.T) {
 	assertRequestMethod(t, spy.requestMethod, "GET")
 	assertRequestCount(t, spy.requestCount, 1)
 	assertRequestPath(t, spy.requestPath, fmt.Sprintf("/build/%s", build.Name))
-	assertData(t, got, build)
+	assert.Equal(t, got, build)
 }
 
 func TestBuildsCreate(t *testing.T) {
@@ -100,7 +102,7 @@ func TestBuildsCreate(t *testing.T) {
 	}
 
 	// now let's check what we made in the server is what we got in the client
-	assertData(t, got, want)
+	assert.Equal(t, got, want)
 }
 
 func TestBuildsGetUsers(t *testing.T) {
@@ -123,7 +125,7 @@ func TestBuildsGetUsers(t *testing.T) {
 	assertRequestMethod(t, spy.requestMethod, "GET")
 	assertRequestCount(t, spy.requestCount, 1)
 	assertRequestPath(t, spy.requestPath, fmt.Sprintf("/build/%s/user", build.ID))
-	assertData(t, got, list)
+	assert.Equal(t, got, list)
 }
 
 func TestBuildsAddUser(t *testing.T) {
@@ -191,7 +193,7 @@ func TestBuildsGetOrgs(t *testing.T) {
 	assertRequestMethod(t, spy.requestMethod, "GET")
 	assertRequestCount(t, spy.requestCount, 1)
 	assertRequestPath(t, spy.requestPath, fmt.Sprintf("/build/%s/organization", build.ID))
-	assertData(t, got, list)
+	assert.Equal(t, got, list)
 }
 
 func TestBuildsAddOrg(t *testing.T) {
@@ -259,7 +261,7 @@ func TestBuildsGetDevices(t *testing.T) {
 	assertRequestMethod(t, spy.requestMethod, "GET")
 	assertRequestCount(t, spy.requestCount, 1)
 	assertRequestPath(t, spy.requestPath, fmt.Sprintf("/build/%s/device", build.ID))
-	assertData(t, got, list)
+	assert.Equal(t, got, list)
 }
 
 func TestBuildsAddDevice(t *testing.T) {
@@ -327,7 +329,7 @@ func TestBuildsGetRacks(t *testing.T) {
 	assertRequestMethod(t, spy.requestMethod, "GET")
 	assertRequestCount(t, spy.requestCount, 1)
 	assertRequestPath(t, spy.requestPath, fmt.Sprintf("/build/%s/rack", build.ID))
-	assertData(t, got, list)
+	assert.Equal(t, got, list)
 }
 
 func TestBuildsAddRack(t *testing.T) {

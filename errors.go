@@ -31,7 +31,7 @@ func errorHandler() {
 					fmt.Println(err)
 				}
 				fmt.Fprintf(os.Stderr,
-					"HTTP Request: %s",
+					"HTTP Request: %s\n\n",
 					reqDump,
 				)
 
