@@ -83,11 +83,11 @@ func (f *Fixture) setupHardwareVendor() *Fixture {
 		return f
 	}
 
-	//	mock := newTestHardwareVendor()
-	f.hardwareVendor = API.Hardware().CreateVendor("MyNewVendor")
+	//mock := newTestHardwareVendor()
+	f.hardwareVendor = API.Hardware().FindOrCreateVendor("MyBigVendor")
 
 	return f.addReset(func() {
-		API.Hardware().DeleteVendor(f.hardwareVendor.Name)
+		API.Hardware().DeleteVendor(f.hardwareVendor.ID)
 	})
 }
 

@@ -104,7 +104,7 @@ func TestHardwareVendorDelete(t *testing.T) {
 	hv := newTestHardwareVendor()
 	h := API.Hardware()
 
-	h.DeleteVendor(hv.ID.String())
+	h.DeleteVendor(hv.ID)
 
 	assertRequestMethod(t, spy.requestMethod, "DELETE")
 	assertRequestCount(t, spy.requestCount, 1)
