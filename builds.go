@@ -97,6 +97,22 @@ func (c *Conch) Builds() *Builds {
 	return &Builds{c}
 }
 
+var BuildRoleList = []string{"admin", "rw", "ro"}
+
+func prettyBuildRoleList() string {
+	return strings.Join(BuildRoleList, ", ")
+}
+
+func okBuildRole(role string) bool {
+	for _, b := range BuildRoleList {
+		if role == b {
+			return true
+		}
+	}
+	return false
+}
+
+
 func (b *Builds) GetAll() (list BuildList) {
 	res := b.Do(b.Sling().Get("/build"))
 	if ok := res.Parse(&list); !ok {
@@ -378,13 +394,13 @@ func init() {
 				userEmailArg := cmd.StringArg(
 					"EMAIL",
 					"",
-					"The email of the user to add to the workspace. Does *not* create the user",
+					"The email of the user to add to the build. Does *not* create the user",
 				)
 
 				roleOpt := cmd.StringOpt(
 					"role",
 					"ro",
-					"The role for the user. One of: "+prettyWorkspaceRoleList(),
+					"The role for the user. One of: "+prettyBuildRoleList(),
 				)
 
 				sendEmailOpt := cmd.BoolOpt(
@@ -395,10 +411,10 @@ func init() {
 
 				cmd.Spec = "EMAIL [OPTIONS]"
 				cmd.Action = func() {
-					if !okWorkspaceRole(*roleOpt) {
+					if !okBuildRole(*roleOpt) {
 						panic(fmt.Errorf(
 							"'role' value must be one of: %s",
-							prettyWorkspaceRoleList(),
+							prettyBuildRoleList(),
 						))
 					}
 					API.Builds().AddUser(
@@ -448,13 +464,13 @@ func init() {
 				orgNameArg := cmd.StringArg(
 					"NAME",
 					"",
-					"The name of the organization to add to the workspace. Does *not* create the organization",
+					"The name of the organization to add to the build. Does *not* create the organization",
 				)
 
 				roleOpt := cmd.StringOpt(
 					"role",
 					"ro",
-					"The role for the organization. One of: "+prettyWorkspaceRoleList(),
+					"The role for the organization. One of: "+prettyBuildRoleList(),
 				)
 
 				sendEmailOpt := cmd.BoolOpt(
@@ -465,10 +481,10 @@ func init() {
 
 				cmd.Spec = "NAME [OPTIONS]"
 				cmd.Action = func() {
-					if !okWorkspaceRole(*roleOpt) {
+					if !okBuildRole(*roleOpt) {
 						panic(fmt.Errorf(
 							"'role' value must be one of: %s",
-							prettyWorkspaceRoleList(),
+							prettyBuildRoleList(),
 						))
 					}
 					API.Builds().AddOrg(
@@ -518,7 +534,7 @@ func init() {
 				deviceIDArg := cmd.StringArg(
 					"ID",
 					"",
-					"The ID or serial number of the device to add to the workspace. Does *not* create the device",
+					"The ID or serial number of the device to add to the build. Does *not* create the device",
 				)
 
 				cmd.Spec = "ID [OPTIONS]"
@@ -536,7 +552,7 @@ func init() {
 				deviceIDArg := cmd.StringArg(
 					"ID",
 					"",
-					"The ID or serial number of the device to add to the workspace. Does *not* create the device",
+					"The ID or serial number of the device to add to the build. Does *not* create the device",
 				)
 
 				cmd.Spec = "ID [OPTIONS]"
@@ -562,7 +578,7 @@ func init() {
 				rackIDArg := cmd.StringArg(
 					"ID",
 					"",
-					"The ID of the rack to add to the workspace. Does *not* create the rack",
+					"The ID of the rack to add to the build. Does *not* create the rack",
 				)
 
 				cmd.Spec = "ID [OPTIONS]"
@@ -580,7 +596,7 @@ func init() {
 				rackIDArg := cmd.StringArg(
 					"ID",
 					"",
-					"The ID of the rack to add to the workspace. Does *not* create the device",
+					"The ID of the rack to add to the build. Does *not* create the device",
 				)
 
 				cmd.Spec = "ID [OPTIONS]"
