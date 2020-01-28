@@ -1104,7 +1104,7 @@ interactions:
     url: http://10.51.54.42:5000/rack/7aadeb89-bd00-4b44-8dba-79409603b38f/assignment
     method: GET
   response:
-    body: '[{"device_asset_tag":null,"device_id":"dd559c03-8901-4250-9946-0cdcf00d953c","hardware_product_name":"ZLepZJcnMPSuCGgjCKATuzdbm","rack_unit_size":1,"rack_unit_start":1,"sku":"FxCjKnuMmPTawRhYMJmKDWwrN"},{"device_asset_tag":null,"device_id":null,"hardware_product_name":"KPHacrRjdKTXHRQkYFizhiXiJ","rack_unit_size":2,"rack_unit_start":2,"sku":"xYxLsvSQYDsWVAxNTrUcxHIgL"}]'
+    body: '[{"device_asset_tag":null,"device_id":"dd559c03-8901-4250-9946-0cdcf00d953c","device_serial_number":"whargarbl","hardware_product_name":"ZLepZJcnMPSuCGgjCKATuzdbm","rack_unit_size":1,"rack_unit_start":1,"sku":"FxCjKnuMmPTawRhYMJmKDWwrN"},{"device_asset_tag":null,"device_id":null,"hardware_product_name":"KPHacrRjdKTXHRQkYFizhiXiJ","rack_unit_size":2,"rack_unit_start":2,"sku":"xYxLsvSQYDsWVAxNTrUcxHIgL"}]'
     headers:
       Cache-Control:
       - no-cache
@@ -1136,7 +1136,7 @@ interactions:
     url: http://10.51.54.42:5000/rack/7aadeb89-bd00-4b44-8dba-79409603b38f/assignment
     method: GET
   response:
-    body: '[{"device_asset_tag":null,"device_id":"dd559c03-8901-4250-9946-0cdcf00d953c","hardware_product_name":"ZLepZJcnMPSuCGgjCKATuzdbm","rack_unit_size":1,"rack_unit_start":1,"sku":"FxCjKnuMmPTawRhYMJmKDWwrN"},{"device_asset_tag":null,"device_id":null,"hardware_product_name":"KPHacrRjdKTXHRQkYFizhiXiJ","rack_unit_size":2,"rack_unit_start":2,"sku":"xYxLsvSQYDsWVAxNTrUcxHIgL"}]'
+    body: '[{"device_asset_tag":null,"device_id":"dd559c03-8901-4250-9946-0cdcf00d953c","device_serial_number":"foo","hardware_product_name":"ZLepZJcnMPSuCGgjCKATuzdbm","rack_unit_size":1,"rack_unit_start":1,"sku":"FxCjKnuMmPTawRhYMJmKDWwrN"},{"device_asset_tag":null,"device_id":null,"hardware_product_name":"KPHacrRjdKTXHRQkYFizhiXiJ","rack_unit_size":2,"rack_unit_start":2,"sku":"xYxLsvSQYDsWVAxNTrUcxHIgL"}]'
     headers:
       Cache-Control:
       - no-cache

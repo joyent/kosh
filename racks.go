@@ -535,6 +535,7 @@ func (r *Racks) SaveLayoutSlot(rackID uuid.UUID, ruStart int, hardwareProductID 
 type RackAssignment struct {
 	DeviceID            uuid.UUID `json:"device_id" faker:"uuid"`
 	SKU                 string    `json:"sku"`
+	DeviceSerialNumber  string    `json:"device_serial_number"`
 	DeviceAssetTag      string    `json:"device_asset_tag,omitempty"`
 	HardwareProductName string    `json:"hardware_product_name,omitempty"`
 	RackUnitStart       int       `json:"rack_unit_start" faker:"rack_unit_start"`
@@ -609,6 +610,7 @@ func (r *Racks) Assignments(id uuid.UUID) RackAssignments {
 
 type RackAssignmentUpdate struct {
 	DeviceID       uuid.UUID `json:"device_id" faker:"uuid"`
+	// FIXME: either device_id or device_serial_number are acceptable
 	DeviceAssetTag string    `json:"device_asset_tag,omitempty"`
 	RackUnitStart  int       `json:"rack_unit_start" faker:"rack_unit_start"`
 }
