@@ -386,7 +386,7 @@ interactions:
     url: http://10.51.54.42:5000/hardware_product/4d97ab05-0d97-47aa-862d-82bb2ee0468a
     method: GET
   response:
-    body: '{"alias":"HrZIMrVpcWqZgaUulBthQcOag","bios_firmware":"MnUVOnKQRdqBIceuwfwrWEjhW","cpu_num":0,"cpu_type":"VnLtfCOjaztZvISSPHEiVKiQZ","created":"2020-01-26T19:04:28.181783Z","dimms_num":0,"generation_name":null,"hardware_vendor_id":"3d28519c-66c8-4342-8220-4e1cae887e2d","hba_firmware":null,"id":"4d97ab05-0d97-47aa-862d-82bb2ee0468a","legacy_product_name":null,"name":"oYVmnkaHmHTuHKrcEesRozYeT","nics_num":0,"nvme_ssd_num":0,"nvme_ssd_size":null,"nvme_ssd_slots":null,"prefix":null,"psu_total":0,"purpose":"znqMcuZEZIkFJlfstVGYwPpkq","rack_unit_size":1,"raid_lun_num":0,"ram_total":0,"sas_hdd_num":0,"sas_hdd_size":null,"sas_hdd_slots":null,"sas_ssd_num":0,"sas_ssd_size":null,"sas_ssd_slots":null,"sata_hdd_num":0,"sata_hdd_size":null,"sata_hdd_slots":null,"sata_ssd_num":0,"sata_ssd_size":null,"sata_ssd_slots":null,"sku":"qDwDpLdrLFrPEqjOOUrmyGirY","specification":null,"updated":"2020-01-26T19:04:28.181783Z","usb_num":0,"validation_plan_id":"a30ab8b2-8a9e-4e51-8bb0-92862abd8b54"}'
+    body: '{"alias":"HrZIMrVpcWqZgaUulBthQcOag","created":"2020-01-26T19:04:28.181783Z","generation_name":null,"id":"4d97ab05-0d97-47aa-862d-82bb2ee0468a","name":"oYVmnkaHmHTuHKrcEesRozYeT","sku":"qDwDpLdrLFrPEqjOOUrmyGirY","updated":"2020-01-26T19:04:28.181783Z"}'
     headers:
       Cache-Control:
       - no-cache
@@ -453,7 +453,7 @@ interactions:
     url: http://10.51.54.42:5000/hardware_product/cd87e849-5520-4601-86ef-5998ae6cde12
     method: GET
   response:
-    body: '{"alias":"kzdrzOFbSzwABLXZJgiRbeCyZ","bios_firmware":"YBMTTKmRmcMJdeudbCHnLdWTA","cpu_num":0,"cpu_type":"IjGVEsUTFgtcqCgykUYFkzSlh","created":"2020-01-26T19:04:28.239898Z","dimms_num":0,"generation_name":null,"hardware_vendor_id":"3d28519c-66c8-4342-8220-4e1cae887e2d","hba_firmware":null,"id":"cd87e849-5520-4601-86ef-5998ae6cde12","legacy_product_name":null,"name":"dpVmuHtPowtbsWxgeQGGhDxzq","nics_num":0,"nvme_ssd_num":0,"nvme_ssd_size":null,"nvme_ssd_slots":null,"prefix":null,"psu_total":0,"purpose":"aqjoVIMEkFxHTVJUbjbuQOjnq","rack_unit_size":1,"raid_lun_num":0,"ram_total":0,"sas_hdd_num":0,"sas_hdd_size":null,"sas_hdd_slots":null,"sas_ssd_num":0,"sas_ssd_size":null,"sas_ssd_slots":null,"sata_hdd_num":0,"sata_hdd_size":null,"sata_hdd_slots":null,"sata_ssd_num":0,"sata_ssd_size":null,"sata_ssd_slots":null,"sku":"kCKOViIEFgkEhdhcQFxItjUmb","specification":null,"updated":"2020-01-26T19:04:28.239898Z","usb_num":0,"validation_plan_id":"a30ab8b2-8a9e-4e51-8bb0-92862abd8b54"}'
+    body: '{"alias":"kzdrzOFbSzwABLXZJgiRbeCyZ","created":"2020-01-26T19:04:28.239898Z","generation_name":null,"id":"cd87e849-5520-4601-86ef-5998ae6cde12","name":"dpVmuHtPowtbsWxgeQGGhDxzq","sku":"kCKOViIEFgkEhdhcQFxItjUmb","updated":"2020-01-26T19:04:28.239898Z"}'
     headers:
       Cache-Control:
       - no-cache
