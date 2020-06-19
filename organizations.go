@@ -26,7 +26,6 @@ type Org struct {
 	Description string            `json:"description"`
 	Created     time.Time         `json:"created" faker:"-"`
 	Admins      UserAndRoles      `json:"admins" faker:"-"`
-	Workspaces  WorkspaceAndRoles `json:"workspaces" faker:"-"`
 	Builds      BuildList         `json:"builds" faker:"-"`
 	Users       UserAndRoles      `json:"users" faker:"-"`
 }
@@ -325,7 +324,7 @@ func init() {
 				roleOpt := cmd.StringOpt(
 					"role",
 					"ro",
-					"The role for the user. One of: "+prettyWorkspaceRoleList(),
+					"The role for the user. One of: "+prettyBuildRoleList(),
 				)
 
 				sendEmailOpt := cmd.BoolOpt(
@@ -336,10 +335,10 @@ func init() {
 
 				cmd.Spec = "EMAIL [OPTIONS]"
 				cmd.Action = func() {
-					if !okWorkspaceRole(*roleOpt) {
+					if !okBuildRole(*roleOpt) {
 						panic(fmt.Errorf(
 							"'role' value must be one of: %s",
-							prettyWorkspaceRoleList(),
+							prettyBuildRoleList(),
 						))
 					}
 					API.Organizations().AddUser(
