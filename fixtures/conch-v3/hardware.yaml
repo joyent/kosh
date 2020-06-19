@@ -225,7 +225,7 @@ interactions:
     url: http://10.51.54.42:5000/hardware_product
     method: GET
   response:
-    body: '[{"alias":"VGyZdhHTSlKEevcIXLFdqLBqV","bios_firmware":"WyWzHYIRLAEpwgatcUwjipqkh","cpu_num":0,"cpu_type":"XddLqzjJkILoECmoUYhruLOeT","created":"2020-01-26T19:04:27.394823Z","dimms_num":0,"generation_name":null,"hardware_vendor_id":"26df0913-5614-4fec-beb7-3514df2a9356","hba_firmware":null,"id":"6542884c-3515-49fe-9ebd-7da5da10e024","legacy_product_name":null,"name":"vVrberRcPGVlljXeonTdwsovX","nics_num":0,"nvme_ssd_num":0,"nvme_ssd_size":null,"nvme_ssd_slots":null,"prefix":null,"psu_total":0,"purpose":"BwdoYKPEhePiedtBHebHTdNnG","rack_unit_size":2,"raid_lun_num":0,"ram_total":0,"sas_hdd_num":0,"sas_hdd_size":null,"sas_hdd_slots":null,"sas_ssd_num":0,"sas_ssd_size":null,"sas_ssd_slots":null,"sata_hdd_num":0,"sata_hdd_size":null,"sata_hdd_slots":null,"sata_ssd_num":0,"sata_ssd_size":null,"sata_ssd_slots":null,"sku":"aPHUOTzVZjFLgMpaBtWWZiXKw","specification":null,"updated":"2020-01-26T19:04:27.394823Z","usb_num":0,"validation_plan_id":"a30ab8b2-8a9e-4e51-8bb0-92862abd8b54"}]'
+    body: '[{"alias":"VGyZdhHTSlKEevcIXLFdqLBqV","created":"2020-01-26T19:04:27.394823Z","generation_name":null,"id":"6542884c-3515-49fe-9ebd-7da5da10e024","name":"vVrberRcPGVlljXeonTdwsovX","sku":"aPHUOTzVZjFLgMpaBtWWZiXKw","updated":"2020-01-26T19:04:27.394823Z"}]'
     headers:
       Cache-Control:
       - no-cache
@@ -438,8 +438,7 @@ interactions:
     url: http://10.51.54.42:5000/hardware_product/9ad55ceb-2eb7-4125-a492-3c595277b3e3
     method: GET
   response:
-    body: '{"alias":"ujOmocHFAUuWZILajRAzVkeuO","bios_firmware":"RcgHsdxbvsvNXWQMpuLchiLgH","cpu_num":0,"cpu_type":"FEkEUQAJTUIwzzxxHsXjxWJqN","created":"2020-01-26T19:04:27.567389Z","dimms_num":0,"generation_name":null,"hardware_vendor_id":"26df0913-5614-4fec-beb7-3514df2a9356","hba_firmware":null,"id":"9ad55ceb-2eb7-4125-a492-3c595277b3e3","legacy_product_name":null,"name":"Testy
-      McTesterson","nics_num":0,"nvme_ssd_num":0,"nvme_ssd_size":null,"nvme_ssd_slots":null,"prefix":null,"psu_total":0,"purpose":"FCYNIyfxlJtZmSIluDaoPNwRD","rack_unit_size":2,"raid_lun_num":0,"ram_total":0,"sas_hdd_num":0,"sas_hdd_size":null,"sas_hdd_slots":null,"sas_ssd_num":0,"sas_ssd_size":null,"sas_ssd_slots":null,"sata_hdd_num":0,"sata_hdd_size":null,"sata_hdd_slots":null,"sata_ssd_num":0,"sata_ssd_size":null,"sata_ssd_slots":null,"sku":"test-sku-001","specification":null,"updated":"2020-01-26T19:04:27.567389Z","usb_num":0,"validation_plan_id":"a30ab8b2-8a9e-4e51-8bb0-92862abd8b54"}'
+    body: '{"alias":"ujOmocHFAUuWZILajRAzVkeuO","created":"2020-01-26T19:04:27.567389Z","generation_name":null,"id":"9ad55ceb-2eb7-4125-a492-3c595277b3e3","name":"Testy McTesterson","sku":"test-sku-001","updated":"2020-01-26T19:04:27.567389Z"}'
     headers:
       Cache-Control:
       - no-cache
@@ -471,8 +470,7 @@ interactions:
     url: http://10.51.54.42:5000/hardware_product
     method: GET
   response:
-    body: '[{"alias":"ujOmocHFAUuWZILajRAzVkeuO","bios_firmware":"RcgHsdxbvsvNXWQMpuLchiLgH","cpu_num":0,"cpu_type":"FEkEUQAJTUIwzzxxHsXjxWJqN","created":"2020-01-26T19:04:27.567389Z","dimms_num":0,"generation_name":null,"hardware_vendor_id":"26df0913-5614-4fec-beb7-3514df2a9356","hba_firmware":null,"id":"9ad55ceb-2eb7-4125-a492-3c595277b3e3","legacy_product_name":null,"name":"Testy
-      McTesterson","nics_num":0,"nvme_ssd_num":0,"nvme_ssd_size":null,"nvme_ssd_slots":null,"prefix":null,"psu_total":0,"purpose":"FCYNIyfxlJtZmSIluDaoPNwRD","rack_unit_size":2,"raid_lun_num":0,"ram_total":0,"sas_hdd_num":0,"sas_hdd_size":null,"sas_hdd_slots":null,"sas_ssd_num":0,"sas_ssd_size":null,"sas_ssd_slots":null,"sata_hdd_num":0,"sata_hdd_size":null,"sata_hdd_slots":null,"sata_ssd_num":0,"sata_ssd_size":null,"sata_ssd_slots":null,"sku":"test-sku-001","specification":null,"updated":"2020-01-26T19:04:27.567389Z","usb_num":0,"validation_plan_id":"a30ab8b2-8a9e-4e51-8bb0-92862abd8b54"}]'
+    body: '[{"alias":"ujOmocHFAUuWZILajRAzVkeuO","created":"2020-01-26T19:04:27.567389Z","generation_name":null,"id":"9ad55ceb-2eb7-4125-a492-3c595277b3e3","name":"Testy McTesterson","sku":"test-sku-001","updated":"2020-01-26T19:04:27.567389Z"}]'
     headers:
       Cache-Control:
       - no-cache

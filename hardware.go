@@ -30,9 +30,9 @@ func (c *Conch) Hardware() *Hardware {
 	return &Hardware{c}
 }
 
-type HardwareProducts []HardwareProduct
+type HardwareProductSummaries []HardwareProductSummary
 
-func (hps HardwareProducts) String() string {
+func (hps HardwareProductSummaries) String() string {
 	if API.JsonOnly {
 		return API.AsJSON(hps)
 	}
@@ -46,36 +46,18 @@ func (hps HardwareProducts) String() string {
 		"SKU",
 		"Name",
 		"Alias",
-		"Purpose",
-		"BIOS",
-		"CPU Type",
-		"Vendor",
-		"Validation Plan",
+		"GenerationName",
 		"Created",
 		"Updated",
 	})
 
 	for _, hp := range hps {
-		/*var vendor string
-		if (hp.HardwareVendorID != uuid.UUID{}) {
-			vendor = hp.HardwareVendor().Name
-		}
-
-		var vp string
-		if (hp.ValidationPlanID != uuid.UUID{}) {
-			vp = hp.ValidationPlan().Name
-		}
-		*/
 		table.Append([]string{
 			CutUUID(hp.ID.String()),
 			hp.SKU,
 			hp.Name,
 			hp.Alias,
-			hp.Purpose,
-			hp.BiosFirmware,
-			hp.CpuType,
-			hp.HardwareVendorID.String(),
-			hp.ValidationPlanID.String(),
+			hp.GenerationName,
 			hp.Created.String(),
 			hp.Updated.String(),
 		})
@@ -90,6 +72,16 @@ func (hp HardwareProduct) HardwareVendor() HardwareVendor {
 
 func (hp HardwareProduct) ValidationPlan() ValidationPlan {
 	return API.Validations().GetPlan(hp.ValidationPlanID)
+}
+
+type HardwareProductSummary struct {
+	ID                uuid.UUID `json:"id" faker:"uuid"`
+	Name              string    `json:"name"`
+	Alias             string    `json:"alias"`
+	GenerationName    string    `json:"generation_name,omitempty"`
+	SKU               string    `json:"sku"`
+	Created time.Time `json:"created" faker:"-"`
+	Updated time.Time `json:"updated" faker:"-"`
 }
 
 type HardwareProduct struct {
@@ -161,7 +153,7 @@ func (hp HardwareProduct) String() string {
 	return buf.String()
 }
 
-func (h *Hardware) GetAllProducts() (hps HardwareProducts) {
+func (h *Hardware) GetAllProducts() (hps HardwareProductSummaries) {
 	res := h.Do(h.Sling().New().Get("/hardware_product"))
 	if ok := res.Parse(&hps); !ok {
 		panic(res)

@@ -23,6 +23,7 @@ func TestHarwareProductIntegration(t *testing.T) {
 
 	t.Run("API", func(t *testing.T) {
 		var testHardwareProduct HardwareProduct
+		var testHardwareProductSummary HardwareProductSummary
 
 		t.Run("create", func(t *testing.T) {
 			defer errorHandler()
@@ -38,13 +39,23 @@ func TestHarwareProductIntegration(t *testing.T) {
 				mock.BiosFirmware,
 				mock.CpuType,
 			)
+
+			testHardwareProductSummary = HardwareProductSummary{
+				ID:				testHardwareProduct.ID,
+				Name:			testHardwareProduct.Name,
+				Alias:			testHardwareProduct.Alias,
+				GenerationName: testHardwareProduct.GenerationName,
+				SKU:			testHardwareProduct.SKU,
+				Created:		testHardwareProduct.Created,
+				Updated:		testHardwareProduct.Updated,
+			}
+
 			assert.NotNil(t, testHardwareProduct.ID)
 		})
 
 		t.Run("get all products", func(t *testing.T) {
 			got := API.Hardware().GetAllProducts()
-			assert.Equal(t, HardwareProducts{testHardwareProduct}, got)
-
+			assert.Equal(t, HardwareProductSummaries{testHardwareProductSummary}, got)
 		})
 
 		t.Run("get product by name", func(t *testing.T) {
@@ -57,7 +68,7 @@ func TestHarwareProductIntegration(t *testing.T) {
 			defer errorHandler()
 			API.Hardware().Delete(testHardwareProduct.ID)
 			got := API.Hardware().GetAllProducts()
-			assert.Equal(t, HardwareProducts{}, got)
+			assert.Equal(t, HardwareProductSummaries{}, got)
 		})
 	})
 
@@ -90,7 +101,7 @@ func TestHarwareProductIntegration(t *testing.T) {
 			{
 				"products ls",
 				[]string{"kosh", "hardware", "products", "ls"},
-				"|    ID    |     SKU      |       NAME        |           ALIAS           |          PURPOSE          |           BIOS            |         CPU TYPE          |                VENDOR                |           VALIDATION PLAN            |               CREATED                |               UPDATED                |\n|----------|--------------|-------------------|---------------------------|---------------------------|---------------------------|---------------------------|--------------------------------------|--------------------------------------|--------------------------------------|--------------------------------------|\n| 9ad55ceb | test-sku-001 | Testy McTesterson | ujOmocHFAUuWZILajRAzVkeuO | FCYNIyfxlJtZmSIluDaoPNwRD | RcgHsdxbvsvNXWQMpuLchiLgH | FEkEUQAJTUIwzzxxHsXjxWJqN | 26df0913-5614-4fec-beb7-3514df2a9356 | a30ab8b2-8a9e-4e51-8bb0-92862abd8b54 | 2020-01-26 19:04:27.567389 +0000 UTC | 2020-01-26 19:04:27.567389 +0000 UTC |\n\n",
+				"|    ID    |     SKU      |       NAME        |           ALIAS           | GENERATIONNAME |               CREATED                |               UPDATED                |\n|----------|--------------|-------------------|---------------------------|----------------|--------------------------------------|--------------------------------------|\n| 9ad55ceb | test-sku-001 | Testy McTesterson | ujOmocHFAUuWZILajRAzVkeuO |                | 2020-01-26 19:04:27.567389 +0000 UTC | 2020-01-26 19:04:27.567389 +0000 UTC |\n\n",
 			},
 			{
 				"product SKU get",
@@ -100,7 +111,7 @@ func TestHarwareProductIntegration(t *testing.T) {
 			{
 				"product SKU delete",
 				[]string{"kosh", "hardware", "product", mock.SKU, "rm"},
-				HardwareProducts{}.String() + "\n",
+				HardwareProductSummaries{}.String() + "\n",
 			},
 		}
 
