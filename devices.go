@@ -232,7 +232,6 @@ type DeviceNic struct {
 	MAC             string    `json:"mac"`
 	InterfaceName   string    `json:"iface_name"`
 	InterfaceVendor string    `json:"iface_vendor"`
-	InterfaceDriver string    `json:"iface_driver"`
 	State           string    `json:"state,omitempty"`
 	IpAddress       string    `json:"ipaddr,omitempty"`
 	MTU             int       `json:"mtu,omitempty"`

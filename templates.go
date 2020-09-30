@@ -232,7 +232,6 @@ Rack Unit Start: {{ .RackUnitStart }}
 const deviceNicTemplate = `
 Name: {{ .InterfaceName }}
 Vendor: {{ .InterfaceVendor }}
-Driver: {{ .InterfaceDriver }}
 
 IP Address: {{ .IpAddress }}
 MAC: {{ .MAC }}
