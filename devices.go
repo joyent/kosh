@@ -375,7 +375,7 @@ func (d DetailedDevice) String() string {
 		RackRole        RackRole
 		HardwareProduct HardwareProduct
 		Enclosures      map[int]map[int]Disk
-		Validations     ValidationStatesWithResults
+		Validations     ValidationStateWithResults
 	}{d, rackRole, hp, enclosures, validations}
 
 	t, err := NewTemplate().Parse(deviceTemplate)
@@ -492,9 +492,12 @@ func (ds *Devices) FindByTag(key, value string) DeviceList {
 /***/
 
 // id is a string because the API accepts both a UUID and a serial number
-func (ds *Devices) ValidationState(id string) (v ValidationStatesWithResults) {
+func (ds *Devices) ValidationState(id string) (v ValidationStateWithResults) {
 	uri := fmt.Sprintf("/device/%s/validation_state", url.PathEscape(id))
-	res := ds.Do(ds.Sling().New().Get(uri))
+	res := ds.DoBadly(ds.Sling().New().Get(uri))
+	if res.StatusCode() == 404 {
+		return v
+	}
 	if ok := res.Parse(&v); !ok {
 		panic(res)
 	}

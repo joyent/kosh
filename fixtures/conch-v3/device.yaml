@@ -1390,18 +1390,16 @@ interactions:
     url: http://10.51.54.42:5000/device/dd559c03-8901-4250-9946-0cdcf00d953c/validation_state
     method: GET
   response:
-    body: '[]'
+    body: '{"error":"Entity Not Found"}'
     headers:
       Cache-Control:
       - no-cache
       Content-Length:
-      - "2"
+      - "28"
       Content-Type:
       - application/json
       Date:
       - Sun, 26 Jan 2020 19:04:26 GMT
-      Location:
-      - /device/dd559c03-8901-4250-9946-0cdcf00d953c
       Request-Id:
       - Nue0rc9wjDHk
       Server:
@@ -1410,8 +1408,8 @@ interactions:
       - v3.0.0-b4-0-gb99fbfff
       X-Request-Id:
       - Nue0rc9wjDHk
-    status: 200 OK
-    code: 200
+    status: 404 NOT FOUND
+    code: 404
     duration: ""
 - request:
     body: ""
@@ -1422,18 +1420,16 @@ interactions:
     url: http://10.51.54.42:5000/device/dd559c03-8901-4250-9946-0cdcf00d953c/validation_state
     method: GET
   response:
-    body: '[]'
+    body: '{"error":"Entity Not Found"}'
     headers:
       Cache-Control:
       - no-cache
       Content-Length:
-      - "2"
+      - "28"
       Content-Type:
       - application/json
       Date:
       - Sun, 26 Jan 2020 19:04:26 GMT
-      Location:
-      - /device/dd559c03-8901-4250-9946-0cdcf00d953c
       Request-Id:
       - ixZVfEKuJrJL
       Server:
@@ -1442,8 +1438,8 @@ interactions:
       - v3.0.0-b4-0-gb99fbfff
       X-Request-Id:
       - ixZVfEKuJrJL
-    status: 200 OK
-    code: 200
+    status: 404 NOT FOUND
+    code: 404
     duration: ""
 - request:
     body: ""

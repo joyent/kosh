@@ -11,20 +11,20 @@ clean: ## Remove build products from bin/ and release/
 .PHONY: tools
 tools: ## Download and install all dev/code tools
 	@echo "==> Installing dev tools"
-	go get -u github.com/golang/dep/cmd/dep
 	go get -u honnef.co/go/tools/cmd/staticcheck
 
 vendor: ## Install dependencies
-	dep ensure -v -vendor-only
+	go mod vendor
 
 .PHONY: deps
 deps: ## Update dependencies to latest version
-	dep ensure -v
+	go mod verify
 
 .PHONY: test
 test: ## Ensure that code matches best practices
 	staticcheck ./...
-	go test
+	go vet
+	TZ=UTC go test
 
 .PHONY: help
 help: ## Display this help message
