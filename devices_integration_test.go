@@ -69,6 +69,7 @@ func TestDeviceAPIIntegration(t *testing.T) {
 	})
 
 	t.Run("fetch device validation state", func(t *testing.T) {
+		defer errorHandler()
 
 		s := API.Devices().ValidationState(testDevice.ID.String())
 		t.Logf("got %v", s)
@@ -82,12 +83,13 @@ func TestDeviceAPIIntegration(t *testing.T) {
 
 	// GetInterface
 	t.Run("fetch device interface", func(t *testing.T) {
-		return // TODO: sort out device report submission
+		// TODO: sort out device report submission
+		/*
+			defer errorHandler()
 
-		defer errorHandler()
-
-		s := API.Devices().GetIPMI(testDevice.ID.String())
-		t.Logf("got %v", s)
+			s := API.Devices().GetIPMI(testDevice.ID.String())
+			t.Logf("got %v", s)
+		*/
 	})
 
 	t.Run("remove device", func(t *testing.T) {
