@@ -6,16 +6,16 @@
 
 package main
 
-const validationStatesWithResultsTemplate = `{{ range . }}
-- ID: {{ .ID }}
-  Created: {{ TimeStr .Created }}
-  Completed: {{ TimeStr .Completed }}
-  Status: {{ .Status }}
-  Validation Plan: {{ .ValidationPlan.Name }}{{ if len .Results }}
+const validationStateWithResultsTemplate = `
+ID: {{ .ID }}
+Created: {{ TimeStr .Created }}
+Completed: {{ TimeStr .Completed }}
+Status: {{ .Status }}
+Validation Plan: {{ .ValidationPlan.Name }}{{ if len .Results }}
 
-  Results:
+Results:
 {{ .Results }}
-{{ end }}{{ end }}
+{{ end }}
 `
 
 const deviceTemplate = `

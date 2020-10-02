@@ -226,24 +226,9 @@ type ValidationStateWithResults struct {
 	Results ValidationResults `json:"results"`
 }
 
-type ValidationStatesWithResults []ValidationStateWithResults
-
-func (v ValidationStatesWithResults) Len() int {
-	return len(v)
-}
-
-func (v ValidationStatesWithResults) Swap(i, j int) {
-	v[i], v[j] = v[j], v[i]
-}
-
-func (v ValidationStatesWithResults) Less(i, j int) bool {
-	return v[i].Created.Before(v[j].Created)
-}
-
-func (vs ValidationStatesWithResults) String() string {
-	sort.Sort(vs)
+func (v ValidationStateWithResults) String() string {
 	if API.JsonOnly {
-		return API.AsJSON(vs)
+		return API.AsJSON(v)
 	}
 
 	type extendedVsR struct {
@@ -251,15 +236,12 @@ func (vs ValidationStatesWithResults) String() string {
 		ValidationPlan ValidationPlan `json:"-"`
 	}
 
-	out := make([]extendedVsR, 0)
-	for _, v := range vs {
-		out = append(out, extendedVsR{
-			v,
-			API.Validations().GetPlan(v.ValidationPlanID),
-		})
+	out := extendedVsR{
+		v,
+		API.Validations().GetPlan(v.ValidationPlanID),
 	}
 
-	t, err := NewTemplate().Parse(validationStatesWithResultsTemplate)
+	t, err := NewTemplate().Parse(validationStateWithResultsTemplate)
 	if err != nil {
 		panic(err)
 	}
