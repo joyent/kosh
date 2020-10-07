@@ -1,0 +1,1783 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/hardware_vendor/MyBigVendor
+    method: GET
+  response:
+    body: '{"error":"Entity Not Found"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "28"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:25 GMT
+      Request-Id:
+      - qWH9gOZPxm+0
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - qWH9gOZPxm+0
+    status: 404 Not Found
+    code: 404
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/hardware_vendor/MyBigVendor
+    method: POST
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Sun, 26 Jan 2020 19:04:25 GMT
+      Location:
+      - /hardware_vendor/MyBigVendor
+      Request-Id:
+      - fonfGbizHibf
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - fonfGbizHibf
+    status: 303 See Other
+    code: 303
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Referer:
+      - http://10.51.54.42:5000/hardware_vendor/MyBigVendor
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/hardware_vendor/MyBigVendor
+    method: GET
+  response:
+    body: '{"created":"2020-01-26T19:04:25.777925Z","id":"713e2342-ed15-409d-a07c-bbca41941d92","name":"MyBigVendor","updated":"2020-01-26T19:04:25.777925Z"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "146"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:25 GMT
+      Request-Id:
+      - FAJrBEVlyK3I
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - FAJrBEVlyK3I
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/hardware_vendor/MyBigVendor
+    method: GET
+  response:
+    body: '{"created":"2020-01-26T19:04:25.777925Z","id":"713e2342-ed15-409d-a07c-bbca41941d92","name":"MyBigVendor","updated":"2020-01-26T19:04:25.777925Z"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "146"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:25 GMT
+      Request-Id:
+      - i831ckqZQrd4
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - i831ckqZQrd4
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/validation_plan/a30ab8b2-8a9e-4e51-8bb0-92862abd8b54
+    method: GET
+  response:
+    body: '{"created":"2019-10-09T17:21:37.861483Z","description":"Validation plan
+      containing all validations run in Conch v1 on servers","id":"a30ab8b2-8a9e-4e51-8bb0-92862abd8b54","name":"Conch
+      v1 Legacy Plan: Server"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "209"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:25 GMT
+      Request-Id:
+      - eG/SeT99BegJ
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - eG/SeT99BegJ
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: |
+      {"alias":"VgvjJOOnrRwUYxWQFOtemUQuQ","bios_firmware":"XqkAkCZYLvgRLvYqIrtHPFhVN","cpu_type":"AjbeLNHApsBhqcpiSwSZtssQx","hardware_vendor_id":"713e2342-ed15-409d-a07c-bbca41941d92","name":"KPHacrRjdKTXHRQkYFizhiXiJ","purpose":"uNggImrxtZCFRXriVRahxKFvd","rack_unit_size":2,"sku":"xYxLsvSQYDsWVAxNTrUcxHIgL","validation_plan_id":"a30ab8b2-8a9e-4e51-8bb0-92862abd8b54"}
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/hardware_product
+    method: POST
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Sun, 26 Jan 2020 19:04:25 GMT
+      Location:
+      - /hardware_product/2eca6269-a424-45f2-a3a9-a9913b8976ba
+      Request-Id:
+      - jhGk7EV8f4r3
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - jhGk7EV8f4r3
+    status: 303 See Other
+    code: 303
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      Referer:
+      - http://10.51.54.42:5000/hardware_product
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/hardware_product/2eca6269-a424-45f2-a3a9-a9913b8976ba
+    method: GET
+  response:
+    body: '{"alias":"VgvjJOOnrRwUYxWQFOtemUQuQ","bios_firmware":"XqkAkCZYLvgRLvYqIrtHPFhVN","cpu_num":0,"cpu_type":"AjbeLNHApsBhqcpiSwSZtssQx","created":"2020-01-26T19:04:25.859308Z","dimms_num":0,"generation_name":null,"hardware_vendor_id":"713e2342-ed15-409d-a07c-bbca41941d92","hba_firmware":null,"id":"2eca6269-a424-45f2-a3a9-a9913b8976ba","legacy_product_name":null,"name":"KPHacrRjdKTXHRQkYFizhiXiJ","nics_num":0,"nvme_ssd_num":0,"nvme_ssd_size":null,"nvme_ssd_slots":null,"prefix":null,"psu_total":0,"purpose":"uNggImrxtZCFRXriVRahxKFvd","rack_unit_size":2,"raid_lun_num":0,"ram_total":0,"sas_hdd_num":0,"sas_hdd_size":null,"sas_hdd_slots":null,"sas_ssd_num":0,"sas_ssd_size":null,"sas_ssd_slots":null,"sata_hdd_num":0,"sata_hdd_size":null,"sata_hdd_slots":null,"sata_ssd_num":0,"sata_ssd_size":null,"sata_ssd_slots":null,"sku":"xYxLsvSQYDsWVAxNTrUcxHIgL","specification":null,"updated":"2020-01-26T19:04:25.859308Z","usb_num":0,"validation_plan_id":"a30ab8b2-8a9e-4e51-8bb0-92862abd8b54"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "985"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:25 GMT
+      Location:
+      - /hardware_product/2eca6269-a424-45f2-a3a9-a9913b8976ba
+      Request-Id:
+      - mKxPAnvfFv6f
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - mKxPAnvfFv6f
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: |
+      {"alias":"fZUdZGfPTpNuoaETCoAXHzHdh","bios_firmware":"KDvLhxavVmQzskmemwXPdBUrb","cpu_type":"NhgfDfTpxIeGdtBbqqFVpflLH","hardware_vendor_id":"713e2342-ed15-409d-a07c-bbca41941d92","name":"ZLepZJcnMPSuCGgjCKATuzdbm","purpose":"QrtEnSloWHelCmwPRFIzWToNy","rack_unit_size":1,"sku":"FxCjKnuMmPTawRhYMJmKDWwrN","validation_plan_id":"a30ab8b2-8a9e-4e51-8bb0-92862abd8b54"}
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/hardware_product
+    method: POST
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Sun, 26 Jan 2020 19:04:25 GMT
+      Location:
+      - /hardware_product/6621614d-ad3d-42f7-8a6d-3cb94d8bd76e
+      Request-Id:
+      - PAJPT2jJuxYC
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - PAJPT2jJuxYC
+    status: 303 See Other
+    code: 303
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      Referer:
+      - http://10.51.54.42:5000/hardware_product
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/hardware_product/6621614d-ad3d-42f7-8a6d-3cb94d8bd76e
+    method: GET
+  response:
+    body: '{"alias":"fZUdZGfPTpNuoaETCoAXHzHdh","bios_firmware":"KDvLhxavVmQzskmemwXPdBUrb","cpu_num":0,"cpu_type":"NhgfDfTpxIeGdtBbqqFVpflLH","created":"2020-01-26T19:04:25.923019Z","dimms_num":0,"generation_name":null,"hardware_vendor_id":"713e2342-ed15-409d-a07c-bbca41941d92","hba_firmware":null,"id":"6621614d-ad3d-42f7-8a6d-3cb94d8bd76e","legacy_product_name":null,"name":"ZLepZJcnMPSuCGgjCKATuzdbm","nics_num":0,"nvme_ssd_num":0,"nvme_ssd_size":null,"nvme_ssd_slots":null,"prefix":null,"psu_total":0,"purpose":"QrtEnSloWHelCmwPRFIzWToNy","rack_unit_size":1,"raid_lun_num":0,"ram_total":0,"sas_hdd_num":0,"sas_hdd_size":null,"sas_hdd_slots":null,"sas_ssd_num":0,"sas_ssd_size":null,"sas_ssd_slots":null,"sata_hdd_num":0,"sata_hdd_size":null,"sata_hdd_slots":null,"sata_ssd_num":0,"sata_ssd_size":null,"sata_ssd_slots":null,"sku":"FxCjKnuMmPTawRhYMJmKDWwrN","specification":null,"updated":"2020-01-26T19:04:25.923019Z","usb_num":0,"validation_plan_id":"a30ab8b2-8a9e-4e51-8bb0-92862abd8b54"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "985"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:25 GMT
+      Location:
+      - /hardware_product/6621614d-ad3d-42f7-8a6d-3cb94d8bd76e
+      Request-Id:
+      - UzaWSuNSqe1y
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - UzaWSuNSqe1y
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: |
+      {"location":"wVUkuFBhOkeuJjPIMOuKFFCtq","region":"mVQptcFUoeCvPUAmWRFQWAAtL","vendor":"raufanYXyJBEiiKSSHtQcmMfO","vendor_name":"DdVxUofQpudwRdHoXPtjYHVri"}
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/dc
+    method: POST
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Sun, 26 Jan 2020 19:04:25 GMT
+      Location:
+      - /dc/bc85ceef-2d58-45ae-a659-1b666f794795
+      Request-Id:
+      - 16IfPczqe5tG
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - 16IfPczqe5tG
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/dc/bc85ceef-2d58-45ae-a659-1b666f794795
+    method: GET
+  response:
+    body: '{"created":"2020-01-26T19:04:25.970655Z","id":"bc85ceef-2d58-45ae-a659-1b666f794795","location":"wVUkuFBhOkeuJjPIMOuKFFCtq","region":"mVQptcFUoeCvPUAmWRFQWAAtL","updated":"2020-01-26T19:04:25.970655Z","vendor":"raufanYXyJBEiiKSSHtQcmMfO","vendor_name":"DdVxUofQpudwRdHoXPtjYHVri"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "280"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:25 GMT
+      Request-Id:
+      - djkc/WI3xJyV
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - djkc/WI3xJyV
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: |
+      {"alias":"YZScFfGvMadGNUUBxvuztEhmc","az":"rSHTRbXlBtZUUPZowzIXvGTtU","datacenter_id":"bc85ceef-2d58-45ae-a659-1b666f794795","vendor_name":"zNHMvLDMgbkfUIPtAhglCOwTg"}
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/room
+    method: POST
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /room/89ce0266-20fe-4136-a772-e2d9ace8d956
+      Request-Id:
+      - oEoP5M4Z5O/c
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - oEoP5M4Z5O/c
+    status: 303 See Other
+    code: 303
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      Referer:
+      - http://10.51.54.42:5000/room
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/room/89ce0266-20fe-4136-a772-e2d9ace8d956
+    method: GET
+  response:
+    body: '{"alias":"YZScFfGvMadGNUUBxvuztEhmc","az":"rSHTRbXlBtZUUPZowzIXvGTtU","created":"2020-01-26T19:04:26.008325Z","datacenter_id":"bc85ceef-2d58-45ae-a659-1b666f794795","id":"89ce0266-20fe-4136-a772-e2d9ace8d956","updated":"2020-01-26T19:04:26.008325Z","vendor_name":"zNHMvLDMgbkfUIPtAhglCOwTg"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "291"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /room/89ce0266-20fe-4136-a772-e2d9ace8d956
+      Request-Id:
+      - SIn+zxbhU4hQ
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - SIn+zxbhU4hQ
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: |
+      {"admins":[{"email":"conch@example.com"}],"description":"XZPonJXYDzKogdPMyeIjmkYpX","name":"JIrULNPxKPKZncyExKMfLfGcY"}
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/build
+    method: POST
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /build/7d2b96d4-3b2a-4a24-9fb9-fbfddf35dcc9
+      Request-Id:
+      - K5WUjtWhPPs0
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - K5WUjtWhPPs0
+    status: 303 See Other
+    code: 303
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      Referer:
+      - http://10.51.54.42:5000/build
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/build/7d2b96d4-3b2a-4a24-9fb9-fbfddf35dcc9
+    method: GET
+  response:
+    body: '{"admins":[{"email":"conch@example.com","id":"1ebc992d-ced6-47fa-be0c-3f966a9eb42f","name":"Kosh"}],"completed":null,"completed_user":null,"created":"2020-01-26T19:04:26.049247Z","description":"XZPonJXYDzKogdPMyeIjmkYpX","id":"7d2b96d4-3b2a-4a24-9fb9-fbfddf35dcc9","name":"JIrULNPxKPKZncyExKMfLfGcY","started":null}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "315"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Request-Id:
+      - /uABG1jTI8i6
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - /uABG1jTI8i6
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: |
+      {"name":"PsSRIniTNebDKOEpDnzQrZASj","rack_size":60}
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/rack_role
+    method: POST
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /rack_role/b233a04d-d453-4730-8f4d-c945948c8d3b
+      Request-Id:
+      - jWSWJb/hD0m1
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - jWSWJb/hD0m1
+    status: 303 See Other
+    code: 303
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      Referer:
+      - http://10.51.54.42:5000/rack_role
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/rack_role/b233a04d-d453-4730-8f4d-c945948c8d3b
+    method: GET
+  response:
+    body: '{"created":"2020-01-26T19:04:26.096897Z","id":"b233a04d-d453-4730-8f4d-c945948c8d3b","name":"PsSRIniTNebDKOEpDnzQrZASj","rack_size":60,"updated":"2020-01-26T19:04:26.096897Z"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "175"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Request-Id:
+      - eR+HhloicFFn
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - eR+HhloicFFn
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: |
+      {"build_id":"7d2b96d4-3b2a-4a24-9fb9-fbfddf35dcc9","datacenter_room_id":"89ce0266-20fe-4136-a772-e2d9ace8d956","name":"RjWeunugnyPEEqdAfhxXBwAJK","phase":"integration","rack_role_id":"b233a04d-d453-4730-8f4d-c945948c8d3b"}
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/rack
+    method: POST
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /rack/7aadeb89-bd00-4b44-8dba-79409603b38f
+      Request-Id:
+      - Nv5/woVeg9zq
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - Nv5/woVeg9zq
+    status: 303 See Other
+    code: 303
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      Referer:
+      - http://10.51.54.42:5000/rack
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/rack/7aadeb89-bd00-4b44-8dba-79409603b38f
+    method: GET
+  response:
+    body: '{"asset_tag":null,"build_id":"7d2b96d4-3b2a-4a24-9fb9-fbfddf35dcc9","build_name":"JIrULNPxKPKZncyExKMfLfGcY","created":"2020-01-26T19:04:26.135631Z","datacenter_room_alias":"YZScFfGvMadGNUUBxvuztEhmc","datacenter_room_id":"89ce0266-20fe-4136-a772-e2d9ace8d956","full_rack_name":"zNHMvLDMgbkfUIPtAhglCOwTg:RjWeunugnyPEEqdAfhxXBwAJK","id":"7aadeb89-bd00-4b44-8dba-79409603b38f","name":"RjWeunugnyPEEqdAfhxXBwAJK","phase":"integration","rack_role_id":"b233a04d-d453-4730-8f4d-c945948c8d3b","rack_role_name":"PsSRIniTNebDKOEpDnzQrZASj","serial_number":null,"updated":"2020-01-26T19:04:26.135631Z"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "593"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /rack/7aadeb89-bd00-4b44-8dba-79409603b38f
+      Request-Id:
+      - FTeBZkTY7ffr
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - FTeBZkTY7ffr
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/rack_role/b233a04d-d453-4730-8f4d-c945948c8d3b
+    method: GET
+  response:
+    body: '{"created":"2020-01-26T19:04:26.096897Z","id":"b233a04d-d453-4730-8f4d-c945948c8d3b","name":"PsSRIniTNebDKOEpDnzQrZASj","rack_size":60,"updated":"2020-01-26T19:04:26.096897Z"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "175"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Request-Id:
+      - wMK/SVi78W5e
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - wMK/SVi78W5e
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/rack/7aadeb89-bd00-4b44-8dba-79409603b38f/layout
+    method: GET
+  response:
+    body: '[]'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "2"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /rack/7aadeb89-bd00-4b44-8dba-79409603b38f/layout
+      Request-Id:
+      - Myw9FZancUab
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - Myw9FZancUab
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: |
+      {"hardware_product_id":"6621614d-ad3d-42f7-8a6d-3cb94d8bd76e","rack_id":"7aadeb89-bd00-4b44-8dba-79409603b38f","rack_unit_start":1}
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/layout
+    method: POST
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /layout/f34b1733-0339-41af-9fb1-f6dee2bfcc04
+      Request-Id:
+      - vYSpt3CKfsF0
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - vYSpt3CKfsF0
+    status: 303 See Other
+    code: 303
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      Referer:
+      - http://10.51.54.42:5000/layout
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/layout/f34b1733-0339-41af-9fb1-f6dee2bfcc04
+    method: GET
+  response:
+    body: '{"created":"2020-01-26T19:04:26.241889Z","hardware_product_id":"6621614d-ad3d-42f7-8a6d-3cb94d8bd76e","id":"f34b1733-0339-41af-9fb1-f6dee2bfcc04","rack_id":"7aadeb89-bd00-4b44-8dba-79409603b38f","rack_name":"zNHMvLDMgbkfUIPtAhglCOwTg:RjWeunugnyPEEqdAfhxXBwAJK","rack_unit_size":1,"rack_unit_start":1,"sku":"FxCjKnuMmPTawRhYMJmKDWwrN","updated":"2020-01-26T19:04:26.241889Z"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "374"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /layout/f34b1733-0339-41af-9fb1-f6dee2bfcc04
+      Request-Id:
+      - +sxvXTymWGlW
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - +sxvXTymWGlW
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: |
+      {"hardware_product_id":"2eca6269-a424-45f2-a3a9-a9913b8976ba","rack_id":"7aadeb89-bd00-4b44-8dba-79409603b38f","rack_unit_start":2}
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/layout
+    method: POST
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /layout/2a3ef5b9-c936-478e-9e66-c097a7e16405
+      Request-Id:
+      - /ZDuM2OHa/nS
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - /ZDuM2OHa/nS
+    status: 303 See Other
+    code: 303
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      Referer:
+      - http://10.51.54.42:5000/layout
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/layout/2a3ef5b9-c936-478e-9e66-c097a7e16405
+    method: GET
+  response:
+    body: '{"created":"2020-01-26T19:04:26.303297Z","hardware_product_id":"2eca6269-a424-45f2-a3a9-a9913b8976ba","id":"2a3ef5b9-c936-478e-9e66-c097a7e16405","rack_id":"7aadeb89-bd00-4b44-8dba-79409603b38f","rack_name":"zNHMvLDMgbkfUIPtAhglCOwTg:RjWeunugnyPEEqdAfhxXBwAJK","rack_unit_size":2,"rack_unit_start":2,"sku":"xYxLsvSQYDsWVAxNTrUcxHIgL","updated":"2020-01-26T19:04:26.303297Z"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "374"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /layout/2a3ef5b9-c936-478e-9e66-c097a7e16405
+      Request-Id:
+      - n0uOdMchEnes
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - n0uOdMchEnes
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/rack/7aadeb89-bd00-4b44-8dba-79409603b38f/layout
+    method: GET
+  response:
+    body: '[{"created":"2020-01-26T19:04:26.241889Z","hardware_product_id":"6621614d-ad3d-42f7-8a6d-3cb94d8bd76e","id":"f34b1733-0339-41af-9fb1-f6dee2bfcc04","rack_id":"7aadeb89-bd00-4b44-8dba-79409603b38f","rack_name":"zNHMvLDMgbkfUIPtAhglCOwTg:RjWeunugnyPEEqdAfhxXBwAJK","rack_unit_size":1,"rack_unit_start":1,"sku":"FxCjKnuMmPTawRhYMJmKDWwrN","updated":"2020-01-26T19:04:26.241889Z"},{"created":"2020-01-26T19:04:26.303297Z","hardware_product_id":"2eca6269-a424-45f2-a3a9-a9913b8976ba","id":"2a3ef5b9-c936-478e-9e66-c097a7e16405","rack_id":"7aadeb89-bd00-4b44-8dba-79409603b38f","rack_name":"zNHMvLDMgbkfUIPtAhglCOwTg:RjWeunugnyPEEqdAfhxXBwAJK","rack_unit_size":2,"rack_unit_start":2,"sku":"xYxLsvSQYDsWVAxNTrUcxHIgL","updated":"2020-01-26T19:04:26.303297Z"}]'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "751"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /rack/7aadeb89-bd00-4b44-8dba-79409603b38f/layout
+      Request-Id:
+      - aIHciUSFEWpz
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - aIHciUSFEWpz
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: |
+      [{"serial_number":"AAAAAA","sku":"xYxLsvSQYDsWVAxNTrUcxHIgL"}]
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/build/7d2b96d4-3b2a-4a24-9fb9-fbfddf35dcc9/device
+    method: POST
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Request-Id:
+      - KD8nVSooyjIi
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - KD8nVSooyjIi
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/device/AAAAAA
+    method: GET
+  response:
+    body: '{"asset_tag":null,"build_id":"7d2b96d4-3b2a-4a24-9fb9-fbfddf35dcc9","build_name":"JIrULNPxKPKZncyExKMfLfGcY","created":"2020-01-26T19:04:26.382355Z","disks":[],"hardware_product_id":"2eca6269-a424-45f2-a3a9-a9913b8976ba","health":"unknown","hostname":null,"id":"dd559c03-8901-4250-9946-0cdcf00d953c","last_seen":null,"latest_report":null,"links":[],"location":null,"nics":[],"phase":"integration","serial_number":"AAAAAA","sku":"xYxLsvSQYDsWVAxNTrUcxHIgL","system_uuid":null,"updated":"2020-01-26T19:04:26.382355Z","uptime_since":null,"validated":null}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "552"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Etag:
+      - '"d1e25cc0b1cb2f7ec1380a3ce54e43f9"'
+      Location:
+      - /device/dd559c03-8901-4250-9946-0cdcf00d953c
+      Request-Id:
+      - 8Ks0NjxXOuJd
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - 8Ks0NjxXOuJd
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: |
+      {"test_setting":"foo"}
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/device/dd559c03-8901-4250-9946-0cdcf00d953c/settings/test_setting
+    method: POST
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /device/dd559c03-8901-4250-9946-0cdcf00d953c
+      Request-Id:
+      - aNAaTiQktlz2
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - aNAaTiQktlz2
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/device/dd559c03-8901-4250-9946-0cdcf00d953c
+    method: GET
+  response:
+    body: '{"asset_tag":null,"build_id":"7d2b96d4-3b2a-4a24-9fb9-fbfddf35dcc9","build_name":"JIrULNPxKPKZncyExKMfLfGcY","created":"2020-01-26T19:04:26.382355Z","disks":[],"hardware_product_id":"2eca6269-a424-45f2-a3a9-a9913b8976ba","health":"unknown","hostname":null,"id":"dd559c03-8901-4250-9946-0cdcf00d953c","last_seen":null,"latest_report":null,"links":[],"location":null,"nics":[],"phase":"integration","serial_number":"AAAAAA","sku":"xYxLsvSQYDsWVAxNTrUcxHIgL","system_uuid":null,"updated":"2020-01-26T19:04:26.382355Z","uptime_since":null,"validated":null}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "552"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Etag:
+      - '"d1e25cc0b1cb2f7ec1380a3ce54e43f9"'
+      Location:
+      - /device/dd559c03-8901-4250-9946-0cdcf00d953c
+      Request-Id:
+      - o5X/t1oHHoTS
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - o5X/t1oHHoTS
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/device/dd559c03-8901-4250-9946-0cdcf00d953c/settings/test_setting
+    method: GET
+  response:
+    body: '{"test_setting":"foo"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "22"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /device/dd559c03-8901-4250-9946-0cdcf00d953c
+      Request-Id:
+      - 6AlCjMxEEJUl
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - 6AlCjMxEEJUl
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/device/dd559c03-8901-4250-9946-0cdcf00d953c/settings
+    method: GET
+  response:
+    body: '{"test_setting":"foo"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "22"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /device/dd559c03-8901-4250-9946-0cdcf00d953c
+      Request-Id:
+      - w5Jq5HsZI27f
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - w5Jq5HsZI27f
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/device/dd559c03-8901-4250-9946-0cdcf00d953c/settings
+    method: GET
+  response:
+    body: '{"test_setting":"foo"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "22"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /device/dd559c03-8901-4250-9946-0cdcf00d953c
+      Request-Id:
+      - T7LUXKGp20ej
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - T7LUXKGp20ej
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: |
+      [{"device_id":"dd559c03-8901-4250-9946-0cdcf00d953c","rack_unit_start":1}]
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/rack/7aadeb89-bd00-4b44-8dba-79409603b38f/assignment
+    method: POST
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /rack/7aadeb89-bd00-4b44-8dba-79409603b38f/assignment
+      Request-Id:
+      - gAE5NDAxwcgr
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - gAE5NDAxwcgr
+    status: 303 See Other
+    code: 303
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Content-Type:
+      - application/json
+      Referer:
+      - http://10.51.54.42:5000/rack/7aadeb89-bd00-4b44-8dba-79409603b38f/assignment
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/rack/7aadeb89-bd00-4b44-8dba-79409603b38f/assignment
+    method: GET
+  response:
+    body: '[{"device_asset_tag":null,"device_id":"dd559c03-8901-4250-9946-0cdcf00d953c","device_serial_number":"whargarbl","hardware_product_name":"ZLepZJcnMPSuCGgjCKATuzdbm","rack_unit_size":1,"rack_unit_start":1,"sku":"FxCjKnuMmPTawRhYMJmKDWwrN"},{"device_asset_tag":null,"device_id":null,"hardware_product_name":"KPHacrRjdKTXHRQkYFizhiXiJ","rack_unit_size":2,"rack_unit_start":2,"sku":"xYxLsvSQYDsWVAxNTrUcxHIgL"}]'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "371"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /rack/7aadeb89-bd00-4b44-8dba-79409603b38f/assignment
+      Request-Id:
+      - Ja5w7V8WG7qq
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - Ja5w7V8WG7qq
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/rack/7aadeb89-bd00-4b44-8dba-79409603b38f/assignment
+    method: GET
+  response:
+    body: '[{"device_asset_tag":null,"device_id":"dd559c03-8901-4250-9946-0cdcf00d953c","device_serial_number":"foo","hardware_product_name":"ZLepZJcnMPSuCGgjCKATuzdbm","rack_unit_size":1,"rack_unit_start":1,"sku":"FxCjKnuMmPTawRhYMJmKDWwrN"},{"device_asset_tag":null,"device_id":null,"hardware_product_name":"KPHacrRjdKTXHRQkYFizhiXiJ","rack_unit_size":2,"rack_unit_start":2,"sku":"xYxLsvSQYDsWVAxNTrUcxHIgL"}]'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "371"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /rack/7aadeb89-bd00-4b44-8dba-79409603b38f/assignment
+      Request-Id:
+      - 16FVyvYMuV+p
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - 16FVyvYMuV+p
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/device/dd559c03-8901-4250-9946-0cdcf00d953c/location
+    method: GET
+  response:
+    body: '{"az":"rSHTRbXlBtZUUPZowzIXvGTtU","datacenter_room":"YZScFfGvMadGNUUBxvuztEhmc","rack":"zNHMvLDMgbkfUIPtAhglCOwTg:RjWeunugnyPEEqdAfhxXBwAJK","rack_unit_start":1,"target_hardware_product":{"alias":"fZUdZGfPTpNuoaETCoAXHzHdh","hardware_vendor_id":"713e2342-ed15-409d-a07c-bbca41941d92","id":"6621614d-ad3d-42f7-8a6d-3cb94d8bd76e","name":"ZLepZJcnMPSuCGgjCKATuzdbm","sku":"FxCjKnuMmPTawRhYMJmKDWwrN"}}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "398"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /device/dd559c03-8901-4250-9946-0cdcf00d953c
+      Request-Id:
+      - O41e1xirQEXc
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - O41e1xirQEXc
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/device/dd559c03-8901-4250-9946-0cdcf00d953c
+    method: GET
+  response:
+    body: '{"asset_tag":null,"build_id":"7d2b96d4-3b2a-4a24-9fb9-fbfddf35dcc9","build_name":"JIrULNPxKPKZncyExKMfLfGcY","created":"2020-01-26T19:04:26.382355Z","disks":[],"hardware_product_id":"2eca6269-a424-45f2-a3a9-a9913b8976ba","health":"unknown","hostname":null,"id":"dd559c03-8901-4250-9946-0cdcf00d953c","last_seen":null,"latest_report":null,"links":[],"location":{"az":"rSHTRbXlBtZUUPZowzIXvGTtU","datacenter_room":"YZScFfGvMadGNUUBxvuztEhmc","rack":"zNHMvLDMgbkfUIPtAhglCOwTg:RjWeunugnyPEEqdAfhxXBwAJK","rack_unit_start":1,"target_hardware_product":{"alias":"fZUdZGfPTpNuoaETCoAXHzHdh","hardware_vendor_id":"713e2342-ed15-409d-a07c-bbca41941d92","id":"6621614d-ad3d-42f7-8a6d-3cb94d8bd76e","name":"ZLepZJcnMPSuCGgjCKATuzdbm","sku":"FxCjKnuMmPTawRhYMJmKDWwrN"}},"nics":[],"phase":"integration","serial_number":"AAAAAA","sku":"xYxLsvSQYDsWVAxNTrUcxHIgL","system_uuid":null,"updated":"2020-01-26T19:04:26.382355Z","uptime_since":null,"validated":null}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "946"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Etag:
+      - '"d1e25cc0b1cb2f7ec1380a3ce54e43f9"'
+      Location:
+      - /device/dd559c03-8901-4250-9946-0cdcf00d953c
+      Request-Id:
+      - MlbKJnoDxIFK
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - MlbKJnoDxIFK
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/rack/zNHMvLDMgbkfUIPtAhglCOwTg:RjWeunugnyPEEqdAfhxXBwAJK
+    method: GET
+  response:
+    body: '{"asset_tag":null,"build_id":"7d2b96d4-3b2a-4a24-9fb9-fbfddf35dcc9","build_name":"JIrULNPxKPKZncyExKMfLfGcY","created":"2020-01-26T19:04:26.135631Z","datacenter_room_alias":"YZScFfGvMadGNUUBxvuztEhmc","datacenter_room_id":"89ce0266-20fe-4136-a772-e2d9ace8d956","full_rack_name":"zNHMvLDMgbkfUIPtAhglCOwTg:RjWeunugnyPEEqdAfhxXBwAJK","id":"7aadeb89-bd00-4b44-8dba-79409603b38f","name":"RjWeunugnyPEEqdAfhxXBwAJK","phase":"integration","rack_role_id":"b233a04d-d453-4730-8f4d-c945948c8d3b","rack_role_name":"PsSRIniTNebDKOEpDnzQrZASj","serial_number":null,"updated":"2020-01-26T19:04:26.135631Z"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "593"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /rack/7aadeb89-bd00-4b44-8dba-79409603b38f
+      Request-Id:
+      - rV6q113SMqcf
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - rV6q113SMqcf
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/rack_role/b233a04d-d453-4730-8f4d-c945948c8d3b
+    method: GET
+  response:
+    body: '{"created":"2020-01-26T19:04:26.096897Z","id":"b233a04d-d453-4730-8f4d-c945948c8d3b","name":"PsSRIniTNebDKOEpDnzQrZASj","rack_size":60,"updated":"2020-01-26T19:04:26.096897Z"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "175"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Request-Id:
+      - ZJ7qR3LYUcAi
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - ZJ7qR3LYUcAi
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/room/89ce0266-20fe-4136-a772-e2d9ace8d956
+    method: GET
+  response:
+    body: '{"alias":"YZScFfGvMadGNUUBxvuztEhmc","az":"rSHTRbXlBtZUUPZowzIXvGTtU","created":"2020-01-26T19:04:26.008325Z","datacenter_id":"bc85ceef-2d58-45ae-a659-1b666f794795","id":"89ce0266-20fe-4136-a772-e2d9ace8d956","updated":"2020-01-26T19:04:26.008325Z","vendor_name":"zNHMvLDMgbkfUIPtAhglCOwTg"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "291"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /room/89ce0266-20fe-4136-a772-e2d9ace8d956
+      Request-Id:
+      - cJjqMBT/qTD4
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - cJjqMBT/qTD4
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/rack_role/b233a04d-d453-4730-8f4d-c945948c8d3b
+    method: GET
+  response:
+    body: '{"created":"2020-01-26T19:04:26.096897Z","id":"b233a04d-d453-4730-8f4d-c945948c8d3b","name":"PsSRIniTNebDKOEpDnzQrZASj","rack_size":60,"updated":"2020-01-26T19:04:26.096897Z"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "175"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Request-Id:
+      - rFokMvOBy8qX
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - rFokMvOBy8qX
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/hardware_product/2eca6269-a424-45f2-a3a9-a9913b8976ba
+    method: GET
+  response:
+    body: '{"alias":"VgvjJOOnrRwUYxWQFOtemUQuQ","bios_firmware":"XqkAkCZYLvgRLvYqIrtHPFhVN","cpu_num":0,"cpu_type":"AjbeLNHApsBhqcpiSwSZtssQx","created":"2020-01-26T19:04:25.859308Z","dimms_num":0,"generation_name":null,"hardware_vendor_id":"713e2342-ed15-409d-a07c-bbca41941d92","hba_firmware":null,"id":"2eca6269-a424-45f2-a3a9-a9913b8976ba","legacy_product_name":null,"name":"KPHacrRjdKTXHRQkYFizhiXiJ","nics_num":0,"nvme_ssd_num":0,"nvme_ssd_size":null,"nvme_ssd_slots":null,"prefix":null,"psu_total":0,"purpose":"uNggImrxtZCFRXriVRahxKFvd","rack_unit_size":2,"raid_lun_num":0,"ram_total":0,"sas_hdd_num":0,"sas_hdd_size":null,"sas_hdd_slots":null,"sas_ssd_num":0,"sas_ssd_size":null,"sas_ssd_slots":null,"sata_hdd_num":0,"sata_hdd_size":null,"sata_hdd_slots":null,"sata_ssd_num":0,"sata_ssd_size":null,"sata_ssd_slots":null,"sku":"xYxLsvSQYDsWVAxNTrUcxHIgL","specification":null,"updated":"2020-01-26T19:04:25.859308Z","usb_num":0,"validation_plan_id":"a30ab8b2-8a9e-4e51-8bb0-92862abd8b54"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "985"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /hardware_product/2eca6269-a424-45f2-a3a9-a9913b8976ba
+      Request-Id:
+      - UwnKm3FJ1z+6
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - UwnKm3FJ1z+6
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/device/dd559c03-8901-4250-9946-0cdcf00d953c/validation_state
+    method: GET
+  response:
+    body: '{"error":"Entity Not Found"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "28"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Request-Id:
+      - Nue0rc9wjDHk
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - Nue0rc9wjDHk
+    status: 404 NOT FOUND
+    code: 404
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/device/dd559c03-8901-4250-9946-0cdcf00d953c/validation_state
+    method: GET
+  response:
+    body: '{"error":"Entity Not Found"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "28"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Request-Id:
+      - ixZVfEKuJrJL
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - ixZVfEKuJrJL
+    status: 404 NOT FOUND
+    code: 404
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/device/dd559c03-8901-4250-9946-0cdcf00d953c/phase
+    method: GET
+  response:
+    body: '{"id":"dd559c03-8901-4250-9946-0cdcf00d953c","phase":"integration"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "67"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /device/dd559c03-8901-4250-9946-0cdcf00d953c
+      Request-Id:
+      - JqWLVQaJY9Ux
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - JqWLVQaJY9Ux
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/device/dd559c03-8901-4250-9946-0cdcf00d953c/location
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Date:
+      - Sun, 26 Jan 2020 19:04:26 GMT
+      Location:
+      - /device/dd559c03-8901-4250-9946-0cdcf00d953c
+      Request-Id:
+      - SPqYNyeA82gr
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - SPqYNyeA82gr
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/device/dd559c03-8901-4250-9946-0cdcf00d953c
+    method: GET
+  response:
+    body: '{"asset_tag":null,"build_id":"7d2b96d4-3b2a-4a24-9fb9-fbfddf35dcc9","build_name":"JIrULNPxKPKZncyExKMfLfGcY","created":"2020-01-26T19:04:26.382355Z","disks":[],"hardware_product_id":"2eca6269-a424-45f2-a3a9-a9913b8976ba","health":"unknown","hostname":null,"id":"dd559c03-8901-4250-9946-0cdcf00d953c","last_seen":null,"latest_report":null,"links":[],"location":null,"nics":[],"phase":"integration","serial_number":"AAAAAA","sku":"xYxLsvSQYDsWVAxNTrUcxHIgL","system_uuid":null,"updated":"2020-01-26T19:04:26.382355Z","uptime_since":null,"validated":null}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "552"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:27 GMT
+      Etag:
+      - '"d1e25cc0b1cb2f7ec1380a3ce54e43f9"'
+      Location:
+      - /device/dd559c03-8901-4250-9946-0cdcf00d953c
+      Request-Id:
+      - Rix792kKn1nu
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - Rix792kKn1nu
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/rack/7aadeb89-bd00-4b44-8dba-79409603b38f/layout
+    method: GET
+  response:
+    body: '[{"created":"2020-01-26T19:04:26.241889Z","hardware_product_id":"6621614d-ad3d-42f7-8a6d-3cb94d8bd76e","id":"f34b1733-0339-41af-9fb1-f6dee2bfcc04","rack_id":"7aadeb89-bd00-4b44-8dba-79409603b38f","rack_name":"zNHMvLDMgbkfUIPtAhglCOwTg:RjWeunugnyPEEqdAfhxXBwAJK","rack_unit_size":1,"rack_unit_start":1,"sku":"FxCjKnuMmPTawRhYMJmKDWwrN","updated":"2020-01-26T19:04:26.241889Z"},{"created":"2020-01-26T19:04:26.303297Z","hardware_product_id":"2eca6269-a424-45f2-a3a9-a9913b8976ba","id":"2a3ef5b9-c936-478e-9e66-c097a7e16405","rack_id":"7aadeb89-bd00-4b44-8dba-79409603b38f","rack_name":"zNHMvLDMgbkfUIPtAhglCOwTg:RjWeunugnyPEEqdAfhxXBwAJK","rack_unit_size":2,"rack_unit_start":2,"sku":"xYxLsvSQYDsWVAxNTrUcxHIgL","updated":"2020-01-26T19:04:26.303297Z"}]'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "751"
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 26 Jan 2020 19:04:27 GMT
+      Location:
+      - /rack/7aadeb89-bd00-4b44-8dba-79409603b38f/layout
+      Request-Id:
+      - Sv6Wf3OMjeLd
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Request-Id:
+      - Sv6Wf3OMjeLd
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/layout/f34b1733-0339-41af-9fb1-f6dee2bfcc04
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Date:
+      - Sun, 26 Jan 2020 19:04:27 GMT
+      Request-Id:
+      - OhiSnajt+K+c
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - OhiSnajt+K+c
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/layout/2a3ef5b9-c936-478e-9e66-c097a7e16405
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Date:
+      - Sun, 26 Jan 2020 19:04:27 GMT
+      Request-Id:
+      - 1BOv/zAB4wau
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - 1BOv/zAB4wau
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/rack/7aadeb89-bd00-4b44-8dba-79409603b38f
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Date:
+      - Sun, 26 Jan 2020 19:04:27 GMT
+      Request-Id:
+      - /7hM/VUO8MM/
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - /7hM/VUO8MM/
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/rack_role/b233a04d-d453-4730-8f4d-c945948c8d3b
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Date:
+      - Sun, 26 Jan 2020 19:04:27 GMT
+      Request-Id:
+      - V1PMPT8xHEFL
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - V1PMPT8xHEFL
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/room/89ce0266-20fe-4136-a772-e2d9ace8d956
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Date:
+      - Sun, 26 Jan 2020 19:04:27 GMT
+      Request-Id:
+      - Pd/UAMZo4LsP
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - Pd/UAMZo4LsP
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/dc/bc85ceef-2d58-45ae-a659-1b666f794795
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Date:
+      - Sun, 26 Jan 2020 19:04:27 GMT
+      Request-Id:
+      - f8ZA/qrH1uk1
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - f8ZA/qrH1uk1
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/hardware_product/6621614d-ad3d-42f7-8a6d-3cb94d8bd76e
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Date:
+      - Sun, 26 Jan 2020 19:04:27 GMT
+      Request-Id:
+      - c3REpBq036At
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - c3REpBq036At
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/hardware_product/2eca6269-a424-45f2-a3a9-a9913b8976ba
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Date:
+      - Sun, 26 Jan 2020 19:04:27 GMT
+      Request-Id:
+      - FzgftV1RI9lB
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - FzgftV1RI9lB
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/hardware_vendor/713e2342-ed15-409d-a07c-bbca41941d92
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Date:
+      - Sun, 26 Jan 2020 19:04:27 GMT
+      Request-Id:
+      - mhjduxXzfUld
+      Server:
+      - Mojolicious (Perl)
+      X-Request-Id:
+      - mhjduxXzfUld
+    status: 204 No Content
+    code: 204
+    duration: ""

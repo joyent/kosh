@@ -1,11 +1,9 @@
 package main
 
 import (
-	"io"
 	"net/http"
 	"net/url"
 	"os"
-	"strings"
 
 	"github.com/dnaeon/go-vcr/cassette"
 	"github.com/dnaeon/go-vcr/recorder"
@@ -60,6 +58,7 @@ func setupRecorder(fixture string) func() {
 	}
 }
 
+/*
 func capture() func() (string, error) {
 	r, w, err := os.Pipe()
 	if err != nil {
@@ -97,3 +96,4 @@ func captureOutput(f func()) string {
 	}
 	return out
 }
+*/

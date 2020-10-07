@@ -1,0 +1,101 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/workspace
+    method: GET
+  response:
+    body: '[{"description":"Global workspace","id":"8bb8f3a8-0f1e-4f1d-92a9-3d108f5743c8","name":"GLOBAL","parent_workspace_id":null,"role":"admin"}]'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "138"
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 13 Jan 2020 23:16:24 GMT
+      Request-Id:
+      - 0ErQNS638ElE
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Deprecated:
+      - this endpoint is deprecated and will be removed in api v3.1
+      X-Request-Id:
+      - 0ErQNS638ElE
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/workspace/GLOBAL
+    method: GET
+  response:
+    body: '{"description":"Global workspace","id":"8bb8f3a8-0f1e-4f1d-92a9-3d108f5743c8","name":"GLOBAL","parent_workspace_id":null,"role":"admin"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "136"
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 13 Jan 2020 23:16:24 GMT
+      Request-Id:
+      - Zd1SZOkQjgdK
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Deprecated:
+      - this endpoint is deprecated and will be removed in api v3.1
+      - this endpoint is deprecated and will be removed in api v3.1
+      X-Request-Id:
+      - Zd1SZOkQjgdK
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/workspace/GLOBAL
+    method: GET
+  response:
+    body: '{"description":"Global workspace","id":"8bb8f3a8-0f1e-4f1d-92a9-3d108f5743c8","name":"GLOBAL","parent_workspace_id":null,"role":"admin"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "136"
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 13 Jan 2020 23:16:24 GMT
+      Request-Id:
+      - Db+S7nWfY+Zx
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-b4-0-gb99fbfff
+      X-Deprecated:
+      - this endpoint is deprecated and will be removed in api v3.1
+      - this endpoint is deprecated and will be removed in api v3.1
+      X-Request-Id:
+      - Db+S7nWfY+Zx
+    status: 200 OK
+    code: 200
+    duration: ""

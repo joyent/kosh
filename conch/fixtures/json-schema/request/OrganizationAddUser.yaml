@@ -1,0 +1,35 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Conch/3.x-testing
+    url: http://10.51.54.42:5000/schema/request/OrganizationAddUser
+    method: GET
+  response:
+    body: '{"$id":"urn:request.OrganizationAddUser.schema.json","$schema":"http:\/\/json-schema.org\/draft-07\/schema#","additionalProperties":false,"definitions":{"email_address":{"allOf":[{"format":"email","type":"string"},{"$ref":"\/definitions\/mojo_relaxed_placeholder"}]},"mojo_relaxed_placeholder":{"description":"see
+      https:\/\/metacpan.org\/pod\/Mojolicious::Guides::Routing#Relaxed-placeholders","pattern":"^[^\/]+$","type":"string"},"role":{"description":"corresponds
+      to role_enum in the database","enum":["ro","rw","admin"],"type":"string"},"uuid":{"pattern":"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$","type":"string"}},"oneOf":[{"required":["user_id"]},{"required":["email"]}],"properties":{"email":{"$ref":"\/definitions\/email_address"},"role":{"$ref":"\/definitions\/role"},"user_id":{"$ref":"\/definitions\/uuid"}},"required":["role"],"title":"OrganizationAddUser","type":"object"}'
+    headers:
+      Content-Length:
+      - "908"
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 01 Nov 2019 21:34:32 GMT
+      Last-Modified:
+      - Fri, 01 Nov 2019 20:19:12 GMT
+      Request-Id:
+      - d0XYf98BdB2O
+      Server:
+      - Mojolicious (Perl)
+      X-Conch-Api:
+      - v3.0.0-a8-0-gd0dc7f2e
+      X-Request-Id:
+      - d0XYf98BdB2O
+    status: 200 OK
+    code: 200
+    duration: ""
