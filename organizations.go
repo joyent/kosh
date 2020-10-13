@@ -9,8 +9,8 @@ import (
 
 	"github.com/gofrs/uuid"
 	cli "github.com/jawher/mow.cli"
+	"github.com/joyent/kosh/tables"
 	"github.com/joyent/kosh/template"
-	"github.com/olekukonko/tablewriter"
 )
 
 type Organizations struct {
@@ -57,8 +57,8 @@ func (o OrgAndRoles) String() string {
 	}
 
 	tableString := &strings.Builder{}
-	table := tablewriter.NewWriter(tableString)
-	TableToMarkdown(table)
+	table := tables.NewTable(tableString)
+	tables.TableToMarkdown(table)
 
 	table.SetHeader([]string{
 		"Name",
@@ -99,8 +99,8 @@ func (o OrgList) String() string {
 	}
 
 	tableString := &strings.Builder{}
-	table := tablewriter.NewWriter(tableString)
-	TableToMarkdown(table)
+	table := tables.NewTable(tableString)
+	tables.TableToMarkdown(table)
 
 	table.SetHeader([]string{
 		"Name",

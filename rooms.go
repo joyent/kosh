@@ -19,8 +19,8 @@ import (
 
 	"github.com/gofrs/uuid"
 	cli "github.com/jawher/mow.cli"
+	"github.com/joyent/kosh/tables"
 	"github.com/joyent/kosh/template"
-	"github.com/olekukonko/tablewriter"
 )
 
 type Rooms struct {
@@ -55,8 +55,8 @@ func (dr RoomList) String() string {
 	}
 
 	tableString := &strings.Builder{}
-	table := tablewriter.NewWriter(tableString)
-	TableToMarkdown(table)
+	table := tables.NewTable(tableString)
+	tables.TableToMarkdown(table)
 
 	table.SetHeader([]string{
 		"ID",

@@ -18,8 +18,8 @@ import (
 
 	"github.com/gofrs/uuid"
 	cli "github.com/jawher/mow.cli"
+	"github.com/joyent/kosh/tables"
 	"github.com/joyent/kosh/template"
-	"github.com/olekukonko/tablewriter"
 )
 
 type Devices struct {
@@ -40,8 +40,8 @@ func (ds DeviceSettings) String() string {
 	}
 
 	tableString := &strings.Builder{}
-	table := tablewriter.NewWriter(tableString)
-	TableToMarkdown(table)
+	table := tables.NewTable(tableString)
+	tables.TableToMarkdown(table)
 
 	var keys []string
 	for key := range ds {
@@ -422,8 +422,8 @@ func (d DeviceList) String() string {
 	}
 
 	tableString := &strings.Builder{}
-	table := tablewriter.NewWriter(tableString)
-	TableToMarkdown(table)
+	table := tables.NewTable(tableString)
+	tables.TableToMarkdown(table)
 
 	table.SetHeader([]string{
 		"Serial",

@@ -20,6 +20,7 @@ import (
 
 	"github.com/gofrs/uuid"
 	cli "github.com/jawher/mow.cli"
+	"github.com/joyent/kosh/tables"
 	"github.com/joyent/kosh/template"
 	"github.com/olekukonko/tablewriter"
 )
@@ -66,7 +67,7 @@ func (rl RackRoleList) String() string {
 
 	tableString := &strings.Builder{}
 	table := tablewriter.NewWriter(tableString)
-	TableToMarkdown(table)
+	tables.TableToMarkdown(table)
 
 	table.SetHeader([]string{
 		"Name",

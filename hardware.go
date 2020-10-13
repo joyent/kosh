@@ -18,6 +18,7 @@ import (
 
 	"github.com/gofrs/uuid"
 	cli "github.com/jawher/mow.cli"
+	"github.com/joyent/kosh/tables"
 	"github.com/joyent/kosh/template"
 	"github.com/olekukonko/tablewriter"
 	// "github.com/olekukonko/tablewriter"
@@ -40,7 +41,7 @@ func (hps HardwareProductSummaries) String() string {
 
 	tableString := &strings.Builder{}
 	table := tablewriter.NewWriter(tableString)
-	TableToMarkdown(table)
+	tables.TableToMarkdown(table)
 
 	table.SetHeader([]string{
 		"ID",

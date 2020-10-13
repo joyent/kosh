@@ -18,8 +18,8 @@ import (
 
 	"github.com/gofrs/uuid"
 	cli "github.com/jawher/mow.cli"
+	"github.com/joyent/kosh/tables"
 	"github.com/joyent/kosh/template"
-	"github.com/olekukonko/tablewriter"
 )
 
 type Users struct {
@@ -58,8 +58,8 @@ func (ur UserAndRoles) String() string {
 	}
 
 	tableString := &strings.Builder{}
-	table := tablewriter.NewWriter(tableString)
-	TableToMarkdown(table)
+	table := tables.NewTable(tableString)
+	tables.TableToMarkdown(table)
 
 	table.SetHeader([]string{
 		"ID",
@@ -180,8 +180,8 @@ func (u UserSettings) String() string {
 	sort.Strings(keys)
 
 	tableString := &strings.Builder{}
-	table := tablewriter.NewWriter(tableString)
-	TableToMarkdown(table)
+	table := tables.NewTable(tableString)
+	tables.TableToMarkdown(table)
 
 	table.SetHeader([]string{
 		"Key",

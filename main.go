@@ -83,18 +83,6 @@ func FindUUID(id string, list []uuid.UUID) (bool, uuid.UUID) {
 	return false, uuid.UUID{}
 }
 
-func Table() (table *tablewriter.Table) {
-	table = tablewriter.NewWriter(os.Stdout)
-	TableToMarkdown(table)
-	return table
-}
-
-func TableToMarkdown(table *tablewriter.Table) {
-	table.SetAutoWrapText(false)
-	table.SetBorders(tablewriter.Border{Left: true, Top: false, Right: true, Bottom: false})
-	table.SetCenterSeparator("|")
-}
-
 func IsSysAdmin() bool {
 	return API.Users().Me().IsAdmin
 }

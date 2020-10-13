@@ -23,8 +23,8 @@ import (
 
 	"github.com/gofrs/uuid"
 	cli "github.com/jawher/mow.cli"
+	"github.com/joyent/kosh/tables"
 	"github.com/joyent/kosh/template"
-	"github.com/olekukonko/tablewriter"
 )
 
 type Racks struct {
@@ -62,8 +62,8 @@ func (rl RackList) String() string {
 	}
 
 	tableString := &strings.Builder{}
-	table := tablewriter.NewWriter(tableString)
-	TableToMarkdown(table)
+	table := tables.NewTable(tableString)
+	tables.TableToMarkdown(table)
 
 	table.SetHeader([]string{
 		"ID",
@@ -346,8 +346,8 @@ func (rl RackLayout) String() string {
 	}
 
 	tableString := &strings.Builder{}
-	table := tablewriter.NewWriter(tableString)
-	TableToMarkdown(table)
+	table := tables.NewTable(tableString)
+	tables.TableToMarkdown(table)
 
 	table.SetHeader([]string{
 		"Rack Unit Start",
@@ -564,8 +564,8 @@ func (a RackAssignments) String() string {
 	}
 
 	tableString := &strings.Builder{}
-	table := tablewriter.NewWriter(tableString)
-	TableToMarkdown(table)
+	table := tables.NewTable(tableString)
+	tables.TableToMarkdown(table)
 
 	table.SetHeader([]string{
 		"Device Serial",

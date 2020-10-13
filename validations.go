@@ -17,10 +17,8 @@ import (
 
 	"github.com/gofrs/uuid"
 	cli "github.com/jawher/mow.cli"
+	"github.com/joyent/kosh/tables"
 	"github.com/joyent/kosh/template"
-
-	// "github.com/jawher/mow.cli"
-	"github.com/olekukonko/tablewriter"
 )
 
 type Validations struct {
@@ -83,8 +81,8 @@ func (v ValidationPlans) String() string {
 	}
 
 	tableString := &strings.Builder{}
-	table := tablewriter.NewWriter(tableString)
-	TableToMarkdown(table)
+	table := tables.NewTable(tableString)
+	tables.TableToMarkdown(table)
 	table.SetRowLine(true)
 
 	table.SetHeader([]string{
@@ -189,8 +187,8 @@ func (v ValidationResults) String() string {
 	}
 
 	tableString := &strings.Builder{}
-	table := tablewriter.NewWriter(tableString)
-	TableToMarkdown(table)
+	table := tables.NewTable(tableString)
+	tables.TableToMarkdown(table)
 	table.SetRowLine(true)
 
 	table.SetHeader([]string{
