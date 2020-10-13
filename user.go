@@ -18,6 +18,7 @@ import (
 
 	"github.com/gofrs/uuid"
 	cli "github.com/jawher/mow.cli"
+	"github.com/joyent/kosh/template"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -104,7 +105,7 @@ func (u DetailedUser) String() string {
 		return API.AsJSON(u)
 	}
 
-	t, err := NewTemplate().Parse(detailedUserTemplate)
+	t, err := template.NewTemplate().Parse(detailedUserTemplate)
 	if err != nil {
 		panic(err)
 	}

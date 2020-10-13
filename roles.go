@@ -20,6 +20,7 @@ import (
 
 	"github.com/gofrs/uuid"
 	cli "github.com/jawher/mow.cli"
+	"github.com/joyent/kosh/template"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -78,8 +79,8 @@ func (rl RackRoleList) String() string {
 		table.Append([]string{
 			r.Name,
 			strconv.Itoa(r.RackSize),
-			TimeStr(r.Created),
-			TimeStr(r.Updated),
+			template.TimeStr(r.Created),
+			template.TimeStr(r.Updated),
 		})
 	}
 
@@ -93,7 +94,7 @@ func (r RackRole) String() string {
 		return API.AsJSON(r)
 	}
 
-	t, err := NewTemplate().Parse(rackRoleTemplate)
+	t, err := template.NewTemplate().Parse(rackRoleTemplate)
 	if err != nil {
 		panic(err)
 	}

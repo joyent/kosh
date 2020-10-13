@@ -10,6 +10,7 @@ import (
 
 	"github.com/gofrs/uuid"
 	cli "github.com/jawher/mow.cli"
+	"github.com/joyent/kosh/template"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -33,7 +34,7 @@ func (b Build) String() string {
 		return API.AsJSON(b)
 	}
 
-	t, err := NewTemplate().Parse(buildTemplate)
+	t, err := template.NewTemplate().Parse(buildTemplate)
 	if err != nil {
 		panic(err)
 	}

@@ -17,6 +17,7 @@ import (
 
 	"github.com/gofrs/uuid"
 	cli "github.com/jawher/mow.cli"
+	"github.com/joyent/kosh/template"
 
 	// "github.com/jawher/mow.cli"
 	"github.com/olekukonko/tablewriter"
@@ -43,7 +44,7 @@ func (v ValidationPlan) String() string {
 		return API.AsJSON(v)
 	}
 
-	t, err := NewTemplate().Parse(validationPlanTemplate)
+	t, err := template.NewTemplate().Parse(validationPlanTemplate)
 	if err != nil {
 		panic(err)
 	}
@@ -95,7 +96,7 @@ func (v ValidationPlans) String() string {
 
 	for _, p := range v {
 		table.Append([]string{
-			CutUUID(p.ID.String()),
+			template.CutUUID(p.ID.String()),
 			p.Name,
 			p.Description,
 			p.Created.String(),
@@ -241,7 +242,7 @@ func (v ValidationStateWithResults) String() string {
 		API.Validations().GetPlan(v.ValidationPlanID),
 	}
 
-	t, err := NewTemplate().Parse(validationStateWithResultsTemplate)
+	t, err := template.NewTemplate().Parse(validationStateWithResultsTemplate)
 	if err != nil {
 		panic(err)
 	}

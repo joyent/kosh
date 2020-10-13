@@ -18,6 +18,7 @@ import (
 
 	"github.com/gofrs/uuid"
 	cli "github.com/jawher/mow.cli"
+	"github.com/joyent/kosh/template"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -44,7 +45,7 @@ func (d Datacenter) String() string {
 		return API.AsJSON(d)
 	}
 
-	t, err := NewTemplate().Parse(datacenterTemplate)
+	t, err := template.NewTemplate().Parse(datacenterTemplate)
 	if err != nil {
 		panic(err)
 	}
@@ -78,7 +79,7 @@ func (dl DatacenterList) String() string {
 
 	for _, d := range dl {
 		table.Append([]string{
-			CutUUID(d.ID.String()),
+			template.CutUUID(d.ID.String()),
 			d.Vendor,
 			d.VendorName,
 			d.Region,

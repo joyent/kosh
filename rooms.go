@@ -19,6 +19,7 @@ import (
 
 	"github.com/gofrs/uuid"
 	cli "github.com/jawher/mow.cli"
+	"github.com/joyent/kosh/template"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -69,13 +70,13 @@ func (dr RoomList) String() string {
 
 	for _, r := range dr {
 		table.Append([]string{
-			CutUUID(r.ID.String()),
+			template.CutUUID(r.ID.String()),
 			r.Alias,
 			r.AZ,
 			r.VendorName,
-			CutUUID(r.DatacenterID.String()),
-			TimeStr(r.Created),
-			TimeStr(r.Updated),
+			template.CutUUID(r.DatacenterID.String()),
+			template.TimeStr(r.Created),
+			template.TimeStr(r.Updated),
 		})
 	}
 
@@ -100,7 +101,7 @@ func (r Room) String() string {
 		return API.AsJSON(r)
 	}
 
-	t, err := NewTemplate().Parse(roomTemplate)
+	t, err := template.NewTemplate().Parse(roomTemplate)
 	if err != nil {
 		panic(err)
 	}

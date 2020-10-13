@@ -18,6 +18,7 @@ import (
 
 	"github.com/gofrs/uuid"
 	cli "github.com/jawher/mow.cli"
+	"github.com/joyent/kosh/template"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -193,7 +194,7 @@ func (dl DeviceLocation) String() string {
 		return API.AsJSON(dl)
 	}
 
-	t, err := NewTemplate().Parse(deviceLocationTemplate)
+	t, err := template.NewTemplate().Parse(deviceLocationTemplate)
 	if err != nil {
 		panic(err)
 	}
@@ -244,7 +245,7 @@ func (dn DeviceNic) String() string {
 		return API.AsJSON(dn)
 	}
 
-	t, err := NewTemplate().Parse(deviceNicTemplate)
+	t, err := template.NewTemplate().Parse(deviceNicTemplate)
 	if err != nil {
 		panic(err)
 	}
@@ -378,7 +379,7 @@ func (d DetailedDevice) String() string {
 		Validations     ValidationStateWithResults
 	}{d, rackRole, hp, enclosures, validations}
 
-	t, err := NewTemplate().Parse(deviceTemplate)
+	t, err := template.NewTemplate().Parse(deviceTemplate)
 	if err != nil {
 		panic(err)
 	}
@@ -447,8 +448,8 @@ func (d DeviceList) String() string {
 			device.AssetTag,
 			hpCache[device.HardwareProductID].Name,
 			device.Phase,
-			TimeStr(device.Updated),
-			TimeStr(device.Validated),
+			template.TimeStr(device.Updated),
+			template.TimeStr(device.Validated),
 		})
 	}
 

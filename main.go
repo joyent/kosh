@@ -105,13 +105,6 @@ func RequireSysAdmin() {
 	}
 }
 
-func NewTemplate() *template.Template {
-	return template.New("wat").Funcs(template.FuncMap{
-		"CutUUID": func(id string) string { return CutUUID(id) },
-		"TimeStr": func(t time.Time) string { return TimeStr(t) },
-	})
-}
-
 /***/
 
 func init() {

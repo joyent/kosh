@@ -18,6 +18,7 @@ import (
 
 	"github.com/gofrs/uuid"
 	cli "github.com/jawher/mow.cli"
+	"github.com/joyent/kosh/template"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -69,7 +70,7 @@ func (rl RelayList) String() string {
 			r.Version,
 			r.IpAddr,
 			strconv.Itoa(r.SshPort),
-			TimeStr(r.Updated),
+			template.TimeStr(r.Updated),
 		})
 	}
 
@@ -96,7 +97,7 @@ func (r Relay) String() string {
 		return API.AsJSON(r)
 	}
 
-	t, err := NewTemplate().Parse(relayTemplate)
+	t, err := template.NewTemplate().Parse(relayTemplate)
 	if err != nil {
 		panic(err)
 	}

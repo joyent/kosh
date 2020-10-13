@@ -18,6 +18,7 @@ import (
 
 	"github.com/gofrs/uuid"
 	cli "github.com/jawher/mow.cli"
+	"github.com/joyent/kosh/template"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -66,7 +67,7 @@ func (w WorkspaceAndRole) String() string {
 		return API.AsJSON(w)
 	}
 
-	t, err := NewTemplate().Parse(workspaceTemplate)
+	t, err := template.NewTemplate().Parse(workspaceTemplate)
 	if err != nil {
 		panic(err)
 	}
@@ -545,7 +546,7 @@ func (summaries WorkspaceRackSummaries) String() string {
 				Statuses []*status
 			}{summary, az, statusii}
 
-			t, err := NewTemplate().Parse(rackSummaryTemplate)
+			t, err := template.NewTemplate().Parse(rackSummaryTemplate)
 			if err != nil {
 				panic(err)
 			}
@@ -607,7 +608,7 @@ func (w WorkspaceRelay) String() string {
 		return API.AsJSON(w)
 	}
 
-	t, err := NewTemplate().Parse(workspaceRelayTemplate)
+	t, err := template.NewTemplate().Parse(workspaceRelayTemplate)
 	if err != nil {
 		panic(err)
 	}
@@ -659,7 +660,7 @@ func (w WorkspaceRelays) String() string {
 		if (r.Location.RackID != uuid.UUID{}) {
 			rackID = fmt.Sprintf(
 				"[%s]",
-				CutUUID(r.Location.RackID.String()),
+				template.CutUUID(r.Location.RackID.String()),
 			)
 		}
 		location := fmt.Sprintf(
@@ -674,7 +675,7 @@ func (w WorkspaceRelays) String() string {
 			r.Version,
 			r.IpAddr,
 			strconv.Itoa(r.SshPort),
-			TimeStr(r.LastSeen),
+			template.TimeStr(r.LastSeen),
 			location,
 		})
 	}

@@ -23,6 +23,7 @@ import (
 
 	"github.com/gofrs/uuid"
 	cli "github.com/jawher/mow.cli"
+	"github.com/joyent/kosh/template"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -88,15 +89,15 @@ func (rl RackList) String() string {
 		}
 
 		table.Append([]string{
-			CutUUID(r.ID.String()),
+			template.CutUUID(r.ID.String()),
 			r.Name,
 			room,
 			role,
 			r.SerialNumber,
 			r.AssetTag,
 			r.Phase,
-			TimeStr(r.Created),
-			TimeStr(r.Updated),
+			template.TimeStr(r.Created),
+			template.TimeStr(r.Updated),
 		})
 	}
 
@@ -110,7 +111,7 @@ func (r Rack) String() string {
 		return API.AsJSON(r)
 	}
 
-	t, err := NewTemplate().Parse(rackTemplate)
+	t, err := template.NewTemplate().Parse(rackTemplate)
 	if err != nil {
 		panic(err)
 	}
@@ -380,10 +381,10 @@ func (rl RackLayout) String() string {
 		table.Append([]string{
 			strconv.Itoa(r.RackUnitStart),
 			strconv.Itoa(r.RackUnitSize),
-			CutUUID(r.ID.String()),
+			template.CutUUID(r.ID.String()),
 			hpName,
-			TimeStr(r.Created),
-			TimeStr(r.Updated),
+			template.TimeStr(r.Created),
+			template.TimeStr(r.Updated),
 		})
 	}
 

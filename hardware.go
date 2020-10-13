@@ -18,6 +18,7 @@ import (
 
 	"github.com/gofrs/uuid"
 	cli "github.com/jawher/mow.cli"
+	"github.com/joyent/kosh/template"
 	"github.com/olekukonko/tablewriter"
 	// "github.com/olekukonko/tablewriter"
 )
@@ -53,7 +54,7 @@ func (hps HardwareProductSummaries) String() string {
 
 	for _, hp := range hps {
 		table.Append([]string{
-			CutUUID(hp.ID.String()),
+			template.CutUUID(hp.ID.String()),
 			hp.SKU,
 			hp.Name,
 			hp.Alias,
@@ -140,7 +141,7 @@ func (hp HardwareProduct) String() string {
 	if API.JsonOnly {
 		return API.AsJSON(hp)
 	}
-	t, err := NewTemplate().Parse(hardwareProductTemplate)
+	t, err := template.NewTemplate().Parse(hardwareProductTemplate)
 	if err != nil {
 		panic(err)
 	}
