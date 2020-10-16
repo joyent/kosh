@@ -4,7 +4,7 @@ import "github.com/joyent/kosh/conch/types"
 
 // GET /hardware_product
 func (c *Client) GetHardwareProducts() (products types.HardwareProducts) {
-	c.HardwareProduct().Receive(products)
+	c.HardwareProduct().Receive(&products)
 	return
 }
 
@@ -16,7 +16,7 @@ func (c *Client) CreateHardwareProduct(product types.HardwareProductCreate) erro
 
 // GET /hardware_product/:hardware_product_id_or_other
 func (c *Client) GetHardwareProductByID(id string) (products types.HardwareProduct) {
-	c.HardwareProduct(id).Receive(products)
+	c.HardwareProduct(id).Receive(&products)
 	return
 }
 
@@ -27,8 +27,8 @@ func (c *Client) UpdateHardwareProduct(id string, update types.HardwareProductUp
 }
 
 // DELETE /hardware_product/:hardware_product_id_or_other
-func (c *Client) DeleteHardwareProduct(id string) error {
-	_, e := c.HardwareProduct(id).Delete().Send()
+func (c *Client) DeleteHardwareProduct(id types.UUID) error {
+	_, e := c.HardwareProduct(id.String()).Delete().Send()
 	return e
 }
 

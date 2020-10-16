@@ -7,21 +7,48 @@ import (
 	"strings"
 
 	"github.com/dghubble/sling"
+	"github.com/joyent/kosh/logger"
 )
-
-type Logger interface {
-	Debug(...interface{})
-}
 
 type Client struct {
 	Sling *sling.Sling
-	Logger
+	logger.Logger
 }
 
-func New(api, token string, l Logger) *Client {
-	s := sling.New().Base(api).Set("Authorization", "Bearer "+token)
-	return &Client{s, l}
+type Config interface {
+	GetURL() string
+	GetToken() string
+	GetLogger() logger.Logger
 }
+
+func New(c Config) *Client {
+	c.GetLogger().Debug(c)
+	s := sling.New().Base(c.GetURL()).Set("Authorization", "Bearer "+c.GetToken())
+	return &Client{s, c.GetLogger()}
+}
+
+/*
+func buildUserAgent(GitRev string) map[string]string {
+	var isRoot bool
+	if current, err := user.Current(); err == nil {
+		if current.Uid == "0" {
+			isRoot = true
+		}
+	}
+
+	agentBits := make(map[string]string)
+	agent := fmt.Sprintf(
+		"%s (%s; %s; r=%v)",
+		GitRev,
+		runtime.GOOS,
+		runtime.GOARCH,
+		isRoot,
+	)
+
+	agentBits["Kosh"] = agent
+	return agentBits
+}
+*/
 
 func (c *Client) New() *Client {
 	s := c.Sling.New()
@@ -98,6 +125,18 @@ func (c *Client) Rack(id ...string) *Client {
 	return c.Path("rack", id...)
 }
 
+func (c *Client) RackRole(id ...string) *Client {
+	return c.Path("rack_role", id...)
+}
+
+func (c *Client) Room(id ...string) *Client {
+	return c.Path("room", id...)
+}
+
+func (c *Client) Layout(id ...string) *Client {
+	return c.Path("layout", id...)
+}
+
 func (c *Client) Validation(id ...string) *Client {
 	return c.Path("validation", id...)
 }
@@ -112,6 +151,10 @@ func (c *Client) ValidationState(id ...string) *Client {
 
 func (c *Client) Interface(id ...string) *Client {
 	return c.Path("interface", id...)
+}
+
+func (c *Client) Schema(name ...string) *Client {
+	return c.Path("schema", name...)
 }
 
 func (c *Client) Field(ids ...string) *Client {
@@ -149,6 +192,10 @@ func (c *Client) ValidationStates(states ...string) *Client {
 
 func (c *Client) SKU() *Client {
 	return c.Path("sku")
+}
+
+func (c *Client) Assignment() *Client {
+	return c.Path("assignment")
 }
 
 func (c *Client) Links() *Client {
@@ -199,39 +246,37 @@ func (c *Client) Put(data interface{}) *Client {
 	return c
 }
 
-func (c *Client) Delete() *Client {
+func (c *Client) Delete(data ...interface{}) *Client {
 	c = c.New()
 	c.Sling.Delete("")
+	for _, d := range data {
+		c.Sling.BodyJSON(d)
+	}
 	return c
 }
 
 // when you don't expect a response
 func (c *Client) Send() (*http.Response, error) {
+	c.Debug("Send")
 	req, err := c.Sling.Request()
-	if err != nil {
-		return nil, err
-	}
+	c.Info("URL: ", req.URL)
+	c.Debug(req, err)
 
-	c.Debug("Sending request: ", req.URL)
 	res, err := c.Sling.Do(req, nil, nil)
-	if err != nil {
-		c.Debug("Error: %+v", err)
-		return nil, err
-	}
-	return res, nil
+	c.Debug(res, err)
+
+	return res, err
 }
 
 // when you do expect a response
-func (c *Client) Receive(data interface{}) (interface{}, error) {
+func (c *Client) Receive(data interface{}) (*http.Response, error) {
+	c.Debug("Receive")
 	req, err := c.Sling.Request()
-	if err != nil {
-		return nil, err
-	}
+	c.Info("URL: ", req.URL)
+	c.Debug(req, err)
 
-	c.Debug("Sending request: ", req.URL)
-	_, err = c.Sling.ReceiveSuccess(data)
-	if err != nil {
-		return nil, err
-	}
-	return data, nil
+	res, err := c.Sling.ReceiveSuccess(data)
+	c.Debug(res, err)
+
+	return res, err
 }

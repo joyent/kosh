@@ -19,12 +19,12 @@ func (c *Client) SendDeviceReport(r io.Reader) error {
 func (c *Client) ValidateDeviceReport(r io.Reader) (results types.ReportValidationResults) {
 	report := &types.DeviceReport{}
 	json.NewDecoder(r).Decode(report)
-	c.DeviceReport().Post(report).Receive(results)
+	c.DeviceReport().Post(report).Receive(&results)
 	return
 }
 
 // GET /device_report/:device_report_id
 func (c *Client) GetDeviceReport(id string) (report types.DeviceReportRow) {
-	c.DeviceReport(id).Receive(report)
+	c.DeviceReport(id).Receive(&report)
 	return
 }

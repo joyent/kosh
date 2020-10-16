@@ -25,13 +25,19 @@ func TestRelayRoutes(t *testing.T) {
 		{
 			URL:    "/relay/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetRelays() },
+			Do:     func(c *conch.Client) { _ = c.GetAllRelays() },
 		},
 		{
 			URL:    "/relay/foo/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetRelayByID("foo") },
+			Do:     func(c *conch.Client) { _ = c.GetRelayBySerial("foo") },
 		},
+		{
+			URL:    "/relay/00000000-0000-0000-0000-000000000000/",
+			Method: "GET",
+			Do:     func(c *conch.Client) { _ = c.GetRelayByID(types.UUID{}) },
+		},
+
 		{
 			URL:    "/relay/foo/",
 			Method: "DELETE",
@@ -51,7 +57,7 @@ func TestRelayRoutes(t *testing.T) {
 				w.WriteHeader(http.StatusOK)
 			}))
 			defer ts.Close()
-			test.Do(conch.New(ts.URL, "token", &logger{}))
+			test.Do(conch.New(newConfig(ts.URL)))
 			assert.True(t, seen, "saw the correct post to conch")
 		})
 	}

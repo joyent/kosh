@@ -9,14 +9,19 @@ func (c *Client) RegisterRelay(id string, relay types.RegisterRelay) error {
 }
 
 // GET /relay
-func (c *Client) GetRelays() (relays types.Relays) {
-	c.Relay().Receive(relays)
+func (c *Client) GetAllRelays() (relays types.Relays) {
+	c.Relay().Receive(&relays)
 	return
 }
 
 // GET /relay/:relay_id_or_serial_number
-func (c *Client) GetRelayByID(id string) (relay types.Relay) {
-	c.Relay(id).Receive(relay)
+func (c *Client) GetRelayBySerial(serial string) (relay types.Relay) {
+	c.Relay(serial).Receive(&relay)
+	return
+}
+
+func (c *Client) GetRelayByID(id types.UUID) (relay types.Relay) {
+	c.Relay(id.String()).Receive(&relay)
 	return
 }
 

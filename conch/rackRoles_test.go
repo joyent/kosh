@@ -11,46 +11,41 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestDatacenterRoutes(t *testing.T) {
+func TestRackRole(t *testing.T) {
 	tests := []struct {
 		URL    string
 		Method string
 		Do     func(c *conch.Client)
 	}{
 		{
-			URL:    "/dc/",
+			URL:    "/rack_role/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetAllDatacenters() },
+			Do:     func(c *conch.Client) { _ = c.GetAllRackRoles() },
 		},
 		{
-			URL:    "/dc/",
+			URL:    "/rack_role/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.CreateDatacenter(types.DatacenterCreate{}) },
+			Do:     func(c *conch.Client) { _ = c.CreateRackRole(types.RackRoleCreate{}) },
 		},
 		{
-			URL:    "/dc/foo/",
+			URL:    "/rack_role/foo/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetDatacenterByName("foo") },
+			Do:     func(c *conch.Client) { _ = c.GetRackRoleByName("foo") },
 		},
 		{
-			URL:    "/dc/00000000-0000-0000-0000-000000000000/",
+			URL:    "/rack_role/00000000-0000-0000-0000-000000000000/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetDatacenterByID(types.UUID{}) },
+			Do:     func(c *conch.Client) { _ = c.GetRackRoleByID(types.UUID{}) },
 		},
 		{
-			URL:    "/dc/00000000-0000-0000-0000-000000000000/",
+			URL:    "/rack_role/00000000-0000-0000-0000-000000000000/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.UpdateDatacenter(types.UUID{}, types.DatacenterUpdate{}) },
+			Do:     func(c *conch.Client) { _ = c.UpdateRackRole(types.UUID{}, types.RackRoleUpdate{}) },
 		},
 		{
-			URL:    "/dc/00000000-0000-0000-0000-000000000000/",
+			URL:    "/rack_role/00000000-0000-0000-0000-000000000000/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteDatacenter(types.UUID{}) },
-		},
-		{
-			URL:    "/dc/00000000-0000-0000-0000-000000000000/rooms/",
-			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetAllDatacenterRooms(types.UUID{}) },
+			Do:     func(c *conch.Client) { _ = c.DeleteRackRole(types.UUID{}) },
 		},
 	}
 

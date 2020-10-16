@@ -9,11 +9,8 @@ import (
 	"github.com/dnaeon/go-vcr/cassette"
 	"github.com/dnaeon/go-vcr/recorder"
 	"github.com/joyent/kosh/conch"
+	"github.com/joyent/kosh/logger"
 )
-
-type logger struct{}
-
-func (*logger) Debug(...interface{}) {}
 
 func NewTestClient(fixture string) *conch.Client {
 	api := os.Getenv("KOSH_URL")
@@ -39,5 +36,5 @@ func NewTestClient(fixture string) *conch.Client {
 
 	s := sling.New().Base(api).Client(&http.Client{Transport: r}).Set("Authorization", "Bearer "+token)
 
-	return &conch.Client{Sling: s, Logger: &logger{}}
+	return &conch.Client{Sling: s, Logger: logger.New()}
 }

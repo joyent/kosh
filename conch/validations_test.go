@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/joyent/kosh/conch"
+	"github.com/joyent/kosh/conch/types"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -24,18 +25,29 @@ func TestValidationRoutes(t *testing.T) {
 		{
 			URL:    "/validation/foo/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetValidationByID("foo") },
+			Do:     func(c *conch.Client) { _ = c.GetValidationByName("foo") },
+		},
+		{
+			URL:    "/validation/00000000-0000-0000-0000-000000000000/",
+			Method: "GET",
+			Do:     func(c *conch.Client) { _ = c.GetValidationByID(types.UUID{}) },
 		},
 		{
 			URL:    "/validation_plan/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetValidationPlans() },
+			Do:     func(c *conch.Client) { _ = c.GetAllValidationPlans() },
 		},
 		{
 			URL:    "/validation_plan/foo/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetValidationPlanByID("foo") },
+			Do:     func(c *conch.Client) { _ = c.GetValidationPlanByName("foo") },
 		},
+		{
+			URL:    "/validation_plan/00000000-0000-0000-0000-000000000000/",
+			Method: "GET",
+			Do:     func(c *conch.Client) { _ = c.GetValidationPlanByID(types.UUID{}) },
+		},
+
 		{
 			URL:    "/validation_plan/foo/validation/",
 			Method: "GET",
@@ -44,7 +56,12 @@ func TestValidationRoutes(t *testing.T) {
 		{
 			URL:    "/validation_state/foo/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetValidationStateByID("foo") },
+			Do:     func(c *conch.Client) { _ = c.GetValidationStateByName("foo") },
+		},
+		{
+			URL:    "/validation_state/00000000-0000-0000-0000-000000000000/",
+			Method: "GET",
+			Do:     func(c *conch.Client) { _ = c.GetValidationStateByID(types.UUID{}) },
 		},
 	}
 
@@ -60,7 +77,7 @@ func TestValidationRoutes(t *testing.T) {
 				w.WriteHeader(http.StatusOK)
 			}))
 			defer ts.Close()
-			test.Do(conch.New(ts.URL, "token", &logger{}))
+			test.Do(conch.New(newConfig(ts.URL)))
 			assert.True(t, seen, "saw the correct post to conch")
 		})
 	}

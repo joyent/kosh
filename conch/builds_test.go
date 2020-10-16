@@ -20,7 +20,7 @@ func TestBuilds(t *testing.T) {
 		{
 			URL:    "/build/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetBuilds() },
+			Do:     func(c *conch.Client) { _ = c.GetAllBuilds() },
 		},
 		{
 			URL:    "/build/",
@@ -51,34 +51,59 @@ func TestBuilds(t *testing.T) {
 		{
 			URL:    "/build/foo/user/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.AddBuildUser("foo", types.BuildAddUser{}) },
+			Do:     func(c *conch.Client) { _ = c.AddBuildUser("foo", types.BuildAddUser{}, false) },
+		},
+		{
+			URL:    "/build/foo/user/",
+			Method: "POST",
+			Do:     func(c *conch.Client) { _ = c.AddBuildUser("foo", types.BuildAddUser{}, true) },
+		},
+
+		{
+			URL:    "/build/foo/user/alice/",
+			Method: "DELETE",
+			Do:     func(c *conch.Client) { _ = c.DeleteBuildUser("foo", "alice", false) },
 		},
 		{
 			URL:    "/build/foo/user/alice/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteBuildUser("foo", "alice") },
+			Do:     func(c *conch.Client) { _ = c.DeleteBuildUser("foo", "alice", true) },
 		},
+
 		{
 			URL:    "/build/foo/organization/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetBuildOrganizations("foo") },
+			Do:     func(c *conch.Client) { _ = c.GetAllBuildOrganizations("foo") },
 		},
 		{
 			URL:    "/build/foo/organization/",
 			Method: "POST",
 			Do: func(c *conch.Client) {
-				_ = c.AddBuildOrganization("foo", types.BuildAddOrganization{})
+				_ = c.AddBuildOrganization("foo", types.BuildAddOrganization{}, false)
+			},
+		},
+		{
+			URL:    "/build/foo/organization/",
+			Method: "POST",
+			Do: func(c *conch.Client) {
+				_ = c.AddBuildOrganization("foo", types.BuildAddOrganization{}, true)
 			},
 		},
 		{
 			URL:    "/build/foo/organization/lemmings/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteBuildOrganization("foo", "lemmings") },
+			Do:     func(c *conch.Client) { _ = c.DeleteBuildOrganization("foo", "lemmings", false) },
 		},
+		{
+			URL:    "/build/foo/organization/lemmings/",
+			Method: "DELETE",
+			Do:     func(c *conch.Client) { _ = c.DeleteBuildOrganization("foo", "lemmings", true) },
+		},
+
 		{
 			URL:    "/build/foo/device/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetBuildDevices("foo") },
+			Do:     func(c *conch.Client) { _ = c.GetAllBuildDevices("foo") },
 		},
 		{
 			URL:    "/build/foo/device/pxe/",
@@ -93,24 +118,24 @@ func TestBuilds(t *testing.T) {
 			},
 		},
 		{
-			URL:    "/build/foo/device/DEADBEEF/",
+			URL:    "/build/00000000-0000-0000-0000-000000000000/device/00000000-0000-0000-0000-000000000000/",
 			Method: "POST",
 			Do: func(c *conch.Client) {
-				_ = c.AddBuildDeviceByID("foo", "DEADBEEF")
+				_ = c.AddBuildDeviceByID(types.UUID{}, types.UUID{})
 			},
 		},
 		{
-			URL:    "/build/foo/device/DEADBEEF/",
+			URL:    "/build/00000000-0000-0000-0000-000000000000/device/00000000-0000-0000-0000-000000000000/",
 			Method: "POST",
 			Do: func(c *conch.Client) {
-				_ = c.AddBuildDeviceByID("foo", "DEADBEEF")
+				_ = c.AddBuildDeviceByID(types.UUID{}, types.UUID{})
 			},
 		},
 		{
-			URL:    "/build/foo/device/DEADBEEF/",
+			URL:    "/build/00000000-0000-0000-0000-000000000000/device/00000000-0000-0000-0000-000000000000/",
 			Method: "DELETE",
 			Do: func(c *conch.Client) {
-				_ = c.DeleteBuildDeviceByID("foo", "DEADBEEF")
+				_ = c.DeleteBuildDeviceByID(types.UUID{}, types.UUID{})
 			},
 		},
 		{
@@ -141,7 +166,7 @@ func TestBuilds(t *testing.T) {
 				w.WriteHeader(http.StatusOK)
 			}))
 			defer ts.Close()
-			test.Do(conch.New(ts.URL, "token", &logger{}))
+			test.Do(conch.New(newConfig(ts.URL)))
 			assert.True(t, seen, "saw the correct post to conch")
 		})
 	}

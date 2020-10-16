@@ -42,9 +42,9 @@ func TestHardwareProductRoutes(t *testing.T) {
 			},
 		},
 		{
-			URL:    "/hardware_product/foo/",
+			URL:    "/hardware_product/00000000-0000-0000-0000-000000000000/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteHardwareProduct("foo") },
+			Do:     func(c *conch.Client) { _ = c.DeleteHardwareProduct(types.UUID{}) },
 		},
 		{
 			URL:    "/hardware_product/foo/specification?path=%5B%2Fbar%5D%2F",
@@ -74,7 +74,7 @@ func TestHardwareProductRoutes(t *testing.T) {
 				w.WriteHeader(http.StatusOK)
 			}))
 			defer ts.Close()
-			test.Do(conch.New(ts.URL, "token", &logger{}))
+			test.Do(conch.New(newConfig(ts.URL)))
 			assert.True(t, seen, "saw the correct post to conch")
 		})
 	}

@@ -3,8 +3,8 @@ package conch
 import "github.com/joyent/kosh/conch/types"
 
 // GET /dc
-func (c *Client) GetDatacenters() (dc types.Datacenters) {
-	c.DC("").Receive(dc)
+func (c *Client) GetAllDatacenters() (dc types.Datacenters) {
+	c.DC("").Receive(&dc)
 	return
 }
 
@@ -15,25 +15,30 @@ func (c *Client) CreateDatacenter(dc types.DatacenterCreate) error {
 }
 
 // GET /dc/:datacenter_id
-func (c *Client) GetDatacenterByID(id string) (dc types.Datacenter) {
-	c.DC(id).Receive(dc)
+func (c *Client) GetDatacenterByName(name string) (dc types.Datacenter) {
+	c.DC(name).Receive(&dc)
+	return
+}
+
+func (c *Client) GetDatacenterByID(id types.UUID) (dc types.Datacenter) {
+	c.DC(id.String()).Receive(&dc)
 	return
 }
 
 // POST /dc/:datacenter_id
-func (c *Client) UpdateDatacenter(id string, update types.DatacenterUpdate) error {
-	_, e := c.DC(id).Post(update).Send()
+func (c *Client) UpdateDatacenter(id types.UUID, update types.DatacenterUpdate) error {
+	_, e := c.DC(id.String()).Post(update).Send()
 	return e
 }
 
 // DELETE /dc/:datacenter_id
-func (c *Client) DeleteDatacenter(id string) error {
-	_, e := c.DC(id).Delete().Send()
+func (c *Client) DeleteDatacenter(id types.UUID) error {
+	_, e := c.DC(id.String()).Delete().Send()
 	return e
 }
 
 // GET /dc/:datacenter_id/rooms
-func (c *Client) GetDatacenterRooms(id string) (rooms types.DatacenterRoomsDetailed) {
-	c.DC(id).Rooms().Receive(rooms)
+func (c *Client) GetAllDatacenterRooms(id types.UUID) (rooms types.DatacenterRoomsDetailed) {
+	c.DC(id.String()).Rooms().Receive(&rooms)
 	return
 }

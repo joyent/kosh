@@ -30,7 +30,7 @@ func TestOrganizationRoutes(t *testing.T) {
 		{
 			URL:    "/organization/foo/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetOrganizationByID("foo") },
+			Do:     func(c *conch.Client) { _ = c.GetOrganizationByName("foo") },
 		},
 		{
 			URL:    "/organization/foo/",
@@ -40,21 +40,33 @@ func TestOrganizationRoutes(t *testing.T) {
 			},
 		},
 		{
-			URL:    "/organization/foo/",
+			URL:    "/organization/00000000-0000-0000-0000-000000000000/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteOrganization("foo") },
+			Do:     func(c *conch.Client) { _ = c.DeleteOrganization(types.UUID{}) },
 		},
 		{
-			URL:    "/organization/foo/",
+			URL:    "/organization/00000000-0000-0000-0000-000000000000/user/",
 			Method: "POST",
 			Do: func(c *conch.Client) {
-				_ = c.AddOrganizationUser("foo", types.OrganizationAddUser{})
+				_ = c.AddOrganizationUser(types.UUID{}, types.OrganizationAddUser{}, false)
 			},
 		},
 		{
-			URL:    "/organization/foo/user/bar/",
+			URL:    "/organization/00000000-0000-0000-0000-000000000000/user/",
+			Method: "POST",
+			Do: func(c *conch.Client) {
+				_ = c.AddOrganizationUser(types.UUID{}, types.OrganizationAddUser{}, true)
+			},
+		},
+		{
+			URL:    "/organization/00000000-0000-0000-0000-000000000000/user/bar/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteOrganizationUser("foo", "bar") },
+			Do:     func(c *conch.Client) { _ = c.DeleteOrganizationUser(types.UUID{}, "bar", false) },
+		},
+		{
+			URL:    "/organization/00000000-0000-0000-0000-000000000000/user/bar/",
+			Method: "DELETE",
+			Do:     func(c *conch.Client) { _ = c.DeleteOrganizationUser(types.UUID{}, "bar", true) },
 		},
 	}
 
@@ -70,7 +82,7 @@ func TestOrganizationRoutes(t *testing.T) {
 				w.WriteHeader(http.StatusOK)
 			}))
 			defer ts.Close()
-			test.Do(conch.New(ts.URL, "token", &logger{}))
+			test.Do(conch.New(newConfig(ts.URL)))
 			assert.True(t, seen, "saw the correct post to conch")
 		})
 	}

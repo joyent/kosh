@@ -12,7 +12,6 @@ import (
 )
 
 func TestDevices(t *testing.T) {
-
 	tests := []struct {
 		URL    string
 		Method string
@@ -36,7 +35,7 @@ func TestDevices(t *testing.T) {
 		{
 			URL:    "/device/DEADBEEF/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetDeviceById("DEADBEEF") },
+			Do:     func(c *conch.Client) { _ = c.GetDeviceBySerial("DEADBEEF") },
 		},
 		{
 			URL:    "/device/DEADBEEF/pxe/",
@@ -186,7 +185,7 @@ func TestDevices(t *testing.T) {
 				w.WriteHeader(http.StatusOK)
 			}))
 			defer ts.Close()
-			test.Do(conch.New(ts.URL, "token", &logger{}))
+			test.Do(conch.New(newConfig(ts.URL)))
 			assert.True(t, seen, "saw the correct post to conch")
 		})
 	}

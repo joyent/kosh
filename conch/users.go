@@ -4,6 +4,7 @@ import "github.com/joyent/kosh/conch/types"
 
 // GET /user/me
 func (c *Client) GetCurrentUser() (me types.UserDetailed) {
+	c.Debug("GetCurrentUser()")
 	me = c.GetUserByID("me")
 	return
 }
@@ -20,7 +21,7 @@ func (c *Client) ChangeCurrentUserPassword(setting types.UserSetting) error {
 
 // GET /user/me/settings
 func (c *Client) GetCurrentUserSettings() (settings types.UserSettings) {
-	c.User("me").Settings("").Receive(settings)
+	c.User("me").Settings("").Receive(&settings)
 	return
 }
 
@@ -32,7 +33,7 @@ func (c *Client) SetCurrentUserSettings(settings types.UserSettings) error {
 
 // GET /user/me/setting/:name
 func (c *Client) GetCurrentUserSettingByName(name string) (setting types.UserSetting) {
-	c.User("me").Settings(name).Receive(setting)
+	c.User("me").Settings(name).Receive(&setting)
 	return
 }
 
@@ -56,7 +57,7 @@ func (c *Client) GetCurrentUserTokens() (tokens types.UserTokens) {
 
 // POST /user/me/token
 func (c *Client) CreateCurrentUserToken(newToken types.NewUserToken) (token types.NewUserToken) {
-	c.User("me").Token().Post(newToken).Receive(token)
+	c.User("me").Token().Post(newToken).Receive(&token)
 	return
 }
 
@@ -73,7 +74,7 @@ func (c *Client) DeleteCurrentUserToken(name string) error {
 
 // GET /user/:target_user_id_or_email
 func (c *Client) GetUserByID(id string) (user types.UserDetailed) {
-	c.User(id).Receive(user)
+	c.User(id).Receive(&user)
 	return
 }
 
@@ -103,25 +104,25 @@ func (c *Client) ChangeUserPassword(id string, setting types.UserSetting) error 
 
 // GET /user
 func (c *Client) GetUsers() (me types.UsersDetailed) {
-	c.User("").Receive(me)
+	c.User("").Receive(&me)
 	return
 }
 
 // POST /user?send_mail=<1|0>
 func (c *Client) CreateUser(newUser types.NewUser) (user types.NewUser) {
-	c.User().Post(newUser).Receive(user)
+	c.User().Post(newUser).Receive(&user)
 	return
 }
 
 // GET /user/:target_user_id_or_email/token
 func (c *Client) GetUserToken(id string) (tokens types.UserTokens) {
-	c.User(id).Token().Receive(tokens)
+	c.User(id).Token().Receive(&tokens)
 	return
 }
 
 // GET /user/:target_user_id_or_email/token/:token_name
 func (c *Client) GetUserTokenByName(id, name string) (token types.UserToken) {
-	c.User(id).Token(name).Receive(token)
+	c.User(id).Token(name).Receive(&token)
 	return
 }
 

@@ -4,19 +4,19 @@ import "github.com/joyent/kosh/conch/types"
 
 // GET /ping
 func (c *Client) Ping() (ping types.Ping) {
-	c.Path("ping").Receive(ping)
+	c.Path("ping").Receive(&ping)
 	return
 }
 
 // GET /version
 func (c *Client) Version() (version types.Version) {
-	c.Path("version").Receive(version)
+	c.Path("version").Receive(&version)
 	return
 }
 
 // POST /login
 func (c *Client) Login(user, pass string) (token types.LoginToken) {
-	c.Path("login").Post(types.Login{Email: types.EmailAddress(user), Password: types.NonEmptyString(pass)}).Receive(token)
+	c.Path("login").Post(types.Login{Email: types.EmailAddress(user), Password: types.NonEmptyString(pass)}).Receive(&token)
 	return
 }
 
@@ -28,6 +28,10 @@ func (c *Client) Logout() error {
 
 // POST /refresh_token
 func (c *Client) RefreshToken() (token types.LoginToken) {
-	c.Path("refresh_token").Post("").Receive(token)
+	c.Path("refresh_token").Post("").Receive(&token)
 	return
+}
+
+func (c *Client) IsSysAdmin() bool {
+	return c.GetCurrentUser().IsAdmin
 }

@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/joyent/kosh/conch"
+	"github.com/joyent/kosh/conch/types"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -27,9 +28,9 @@ func TestHardwareVendorRoutes(t *testing.T) {
 			Do:     func(c *conch.Client) { _ = c.GetHardwareVendorByID("foo") },
 		},
 		{
-			URL:    "/hardware_vendor/foo/",
+			URL:    "/hardware_vendor/00000000-0000-0000-0000-000000000000/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteHardwareVendor("foo") },
+			Do:     func(c *conch.Client) { _ = c.DeleteHardwareVendor(types.UUID{}) },
 		},
 		{
 			URL:    "/hardware_vendor/foo/",
@@ -50,7 +51,7 @@ func TestHardwareVendorRoutes(t *testing.T) {
 				w.WriteHeader(http.StatusOK)
 			}))
 			defer ts.Close()
-			test.Do(conch.New(ts.URL, "token", &logger{}))
+			test.Do(conch.New(newConfig(ts.URL)))
 			assert.True(t, seen, "saw the correct post to conch")
 		})
 	}
