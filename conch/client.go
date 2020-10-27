@@ -2,9 +2,13 @@ package conch
 
 import (
 	"fmt"
+	"net"
 	"net/http"
 	"net/url"
+	"os"
+	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/dghubble/sling"
 	"github.com/joyent/kosh/logger"
@@ -21,39 +25,42 @@ type Config interface {
 	GetLogger() logger.Logger
 }
 
+var defaultTransport = &http.Transport{
+	Proxy: http.ProxyFromEnvironment,
+	Dial: (&net.Dialer{
+		Timeout:   5 * time.Second,
+		KeepAlive: 5 * time.Second,
+		DualStack: true,
+	}).Dial,
+	TLSHandshakeTimeout: 5 * time.Second,
+}
+
+func defaultUserAgent() string {
+	f, _ := os.Executable()
+	return fmt.Sprintf("go-conch %s", filepath.Base(f))
+}
+
 func New(c Config) *Client {
 	c.GetLogger().Debug(c)
-	s := sling.New().Base(c.GetURL()).Set("Authorization", "Bearer "+c.GetToken())
+	s := sling.New().
+		Client(&http.Client{Transport: defaultTransport}).
+		Set("User-Agent", defaultUserAgent()).
+		Base(c.GetURL()).
+		Set("Authorization", "Bearer "+c.GetToken())
+
 	return &Client{s, c.GetLogger()}
 }
-
-/*
-func buildUserAgent(GitRev string) map[string]string {
-	var isRoot bool
-	if current, err := user.Current(); err == nil {
-		if current.Uid == "0" {
-			isRoot = true
-		}
-	}
-
-	agentBits := make(map[string]string)
-	agent := fmt.Sprintf(
-		"%s (%s; %s; r=%v)",
-		GitRev,
-		runtime.GOOS,
-		runtime.GOARCH,
-		isRoot,
-	)
-
-	agentBits["Kosh"] = agent
-	return agentBits
-}
-*/
 
 func (c *Client) New() *Client {
 	s := c.Sling.New()
 	l := c.Logger
 	return &Client{s, l}
+}
+
+func (c *Client) UserAgent(ua string) *Client {
+	c = c.New()
+	c.Sling.Set("User-Agent", ua)
+	return c
 }
 
 func (c *Client) Path(path string, ids ...string) *Client {

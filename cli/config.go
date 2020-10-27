@@ -96,7 +96,8 @@ func (c *DefaultConfig) String() string {
 
 // ConchClient returns a configured client for the Conch API
 func (c *DefaultConfig) ConchClient() *conch.Client {
-	return conch.New(c)
+	userAgent := fmt.Sprintf("kosh %s", c.GitRev)
+	return conch.New(c).UserAgent(userAgent)
 }
 
 func (c *DefaultConfig) Renderer() func(interface{}) {
