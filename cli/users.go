@@ -22,7 +22,7 @@ func profileCmd(cfg Config) func(cmd *cli.Cmd) {
 	return func(cmd *cli.Cmd) {
 		cmd.Action = func() {
 			conch := cfg.ConchClient()
-			log := cfg.GetLogger()
+			log := cfg.Logger
 			log.Debug("display(conch.GetCurrentUser())")
 			display(conch.GetCurrentUser())
 		}
@@ -87,7 +87,7 @@ func userSettingDelete(cfg Config, setting string) func(cmd *cli.Cmd) {
 			if e := conch.DeleteCurrentUserSetting(setting); e != nil {
 				fatal(e)
 			}
-			if !cfg.GetOutputJSON() {
+			if !cfg.OutputJSON {
 				fmt.Println("OK")
 			}
 		}

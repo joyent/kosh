@@ -37,11 +37,11 @@ func requireSysAdmin(c Config) func() {
 }
 
 // NewApp creates a new kosh app, takes a cli.Config and returns an instance of cli.Cli
-func NewApp(config Config) *cli.Cli {
+func NewApp(config *Config) *cli.Cli {
 	app := cli.App("kosh", "Command line interface for Conch")
 	app.Spec = "[-vVdj]"
 
-	app.Version("V version", config.GetVersion())
+	app.Version("V version", config.Version)
 
 	conchToken := app.String(cli.StringOpt{
 		Name:   "t token",
@@ -78,36 +78,39 @@ func NewApp(config Config) *cli.Cli {
 		EnvVar: "KOSH_VERBOSE_MODE",
 	})
 
-	app.Command("build b", "Work with a specific build", buildCmd(config))
-	app.Command("builds bs", "Work with builds", buildsCmd(config))
-	app.Command("datacenter dc", "Deal with a single datacenter", datacenterCmd(config))
-	app.Command("datacenters dcs", "Work with the datacenters you have access to", datacentersCmd(config))
-	app.Command("device d", "Perform actions against a single device", deviceCmd(config))
-	app.Command("device-report dr", "Deal with device reports", deviceReportCmd(config))
-	app.Command("devices ds", "Commands for dealing with multiple devices", devicesCmd(config))
-	app.Command("hardware h", "Work with hardware profiles and vendors", hardwareCmd(config))
-	app.Command("organization org", "Work with a specific organization", organizationCmd(config))
-	app.Command("organizations orgs", "Work with organizations", organizationsCmd(config))
-	app.Command("rack r", "Work with a single rack", rackCmd(config))
-	app.Command("racks rs", "Work with datacenter racks", racksCmd(config))
-	app.Command("relay", "Perform actions against a single relay", relayCmd(config))
-	app.Command("relays", "Perform actions against the whole list of relays", relaysCmd(config))
-	app.Command("roles", "Work with datacenter rack roles", rolesCmd(config))
-	app.Command("role", "Work with a single rack role", roleCmd(config))
-	app.Command("room", "Deal with a single datacenter room", roomCmd(config))
-	app.Command("rooms", "Work with datacenter rooms", roomsCmd(config))
-	app.Command("schema", "Get the server JSON Schema for a given request or response", schemaCmd(config))
-	app.Command("user u", "Commands for dealing with the current user (you)", userCmd(config))
-	app.Command("validation v", "Work with validations", validationCmd(config))
-	app.Command("whoami", "Display details of the current user", whoamiCmd(config))
+	app.Command("build b", "Work with a specific build", buildCmd(*config))
+	app.Command("builds bs", "Work with builds", buildsCmd(*config))
+	app.Command("datacenter dc", "Deal with a single datacenter", datacenterCmd(*config))
+	app.Command("datacenters dcs", "Work with the datacenters you have access to", datacentersCmd(*config))
+	app.Command("device d", "Perform actions against a single device", deviceCmd(*config))
+	app.Command("device-report dr", "Deal with device reports", deviceReportCmd(*config))
+	app.Command("devices ds", "Commands for dealing with multiple devices", devicesCmd(*config))
+	app.Command("hardware h", "Work with hardware profiles and vendors", hardwareCmd(*config))
+	app.Command("organization org", "Work with a specific organization", organizationCmd(*config))
+	app.Command("organizations orgs", "Work with organizations", organizationsCmd(*config))
+	app.Command("rack r", "Work with a single rack", rackCmd(*config))
+	app.Command("racks rs", "Work with datacenter racks", racksCmd(*config))
+	app.Command("relay", "Perform actions against a single relay", relayCmd(*config))
+	app.Command("relays", "Perform actions against the whole list of relays", relaysCmd(*config))
+	app.Command("roles", "Work with datacenter rack roles", rolesCmd(*config))
+	app.Command("role", "Work with a single rack role", roleCmd(*config))
+	app.Command("room", "Deal with a single datacenter room", roomCmd(*config))
+	app.Command("rooms", "Work with datacenter rooms", roomsCmd(*config))
+	app.Command("schema", "Get the server JSON Schema for a given request or response", schemaCmd(*config))
+	app.Command("user u", "Commands for dealing with the current user (you)", userCmd(*config))
+	app.Command("validation v", "Work with validations", validationCmd(*config))
+	app.Command("whoami", "Display details of the current user", whoamiCmd(*config))
 
 	app.Command("version", "Get more detailed version info than --version", func(cmd *cli.Cmd) {
 		cmd.Action = func() {
+			conch := config.ConchClient()
+			display := config.Renderer()
 			fmt.Printf(
 				"Kosh %s\n"+"  Git Revision: %s\n",
-				config.GetVersion(),
-				config.GetGitRev(),
+				config.Version,
+				config.GitRev,
 			)
+			display(conch.Version())
 		}
 	})
 
@@ -116,16 +119,15 @@ func NewApp(config Config) *cli.Cli {
 			fmt.Println("Need to provide --token or set KOSH_TOKEN")
 			cli.Exit(1)
 		}
-
-		config.SetURL(*conchURL)
-		config.SetToken(*conchToken)
-		config.SetOutputJSON(*outputJSON)
-		config.SetLogger(logger.Logger{
+		config.ConchURL = *conchURL
+		config.ConchToken = *conchToken
+		config.OutputJSON = *outputJSON
+		config.Logger = logger.Logger{
 			LevelDebug: *levelDebug,
 			LevelInfo:  *levelInfo,
-		})
-		config.GetLogger().Debug("Starting App")
-		config.GetLogger().Info(config)
+		}
+		config.Debug("Starting App")
+		config.Info(*config)
 	}
 
 	return app

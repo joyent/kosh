@@ -14,28 +14,8 @@ import (
 	"github.com/joyent/kosh/template"
 )
 
-// Config is the interface for the configuration object for the full app
-type Config interface {
-	GetVersion() string
-	GetGitRev() string
-
-	SetURL(string)
-
-	SetToken(string)
-
-	SetLogger(logger.Logger)
-
-	GetOutputJSON() bool
-	SetOutputJSON(bool)
-
-	ConchClient() *conch.Client
-	Renderer() func(interface{})
-
-	conch.Config
-}
-
 // DefaultConfig is the default configuration struct
-type DefaultConfig struct {
+type Config struct {
 	Version string
 	GitRev  string
 
@@ -48,39 +28,9 @@ type DefaultConfig struct {
 	logger.Logger
 }
 
-// GetVersion returns the current app version
-func (c *DefaultConfig) GetVersion() string { return c.Version }
-
-// GetGitRev returns the current app version
-func (c *DefaultConfig) GetGitRev() string { return c.GitRev }
-
-// GetURL returns the current conch API url
-func (c *DefaultConfig) GetURL() string { return c.ConchURL }
-
-// GetToken returns the current conch API token
-func (c *DefaultConfig) GetToken() string { return c.ConchToken }
-
-// GetLogger returns the current logger instance
-func (c *DefaultConfig) GetLogger() logger.Logger { return c.Logger }
-
-// SetURL updates the current conch API url
-func (c *DefaultConfig) SetURL(URL string) { c.ConchURL = URL }
-
-// SetToken updates the current conch API token being used
-func (c *DefaultConfig) SetToken(token string) { c.ConchToken = token }
-
-// GetOutputJSON returns whether JSON is used for output or not
-func (c *DefaultConfig) GetOutputJSON() bool { return c.OutputJSON }
-
-// SetOutputJSON sets whether to use JSOn for output or not
-func (c *DefaultConfig) SetOutputJSON(p bool) { c.OutputJSON = p }
-
-// SetLogger sets the configured logger instance
-func (c *DefaultConfig) SetLogger(l logger.Logger) { c.Logger = l }
-
 // NewConfig takes a Version and a GitRev and returns a Config object
-func NewConfig(Version, GitRev string) *DefaultConfig {
-	return &DefaultConfig{
+func NewConfig(Version, GitRev string) *Config {
+	return &Config{
 		Version: Version,
 		GitRev:  GitRev,
 		Logger:  logger.New(),
@@ -103,7 +53,7 @@ const configTemplate = `
 `
 
 // String returns a string implementation of the config object
-func (c *DefaultConfig) String() string {
+func (c *Config) String() string {
 	t, err := template.NewTemplate().Parse(configTemplate)
 	if err != nil {
 		log.Fatal(err)
@@ -117,13 +67,18 @@ func (c *DefaultConfig) String() string {
 }
 
 // ConchClient returns a configured client for the Conch API
-func (c *DefaultConfig) ConchClient() *conch.Client {
+func (c *Config) ConchClient() *conch.Client {
 	userAgent := fmt.Sprintf("kosh %s", c.GitRev)
-	return conch.New(c).UserAgent(userAgent)
+	return conch.New(
+		conch.API(c.ConchURL),
+		conch.AuthToken(c.ConchToken),
+		conch.UserAgent(userAgent),
+		conch.Logger(c.Logger),
+	)
 }
 
 // Renderer returns a function that will render to STDOUT
-func (c *DefaultConfig) Renderer() func(interface{}) {
+func (c *Config) Renderer() func(interface{}) {
 	return c.RenderTo(os.Stdout)
 }
 
@@ -137,7 +92,7 @@ func renderJSON(i interface{}) string {
 
 // RenderTo returns a function tha renders to a given io.Writer based on the
 // configuraton and datatype
-func (c *DefaultConfig) RenderTo(w io.Writer) func(interface{}) {
+func (c *Config) RenderTo(w io.Writer) func(interface{}) {
 	return func(i interface{}) {
 		if c.OutputJSON {
 			fmt.Fprintln(w, renderJSON(i))

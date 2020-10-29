@@ -26,7 +26,7 @@ func okBuildRole(role string) bool {
 func buildsCmd(cfg Config) func(cmd *cli.Cmd) {
 	conch := cfg.ConchClient()
 	display := cfg.Renderer()
-	log := cfg.GetLogger()
+	log := cfg
 	return func(cmd *cli.Cmd) {
 		cmd.Before = func() {
 			conch = cfg.ConchClient()

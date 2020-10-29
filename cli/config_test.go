@@ -9,28 +9,9 @@ import (
 	"github.com/joyent/kosh/cli"
 	"github.com/joyent/kosh/conch"
 	"github.com/joyent/kosh/conch/types"
-	"github.com/joyent/kosh/logger"
 
 	"github.com/stretchr/testify/assert"
 )
-
-type config struct {
-	url    string
-	token  string
-	logger logger.Logger
-}
-
-func (c config) GetURL() string           { return c.url }
-func (c config) GetToken() string         { return c.token }
-func (c config) GetLogger() logger.Logger { return c.logger }
-
-func newConfig(URL string) config {
-	return config{
-		URL,
-		"token",
-		logger.New(),
-	}
-}
 
 func TestRender(t *testing.T) {
 	buffer := bytes.NewBufferString("")
@@ -40,7 +21,7 @@ func TestRender(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	}))
-	conch := conch.New(newConfig(ts.URL))
+	conch := conch.New(conch.API(ts.URL))
 
 	tests := []struct {
 		Name string

@@ -14,20 +14,6 @@ import (
 	"github.com/joyent/kosh/logger"
 )
 
-// Client is a struct that represnts the current Conch client.
-type Client struct {
-	Sling *sling.Sling
-	logger.Logger
-}
-
-// Config is an interface for an acceptable struct to configure the conch
-// client.
-type Config interface {
-	GetURL() string
-	GetToken() string
-	GetLogger() logger.Logger
-}
-
 var defaultTransport = &http.Transport{
 	Proxy: http.ProxyFromEnvironment,
 	Dial: (&net.Dialer{
@@ -43,16 +29,51 @@ func defaultUserAgent() string {
 	return fmt.Sprintf("go-conch %s", filepath.Base(f))
 }
 
+type Option func(*Client)
+
 // New takes a Config struct and returns a new instance of Client
-func New(c Config) *Client {
-	c.GetLogger().Debug(c)
+func New(options ...Option) (client *Client) {
 	s := sling.New().
 		Client(&http.Client{Transport: defaultTransport}).
-		Set("User-Agent", defaultUserAgent()).
-		Base(c.GetURL()).
-		Set("Authorization", "Bearer "+c.GetToken())
+		Set("User-Agent", defaultUserAgent())
 
-	return &Client{s, c.GetLogger()}
+	client = &Client{Sling: s}
+
+	for _, set := range options {
+		set(client)
+	}
+	return
+}
+
+// HTTPCLient sets the client used by the package for making HTTP Requests
+func HTTPClient(client *http.Client) Option {
+	return func(conch *Client) { conch.Sling.Client(client) }
+}
+
+// UserAgent sets the User-Agent used by the package
+func UserAgent(ua string) Option {
+	return func(conch *Client) { conch.Sling.Set("User-Agent", ua) }
+}
+
+// API sets the base URL for the API
+func API(url string) Option {
+	return func(conch *Client) { conch.Sling.Base(url) }
+}
+
+// AuthToken sets the authentication token
+func AuthToken(token string) Option {
+	return func(conch *Client) { conch.Sling.Set("Authorization", "Bearer "+token) }
+}
+
+// Logger sets the logger used by the package
+func Logger(logger logger.Logger) Option {
+	return func(conch *Client) { conch.Logger = logger }
+}
+
+// Client is a struct that represnts the current Conch client.
+type Client struct {
+	Sling *sling.Sling
+	logger.Logger
 }
 
 // New performs a shallow clone of the current client and returns the
