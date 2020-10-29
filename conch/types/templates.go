@@ -19,7 +19,6 @@ func (bl Builds) Headers() []string {
 		"Description",
 		"Started",
 		"Completed",
-		"Completed By",
 	}
 }
 
@@ -28,9 +27,8 @@ func (bl Builds) ForEach(do func([]string)) {
 		do([]string{
 			string(b.Name),
 			b.Description,
-			b.Started.String(),
-			b.Completed.String(),
-			string(b.CompletedUser.Email),
+			template.TimeStr(b.Started),
+			template.TimeStr(b.Completed),
 		})
 	}
 }
@@ -45,10 +43,15 @@ const buildTemplate = `
 * {{ .Name }} - {{ .Email }}
 {{ end }}
 
+## Links ##
+{{ range .Links }}
+* {{ . }}
+{{ end }}
+
 ---
-* Created: {{ .Created }}
-* Started: {{ .Started }}
-* Completed: {{ .Completed }} by {{ .CompletedUser.Name }}({{ .CompletedUser.Email }})
+* Created: {{ TimeStr .Created }}
+* Started: {{ TimeStr .Started }}
+* Completed: {{ TimeStr .Completed }} by {{ .CompletedUser.Name }}({{ .CompletedUser.Email }})
 `
 
 func (b Build) Template() string { return buildTemplate }
