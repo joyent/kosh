@@ -22,9 +22,9 @@ deps: ## Update dependencies to latest version
 
 .PHONY: test
 test: ## Ensure that code matches best practices
+	go test ./...
 	staticcheck ./...
 	go vet
-	TZ=UTC go test
 
 .PHONY: help
 help: ## Display this help message
