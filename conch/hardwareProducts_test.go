@@ -74,7 +74,7 @@ func TestHardwareProductRoutes(t *testing.T) {
 				w.WriteHeader(http.StatusOK)
 			}))
 			defer ts.Close()
-			test.Do(conch.New(newConfig(ts.URL)))
+			test.Do(conch.New(conch.API(ts.URL)))
 			assert.True(t, seen, "saw the correct post to conch")
 		})
 	}

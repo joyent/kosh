@@ -7,27 +7,8 @@ import (
 	"testing"
 
 	"github.com/joyent/kosh/conch"
-	"github.com/joyent/kosh/logger"
 	"github.com/stretchr/testify/assert"
 )
-
-type config struct {
-	url    string
-	token  string
-	logger logger.Logger
-}
-
-func (c config) GetURL() string           { return c.url }
-func (c config) GetToken() string         { return c.token }
-func (c config) GetLogger() logger.Logger { return c.logger }
-
-func newConfig(URL string) config {
-	return config{
-		URL,
-		"token",
-		logger.New(),
-	}
-}
 
 func TestDefaultRoutes(t *testing.T) {
 	tests := []struct {
@@ -74,7 +55,7 @@ func TestDefaultRoutes(t *testing.T) {
 				w.WriteHeader(http.StatusOK)
 			}))
 			defer ts.Close()
-			test.Do(conch.New(newConfig(ts.URL)))
+			test.Do(conch.New(conch.API(ts.URL)))
 			assert.True(t, seen, "saw the correct post to conch")
 		})
 	}
