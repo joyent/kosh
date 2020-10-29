@@ -17,6 +17,7 @@ import (
 // Config is the interface for the configuration object for the full app
 type Config interface {
 	GetVersion() string
+	GetGitRev() string
 
 	SetURL(string)
 
@@ -49,6 +50,9 @@ type DefaultConfig struct {
 
 // GetVersion returns the current app version
 func (c *DefaultConfig) GetVersion() string { return c.Version }
+
+// GetGitRev returns the current app version
+func (c *DefaultConfig) GetGitRev() string { return c.GitRev }
 
 // GetURL returns the current conch API url
 func (c *DefaultConfig) GetURL() string { return c.ConchURL }

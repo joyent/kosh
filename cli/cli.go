@@ -101,6 +101,16 @@ func NewApp(config Config) *cli.Cli {
 	app.Command("validation v", "Work with validations", validationCmd(config))
 	app.Command("whoami", "Display details of the current user", whoamiCmd(config))
 
+	app.Command("version", "Get more detailed version info than --version", func(cmd *cli.Cmd) {
+		cmd.Action = func() {
+			fmt.Printf(
+				"Kosh %s\n"+"  Git Revision: %s\n",
+				config.GetVersion(),
+				config.GetGitRev(),
+			)
+		}
+	})
+
 	app.Before = func() {
 		if *conchToken == "" {
 			fmt.Println("Need to provide --token or set KOSH_TOKEN")
