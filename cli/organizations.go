@@ -16,7 +16,7 @@ func organizationsCmd(cfg Config) func(cmd *cli.Cmd) {
 		}
 		cmd.Command("get ls", "Get a list of all organizations", func(cmd *cli.Cmd) {
 			cmd.Action = func() {
-				display(conch.GetOrganizations())
+				display(conch.GetAllOrganizations())
 			}
 		})
 

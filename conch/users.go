@@ -2,132 +2,163 @@ package conch
 
 import "github.com/joyent/kosh/conch/types"
 
-// GET /user/me
+// GetCurrentUser (GET /user/me) retrieves the user associated with the current
+// authentication
 func (c *Client) GetCurrentUser() (me types.UserDetailed) {
-	c.Debug("GetCurrentUser()")
-	me = c.GetUserByID("me")
+	me = c.GetUserByEmail("me")
 	return
 }
 
-// POST /user/me/revoke
+// RevokeCurrentUserCredentials (POST /user/me/revoke) reokes the
+// authentication (login) credentials for the current user.
+// DOES NOT AFFECT API TOKENS
 func (c *Client) RevokeCurrentUserCredentials() error {
 	return c.RevokeUserCredentials("me")
 }
 
-// POST /user/me/password
+// ChangeCurrentUserPassword (POST /user/me/password)
+// updates the password for the current user
 func (c *Client) ChangeCurrentUserPassword(setting types.UserSetting) error {
 	return c.ChangeUserPassword("me", setting)
 }
 
-// GET /user/me/settings
+// GetCurrentUserSettings (GET /user/me/settings) gets the settings for the
+// current user
 func (c *Client) GetCurrentUserSettings() (settings types.UserSettings) {
 	c.User("me").Settings("").Receive(&settings)
 	return
 }
 
-// POST /user/me/setting
+// SetCurrentUserSettings (POST /user/me/setting) updates the settings for the
+// current user
 func (c *Client) SetCurrentUserSettings(settings types.UserSettings) error {
 	_, e := c.User("me").Settings().Post(settings).Send()
 	return e
 }
 
-// GET /user/me/setting/:name
+// GetCurrentUserSettingByName (GET /user/me/setting/:name) retrieves a single
+// user setting
 func (c *Client) GetCurrentUserSettingByName(name string) (setting types.UserSetting) {
 	c.User("me").Settings(name).Receive(&setting)
 	return
 }
 
-// POST /user/me/setting/:name
+// SetCurrentUserSettingByName (POST /user/me/setting/:name) sets a single
+// users setting
 func (c *Client) SetCurrentUserSettingByName(name string, setting types.UserSetting) error {
 	_, e := c.User("me").Settings(name).Post(setting).Send()
 	return e
 }
 
-// DELETE /user/me/setting/:name
+// DeleteCurrentUserSetting (DELETE /user/me/setting/:name) removes a single
+// user setting by name
 func (c *Client) DeleteCurrentUserSetting(name string) error {
 	_, e := c.User("me").Settings(name).Delete().Send()
 	return e
 }
 
-// GET /user/me/token
+// GetCurrentUserTokens (GET /user/me/token) returns the list of API tokens for the current user
 func (c *Client) GetCurrentUserTokens() (tokens types.UserTokens) {
-	tokens = c.GetUserToken("me")
+	tokens = c.GetUserTokens("me")
 	return
 }
 
-// POST /user/me/token
+// CreateCurrentUserToken (POST /user/me/token) creates a new API token for the
+// current user. This is the only time the actual token string will be readable
 func (c *Client) CreateCurrentUserToken(newToken types.NewUserToken) (token types.NewUserToken) {
 	c.User("me").Token().Post(newToken).Receive(&token)
 	return
 }
 
-// GET /user/me/token/:token_name
+// GetCurrentUserTokenByName (GET /user/me/token/:token_name) returns the
+// information for a single API token for the current user. The token string
+// itself is not readable.
 func (c *Client) GetCurrentUserTokenByName(name string) (token types.UserToken) {
 	token = c.GetUserTokenByName("me", name)
 	return
 }
 
-// DELETE /user/me/token/:token_name
+// DeleteCurrentUserToken (DELETE /user/me/token/:token_name) removes the token
+// with the given name for the current user
 func (c *Client) DeleteCurrentUserToken(name string) error {
 	return c.DeleteUserToken("me", name)
 }
 
-// GET /user/:target_user_id_or_email
-func (c *Client) GetUserByID(id string) (user types.UserDetailed) {
-	c.User(id).Receive(&user)
+// GetUserByEmail (GET /user/:target_user_id_or_email) retrieves the user with
+// the given email
+func (c *Client) GetUserByEmail(email string) (user types.UserDetailed) {
+	c.User(email).Receive(&user)
 	return
 }
 
-// POST /user/:target_user_id_or_email?send_mail=<1|0>
-func (c *Client) UpdateUser(id string, update types.UpdateUser) error {
-	_, e := c.User(id).Post(update).Send()
+// GetUserByID (GET /user/:target_user_id_or_email) retrieves the user with
+// the given UUID
+func (c *Client) GetUserByID(id types.UUID) (user types.UserDetailed) {
+	c.User(id.String()).Receive(&user)
+	return
+}
+
+// UpdateUser (POST /user/:target_user_id_or_email?send_mail=<1|0>) will update the
+// user with the given email. Optionally notify the user via email.
+// BUG(perigrin): sendEmail is currently not implemented
+func (c *Client) UpdateUser(email string, update types.UpdateUser, sendEmail bool) error {
+	_, e := c.User(email).Post(update).Send()
 	return e
 }
 
-// DELETE /user/:target_user_id_or_email
-func (c *Client) DeleteUser(id string) error {
-	_, e := c.User(id).Delete().Send()
+// DeleteUser (DELETE /user/:target_user_id_or_email) will remove the user with the
+// given email
+func (c *Client) DeleteUser(email string) error {
+	_, e := c.User(email).Delete().Send()
 	return e
 }
 
-// POST /user/:target_user_id_or_email/revoke
-func (c *Client) RevokeUserCredentials(id string) error {
-	_, e := c.User(id).Revoke().Post("").Send()
+// RevokeUserCredentials (POST /user/:target_user_id_or_email/revoke) will
+// revoke the authentication credentials for the user with hte given email.
+// DOES NOT AFFECT API TOKENS FOR THE USER
+func (c *Client) RevokeUserCredentials(email string) error {
+	_, e := c.User(email).Revoke().Post("").Send()
 	return e
 }
 
-// DELETE /user/:target_user_id_or_email/password
-func (c *Client) ChangeUserPassword(id string, setting types.UserSetting) error {
-	_, e := c.User(id).Password().Post(setting).Send()
+// ChangeUserPassword (DELETE /user/:target_user_id_or_email/password) triggers
+// the password change mechanisim for the user with the given email.
+func (c *Client) ChangeUserPassword(email string, setting types.UserSetting) error {
+	_, e := c.User(email).Password().Post(setting).Send()
 	return e
 }
 
-// GET /user
-func (c *Client) GetUsers() (me types.UsersDetailed) {
+// GetAllUsers (GET /user) retrieves a list of all users
+func (c *Client) GetAllUsers() (me types.UsersDetailed) {
 	c.User("").Receive(&me)
 	return
 }
 
-// POST /user?send_mail=<1|0>
-func (c *Client) CreateUser(newUser types.NewUser) (user types.NewUser) {
+// CreateUser (POST /user?send_mail=<1|0>) create a new user in teh system and
+// optionally send them an email notification.
+// BUG(perigrin): sendEmail isn't implemented
+func (c *Client) CreateUser(newUser types.NewUser, sendEmail bool) (user types.NewUser) {
 	c.User().Post(newUser).Receive(&user)
 	return
 }
 
-// GET /user/:target_user_id_or_email/token
-func (c *Client) GetUserToken(id string) (tokens types.UserTokens) {
-	c.User(id).Token().Receive(&tokens)
+// GetUserTokens (GET /user/:target_user_id_or_email/token) retrieves the list
+// of API tokens for the given user.
+func (c *Client) GetUserTokens(email string) (tokens types.UserTokens) {
+	c.User(email).Token().Receive(&tokens)
 	return
 }
 
-// GET /user/:target_user_id_or_email/token/:token_name
-func (c *Client) GetUserTokenByName(id, name string) (token types.UserToken) {
-	c.User(id).Token(name).Receive(&token)
+// GetUserTokenByName (GET /user/:target_user_id_or_email/token/:token_name)
+// retrieves a single named API token for the given user
+func (c *Client) GetUserTokenByName(email, name string) (token types.UserToken) {
+	c.User(email).Token(name).Receive(&token)
 	return
 }
 
-// DELETE /user/:target_user_id_or_email/token/:token_name
-func (c *Client) DeleteUserToken(id, name string) error {
-	_, e := c.User(id).Token(name).Delete().Send()
+// DeleteUserToken (DELETE /user/:target_user_id_or_email/token/:token_name)
+// removes a named API token for the given user
+func (c *Client) DeleteUserToken(email, name string) error {
+	_, e := c.User(email).Token(name).Delete().Send()
 	return e
 }

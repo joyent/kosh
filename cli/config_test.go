@@ -198,7 +198,7 @@ func TestRender(t *testing.T) {
 
 		{
 			Name: "	display(conch.GetHardwareVendors())",
-			Do: func() { display(conch.GetHardwareVendors()) },
+			Do: func() { display(conch.GetAllHardwareVendors()) },
 		},
 
 		{
@@ -208,7 +208,7 @@ func TestRender(t *testing.T) {
 
 		{
 			Name: "	display(conch.GetOrganizations())",
-			Do: func() { display(conch.GetOrganizations()) },
+			Do: func() { display(conch.GetAllOrganizations()) },
 		},
 
 		{

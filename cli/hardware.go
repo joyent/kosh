@@ -26,7 +26,7 @@ func cmdCreateProduct(cfg Config) func(*cli.Cmd) {
 		cmd.Action = func() {
 			conch := cfg.ConchClient()
 			validationPlan := conch.GetValidationPlanByName(*validationPlanOpt)
-			vendor := conch.GetHardwareVendorByID(*vendor)
+			vendor := conch.GetHardwareVendorByName(*vendor)
 			create := types.HardwareProductCreate{
 				Name:             types.MojoStandardPlaceholder(*name),
 				Alias:            types.MojoStandardPlaceholder(*alias),
@@ -91,7 +91,7 @@ func hardwareCmd(cfg Config) func(*cli.Cmd) {
 
 		cmd.Command("vendors", "Work with hardware vendors", func(cmd *cli.Cmd) {
 			cmd.Command("get ls", "Get a list of all hardware vendors", func(cmd *cli.Cmd) {
-				display(conch.GetHardwareVendors())
+				display(conch.GetAllHardwareVendors())
 			})
 			cmd.Command("create", "Create a hardware vendor", func(cmd *cli.Cmd) {
 				name := cmd.StringArg("NAME", "", "The name of the hardware vendor.")
@@ -107,7 +107,7 @@ func hardwareCmd(cfg Config) func(*cli.Cmd) {
 
 			// grab the Vendor for the given ID
 			cmd.Before = func() {
-				hv = conch.GetHardwareVendorByID(*idArg)
+				hv = conch.GetHardwareVendorByName(*idArg)
 				if (hv == types.HardwareVendor{}) {
 					fmt.Println("Hardware Vendor not found for " + *idArg)
 					cli.Exit(1)

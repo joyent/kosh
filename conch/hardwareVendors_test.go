@@ -20,12 +20,12 @@ func TestHardwareVendorRoutes(t *testing.T) {
 		{
 			URL:    "/hardware_vendor/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetHardwareVendors() },
+			Do:     func(c *conch.Client) { _ = c.GetAllHardwareVendors() },
 		},
 		{
 			URL:    "/hardware_vendor/foo/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetHardwareVendorByID("foo") },
+			Do:     func(c *conch.Client) { _ = c.GetHardwareVendorByName("foo") },
 		},
 		{
 			URL:    "/hardware_vendor/00000000-0000-0000-0000-000000000000/",

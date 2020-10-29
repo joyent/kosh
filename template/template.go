@@ -1,3 +1,7 @@
+/*
+Package template provies utilities for rendering the output to markdown
+compatible output
+*/
 package template
 
 import (
@@ -21,7 +25,7 @@ func CutUUID(id string) string {
 	return id
 }
 
-// TimeStr fformats a time value into something human readable
+// TimeStr formats a time value into something human readable
 func TimeStr(t time.Time) string {
 	if t.IsZero() {
 		return ""
@@ -29,6 +33,7 @@ func TimeStr(t time.Time) string {
 	return t.Local().Format(dateFormat)
 }
 
+// Table formats Tabulable data using the tables package
 func Table(t tables.Tabulable) string {
 	return tables.Render(t)
 }
@@ -42,11 +47,12 @@ func NewTemplate() *template.Template {
 	})
 }
 
+// Templated tracks what the template is for a given data structure
 type Templated interface {
 	Template() string
 }
 
-// Render takes a struct, and a template string and returns a string
+// Render takes a Templated datapiecea and returns a markdown compatible string
 func Render(data Templated) (string, error) {
 	template := data.Template()
 	t, err := NewTemplate().Parse(template)

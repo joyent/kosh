@@ -20,7 +20,7 @@ func TestOrganizationRoutes(t *testing.T) {
 		{
 			URL:    "/organization/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetOrganizations() },
+			Do:     func(c *conch.Client) { _ = c.GetAllOrganizations() },
 		},
 		{
 			URL:    "/organization/",
