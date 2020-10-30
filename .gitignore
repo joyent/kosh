@@ -6,3 +6,4 @@ release
 vendor
 *.yml
 *.out
+.chglog/
