@@ -14,7 +14,7 @@ import (
 	"github.com/joyent/kosh/template"
 )
 
-// DefaultConfig is the default configuration struct
+// Config is the default configuration struct
 type Config struct {
 	Version string
 	GitRev  string
@@ -29,8 +29,8 @@ type Config struct {
 }
 
 // NewConfig takes a Version and a GitRev and returns a Config object
-func NewConfig(Version, GitRev string) *Config {
-	return &Config{
+func NewConfig(Version, GitRev string) Config {
+	return Config{
 		Version: Version,
 		GitRev:  GitRev,
 		Logger:  logger.New(),
@@ -49,11 +49,16 @@ const configTemplate = `
 * ConchEnvironment: {{ .ConchEnvironment }}
 
 * OutputJSON: {{ .OutputJSON }}
+
+Logger
+
+* Debug {{ .Logger.LevelDebug  }}
+* Info {{ .Logger.LevelInfo  }}
 ---
 `
 
 // String returns a string implementation of the config object
-func (c *Config) String() string {
+func (c Config) String() string {
 	t, err := template.NewTemplate().Parse(configTemplate)
 	if err != nil {
 		log.Fatal(err)
@@ -67,18 +72,18 @@ func (c *Config) String() string {
 }
 
 // ConchClient returns a configured client for the Conch API
-func (c *Config) ConchClient() *conch.Client {
-	userAgent := fmt.Sprintf("kosh %s", c.GitRev)
+func (c Config) ConchClient() *conch.Client {
+	c.Debug("Creating Conch Client")
 	return conch.New(
 		conch.API(c.ConchURL),
 		conch.AuthToken(c.ConchToken),
-		conch.UserAgent(userAgent),
+		conch.UserAgent(fmt.Sprintf("kosh %s", c.GitRev)),
 		conch.Logger(c.Logger),
 	)
 }
 
 // Renderer returns a function that will render to STDOUT
-func (c *Config) Renderer() func(interface{}) {
+func (c Config) Renderer() func(interface{}) {
 	return c.RenderTo(os.Stdout)
 }
 
@@ -92,10 +97,12 @@ func renderJSON(i interface{}) string {
 
 // RenderTo returns a function tha renders to a given io.Writer based on the
 // configuraton and datatype
-func (c *Config) RenderTo(w io.Writer) func(interface{}) {
+func (c Config) RenderTo(w io.Writer) func(interface{}) {
 	return func(i interface{}) {
 		if c.OutputJSON {
+			c.Debug("Outputting JSON")
 			fmt.Fprintln(w, renderJSON(i))
+			return
 		}
 		switch t := i.(type) {
 		case template.Templated:

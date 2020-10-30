@@ -7,130 +7,126 @@ import (
 	"strings"
 
 	cli "github.com/jawher/mow.cli"
+	"github.com/joyent/kosh/conch"
 )
 
-func devicesCmd(cfg Config) func(cmd *cli.Cmd) {
-	return func(cmd *cli.Cmd) {
-		cmd.Command("search s", "Search for devices", deviceSearchCmd(cfg))
+func devicesCmd(cmd *cli.Cmd) {
+	cmd.Command("search s", "Search for devices", deviceSearchCmd)
+}
+
+func deviceSearchCmd(cmd *cli.Cmd) {
+	cmd.Command("setting", "Search for devices by exact setting value", searchBySettingCmd)
+	cmd.Command("tag", "Search for devices by exact tag value", searchByTagCmd)
+	cmd.Command("hostname", "Search for devices by exact hostname", searchByHostnameCmd)
+}
+
+func searchBySettingCmd(cmd *cli.Cmd) {
+	key := *cmd.StringArg("KEY", "", "Setting name")
+	value := *cmd.StringArg("VALUE", "", "Setting Value")
+	cmd.Spec = "KEY VALUE"
+
+	cmd.Action = func() {
+		conch := config.ConchClient()
+		display := config.Renderer()
+
+		display(conch.FindDevicesBySetting(key, value))
 	}
 }
 
-func deviceSearchCmd(cfg Config) func(cmd *cli.Cmd) {
-	return func(cmd *cli.Cmd) {
-		cmd.Command("setting", "Search for devices by exact setting value", searchBySettingCmd(cfg))
-		cmd.Command("tag", "Search for devices by exact tag value", searchByTagCmd(cfg))
-		cmd.Command("hostname", "Search for devices by exact hostname", searchByHostnameCmd(cfg))
+func searchByTagCmd(cmd *cli.Cmd) {
+	key := *cmd.StringArg("KEY", "", "Tag name")
+	value := *cmd.StringArg("VALUE", "", "Tag Value")
+	cmd.Spec = "KEY VALUE"
+
+	cmd.Action = func() {
+		conch := config.ConchClient()
+		display := config.Renderer()
+
+		display(conch.FindDevicesByTag(key, value))
 	}
 }
 
-func searchBySettingCmd(cfg Config) func(cmd *cli.Cmd) {
-	display := cfg.Renderer()
-	return func(cmd *cli.Cmd) {
-		key := *cmd.StringArg("KEY", "", "Setting name")
-		value := *cmd.StringArg("VALUE", "", "Setting Value")
-		cmd.Spec = "KEY VALUE"
+func searchByHostnameCmd(cmd *cli.Cmd) {
+	hostname := *cmd.StringArg("HOSTNAME", "", "hostname")
+	cmd.Spec = "HOSTNAME"
 
-		cmd.Action = func() {
-			conch := cfg.ConchClient()
-			display(conch.FindDevicesBySetting(key, value))
-		}
-	}
-}
+	cmd.Action = func() {
+		conch := config.ConchClient()
+		display := config.Renderer()
 
-func searchByTagCmd(cfg Config) func(cmd *cli.Cmd) {
-	display := cfg.Renderer()
-	return func(cmd *cli.Cmd) {
-		key := *cmd.StringArg("KEY", "", "Tag name")
-		value := *cmd.StringArg("VALUE", "", "Tag Value")
-		cmd.Spec = "KEY VALUE"
-
-		cmd.Action = func() {
-			conch := cfg.ConchClient()
-			display(conch.FindDevicesByTag(key, value))
-		}
-	}
-}
-
-func searchByHostnameCmd(cfg Config) func(cmd *cli.Cmd) {
-	display := cfg.Renderer()
-	return func(cmd *cli.Cmd) {
-		hostname := *cmd.StringArg("HOSTNAME", "", "hostname")
-		cmd.Spec = "HOSTNAME"
-
-		cmd.Action = func() {
-			conch := cfg.ConchClient()
-			display(conch.FindDevicesByField("hostname", hostname))
-		}
+		display(conch.FindDevicesByField("hostname", hostname))
 	}
 }
 
 // Single Device Commands
-func deviceCmd(cfg Config) func(cmd *cli.Cmd) {
-	return func(cmd *cli.Cmd) {
-		id := cmd.StringArg(
-			"DEVICE",
-			"",
-			"UUID or serial number of the device. Short UUIDs are *not* accepted",
-		)
-		cmd.Spec = "DEVICE"
+func deviceCmd(cmd *cli.Cmd) {
+	id := cmd.StringArg(
+		"DEVICE",
+		"",
+		"UUID or serial number of the device. Short UUIDs are *not* accepted",
+	)
+	cmd.Spec = "DEVICE"
 
-		cmd.Command("get", "Get information about a single device", deviceGetCmd(cfg, id))
-		cmd.Command("validations", "Get the most recent validation results for a single device", deviceValidationsCmd(cfg, id))
-		cmd.Command("settings", "See all settings for a device", deviceSettingsCmd(cfg, id))
-		cmd.Command("setting", "See a single setting for a device", deviceSettingCmd(cfg, id))
-		cmd.Command("tags", "See all tags for a device", deviceTagsCmd(cfg, id))
-		cmd.Command("tag", "See a single tag for a device", deviceTagCmd(cfg, id))
-		cmd.Command("interface", "Information about a single interface", deviceInterfaceCmd(cfg, id))
-		cmd.Command("preflight", "Data that is only accurate inside preflight", devicePreflightCmd(cfg, id))
-		cmd.Command("phase", "Actions on the lifecycle phase of the device", devicePhaseCmd(cfg, id))
-
-		cmd.Command("report", "Get the most recently recorded report for this device", deviceDeviceReportCmd(cfg, id))
-	}
+	cmd.Command("get", "Get information about a single device", deviceGetCmd(id))
+	cmd.Command("validations", "Get the most recent validation results for a single device", deviceValidationsCmd(id))
+	cmd.Command("settings", "See all settings for a device", deviceSettingsCmd(id))
+	cmd.Command("setting", "See a single setting for a device", deviceSettingCmd(id))
+	cmd.Command("tags", "See all tags for a device", deviceTagsCmd(id))
+	cmd.Command("tag", "See a single tag for a device", deviceTagCmd(id))
+	cmd.Command("interface", "Information about a single interface", deviceInterfaceCmd(id))
+	cmd.Command("preflight", "Data that is only accurate inside preflight", devicePreflightCmd(id))
+	cmd.Command("phase", "Actions on the lifecycle phase of the device", devicePhaseCmd(id))
+	cmd.Command("report", "Get the most recently recorded report for this device", deviceDeviceReportCmd(id))
 }
 
-func deviceGetCmd(cfg Config, id *string) func(cmd *cli.Cmd) {
-	display := cfg.Renderer()
+func deviceGetCmd(id *string) func(cmd *cli.Cmd) {
 	return func(cmd *cli.Cmd) {
 		cmd.Action = func() {
-			conch := cfg.ConchClient()
+			conch := config.ConchClient()
+			display := config.Renderer()
+
 			display(conch.GetDeviceBySerial(*id))
 		}
 	}
 }
 
-func deviceValidationsCmd(cfg Config, id *string) func(cmd *cli.Cmd) {
-	display := cfg.Renderer()
+func deviceValidationsCmd(id *string) func(cmd *cli.Cmd) {
 	return func(cmd *cli.Cmd) {
 		cmd.Action = func() {
-			conch := cfg.ConchClient()
+			conch := config.ConchClient()
+			display := config.Renderer()
+
 			display(conch.GetDeviceValidationStates(*id))
 		}
 	}
 }
 
-func deviceSettingsCmd(cfg Config, id *string) func(cmd *cli.Cmd) {
-	display := cfg.Renderer()
+func deviceSettingsCmd(id *string) func(cmd *cli.Cmd) {
 	return func(cmd *cli.Cmd) {
 		cmd.Action = func() {
-			conch := cfg.ConchClient()
+			conch := config.ConchClient()
+			display := config.Renderer()
+
 			display(conch.GetDeviceSettings(*id))
 		}
 	}
 }
 
-func deviceSettingCmd(cfg Config, id *string) func(cmd *cli.Cmd) {
-	conch := cfg.ConchClient()
-	display := cfg.Renderer()
+func deviceSettingCmd(id *string) func(cmd *cli.Cmd) {
 	return func(cmd *cli.Cmd) {
+		var conch *conch.Client
+		var display func(interface{})
+
 		key := *cmd.StringArg(
 			"NAME",
 			"",
 			"Name of the setting",
 		)
-
 		cmd.Spec = "NAME"
+
 		cmd.Before = func() {
-			conch = cfg.ConchClient()
+			conch = config.ConchClient()
+			display = config.Renderer()
 		}
 		cmd.Action = func() {
 			display(conch.GetDeviceSettingByName(*id, key))
@@ -159,26 +155,28 @@ func deviceSettingCmd(cfg Config, id *string) func(cmd *cli.Cmd) {
 	}
 }
 
-func deviceTagsCmd(cfg Config, id *string) func(cmd *cli.Cmd) {
-	display := cfg.Renderer()
+func deviceTagsCmd(id *string) func(cmd *cli.Cmd) {
 	return func(cmd *cli.Cmd) {
 		cmd.Action = func() {
-			conch := cfg.ConchClient()
+			conch := config.ConchClient()
+			display := config.Renderer()
+
 			display(conch.GetDeviceTags(*id))
 		}
 	}
 }
 
-func deviceTagCmd(cfg Config, id *string) func(cmd *cli.Cmd) {
-	conch := cfg.ConchClient()
-	display := cfg.Renderer()
+func deviceTagCmd(id *string) func(cmd *cli.Cmd) {
 	return func(cmd *cli.Cmd) {
-		name := *cmd.StringArg("NAME", "", "Name of the tag")
+		var conch *conch.Client
+		var display func(interface{})
 
+		name := *cmd.StringArg("NAME", "", "Name of the tag")
 		cmd.Spec = "NAME"
 
 		cmd.Before = func() {
-			conch = cfg.ConchClient()
+			conch = config.ConchClient()
+			display = config.Renderer()
 		}
 
 		cmd.Action = func() { display(conch.GetDeviceTagByName(*id, name)) }
@@ -206,24 +204,28 @@ func deviceTagCmd(cfg Config, id *string) func(cmd *cli.Cmd) {
 	}
 }
 
-func deviceInterfaceCmd(cfg Config, id *string) func(cmd *cli.Cmd) {
-	display := cfg.Renderer()
+func deviceInterfaceCmd(id *string) func(cmd *cli.Cmd) {
 	return func(cmd *cli.Cmd) {
 		name := *cmd.StringArg("NAME", "", "Name of the interface")
 		cmd.Spec = "NAME"
 		cmd.Action = func() {
-			conch := cfg.ConchClient()
+			conch := config.ConchClient()
+			display := config.Renderer()
+
 			display(conch.GetDeviceInterfaceByName(*id, name))
 		}
 	}
 }
 
-func devicePreflightCmd(cfg Config, id *string) func(cmd *cli.Cmd) {
-	conch := cfg.ConchClient()
-	display := cfg.Renderer()
+func devicePreflightCmd(id *string) func(cmd *cli.Cmd) {
 	return func(cmd *cli.Cmd) {
+		var conch *conch.Client
+		var display func(interface{})
+
 		cmd.Before = func() {
-			conch = cfg.ConchClient()
+			conch = config.ConchClient()
+			display = config.Renderer()
+
 			if conch.GetDevicePhase(*id) != "integration" {
 				os.Stderr.WriteString("Warning: This device is no longer in the 'integration' phase. This data is likely to be inaccurate\n")
 			}
@@ -264,12 +266,14 @@ func okPhase(phase string) bool {
 	return false
 }
 
-func devicePhaseCmd(cfg Config, id *string) func(cmd *cli.Cmd) {
-	conch := cfg.ConchClient()
-	display := cfg.Renderer()
+func devicePhaseCmd(id *string) func(cmd *cli.Cmd) {
 	return func(cmd *cli.Cmd) {
+		var conch *conch.Client
+		var display func(interface{})
+
 		cmd.Before = func() {
-			conch = cfg.ConchClient()
+			conch = config.ConchClient()
+			display = config.Renderer()
 		}
 
 		cmd.Command("get", "Get the phase of the device", func(cmd *cli.Cmd) {
@@ -290,11 +294,12 @@ func devicePhaseCmd(cfg Config, id *string) func(cmd *cli.Cmd) {
 	}
 }
 
-func deviceDeviceReportCmd(cfg Config, id *string) func(cmd *cli.Cmd) {
-	display := cfg.Renderer()
+func deviceDeviceReportCmd(id *string) func(cmd *cli.Cmd) {
 	return func(cmd *cli.Cmd) {
 		cmd.Action = func() {
-			conch := cfg.ConchClient()
+			conch := config.ConchClient()
+			display := config.Renderer()
+
 			display(conch.GetDeviceBySerial(*id).LatestReport)
 		}
 	}

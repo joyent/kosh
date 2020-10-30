@@ -2,18 +2,13 @@ package cli
 
 import (
 	cli "github.com/jawher/mow.cli"
+	"github.com/joyent/kosh/conch"
 )
 
-func deviceReportCmd(cfg Config) func(cmd *cli.Cmd) {
-	return func(cmd *cli.Cmd) {
-		cmd.Command("post", "Post a new device report", deviceReportPostCmd(cfg))
-	}
-}
+func deviceReportCmd(cmd *cli.Cmd) {
+	cmd.Command("post", "Post a new device report", func(cmd *cli.Cmd) {
+		var conch *conch.Client
 
-func deviceReportPostCmd(cfg Config) func(*cli.Cmd) {
-	conch := cfg.ConchClient()
-
-	return func(cmd *cli.Cmd) {
 		filePathArg := cmd.StringArg("FILE", "-", "Path to a JSON file that defines the layout. '-' indicates STDIN")
 
 		input, err := getInputReader(*filePathArg)
@@ -21,7 +16,7 @@ func deviceReportPostCmd(cfg Config) func(*cli.Cmd) {
 			fatal(err)
 		}
 
-		cmd.Before = func() { conch = cfg.ConchClient() }
+		cmd.Before = func() { conch = config.ConchClient() }
 		cmd.Action = func() { conch.SendDeviceReport(input) }
-	}
+	})
 }

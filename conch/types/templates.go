@@ -759,3 +759,22 @@ AZ: {{ .Az }}
 `
 
 func (dl DeviceLocation) Template() string { return deviceLocationTemplate }
+
+func (ul UsersTerse) Len() int           { return len(ul) }
+func (ul UsersTerse) Swap(i, j int)      { ul[i], ul[j] = ul[j], ul[i] }
+func (ul UsersTerse) Less(i, j int) bool { return ul[i].Name < ul[j].Name }
+func (ul UsersTerse) Headers() []string {
+	return []string{
+		"Name",
+		"Email",
+	}
+}
+
+func (ul UsersTerse) ForEach(do func([]string)) {
+	for _, u := range ul {
+		do([]string{
+			string(u.Name),
+			string(u.Email),
+		})
+	}
+}

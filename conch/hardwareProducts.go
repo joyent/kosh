@@ -1,6 +1,11 @@
 package conch
 
-import "github.com/joyent/kosh/conch/types"
+import (
+	"encoding/json"
+	"io"
+
+	"github.com/joyent/kosh/conch/types"
+)
 
 // GetHardwareProducts (GET /hardware_product) returns a list of known hardware
 // products
@@ -14,6 +19,13 @@ func (c *Client) GetHardwareProducts() (products types.HardwareProducts) {
 func (c *Client) CreateHardwareProduct(product types.HardwareProductCreate) error {
 	_, e := c.HardwareProduct().Post(product).Send()
 	return e
+}
+
+// ReadHardwareProduct takes an io reader and returns a HardwareProductCreate
+// struct suitable for CreateHardwareProduct
+func (c *Client) ReadHardwareProduct(r io.Reader) (create types.HardwareProductCreate) {
+	json.NewDecoder(r).Decode(&create)
+	return
 }
 
 // GetHardwareProductByID (GET /hardware_product/:hardware_product_id_or_other)
