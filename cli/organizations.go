@@ -78,7 +78,7 @@ func organizationCmd(cmd *cli.Cmd) {
 	cmd.Command("users", "Manage users in a specific organization", func(cmd *cli.Cmd) {
 		cmd.Command("get ls", "Get a list of users in an organization", func(cmd *cli.Cmd) {
 			cmd.Action = func() {
-				display(conch.GetOrganizationByID(o.ID))
+				display(o.Users)
 			}
 		})
 
