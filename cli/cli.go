@@ -6,7 +6,6 @@ import (
 	"os"
 
 	cli "github.com/jawher/mow.cli"
-	"github.com/joyent/kosh/logger"
 )
 
 const (
@@ -36,70 +35,74 @@ func requireSysAdmin(c Config) func() {
 	}
 }
 
+var config Config
+
 // NewApp creates a new kosh app, takes a cli.Config and returns an instance of cli.Cli
-func NewApp(config *Config) *cli.Cli {
+func NewApp(cfg Config) *cli.Cli {
+	config = cfg
+
 	app := cli.App("kosh", "Command line interface for Conch")
 	app.Spec = "[-vVdj]"
 
 	app.Version("V version", config.Version)
 
-	conchToken := app.String(cli.StringOpt{
+	app.StringPtr(&config.ConchToken, cli.StringOpt{
 		Name:   "t token",
 		Value:  "",
 		Desc:   "API token",
 		EnvVar: "KOSH_TOKEN",
 	})
 
-	conchURL := app.String(cli.StringOpt{
+	app.StringPtr(&config.ConchURL, cli.StringOpt{
 		Name:   "u url",
 		Value:  productionURL,
 		Desc:   "This specifies the API URL.",
 		EnvVar: "KOSH_URL",
 	})
 
-	outputJSON := app.Bool(cli.BoolOpt{
+	app.BoolPtr(&config.OutputJSON, cli.BoolOpt{
 		Name:   "j json",
 		Value:  false,
 		Desc:   "Output JSON only",
 		EnvVar: "KOSH_JSON_ONLY",
 	})
 
-	levelDebug := app.Bool(cli.BoolOpt{
+	app.BoolPtr(&config.Logger.LevelDebug, cli.BoolOpt{
 		Name:   "d debug",
 		Value:  false,
 		Desc:   "Enable Debugging output (for debugging purposes *very* noisy). ",
 		EnvVar: "KOSH_DEBUG_MODE",
 	})
 
-	levelInfo := app.Bool(cli.BoolOpt{
+	app.BoolPtr(&config.Logger.LevelInfo, cli.BoolOpt{
 		Name:   "v verbose",
 		Value:  false,
 		Desc:   "Enable Verbose Output",
 		EnvVar: "KOSH_VERBOSE_MODE",
 	})
 
-	app.Command("build b", "Work with a specific build", buildCmd(*config))
-	app.Command("builds bs", "Work with builds", buildsCmd(*config))
-	app.Command("datacenter dc", "Deal with a single datacenter", datacenterCmd(*config))
-	app.Command("datacenters dcs", "Work with the datacenters you have access to", datacentersCmd(*config))
-	app.Command("device d", "Perform actions against a single device", deviceCmd(*config))
-	app.Command("device-report dr", "Deal with device reports", deviceReportCmd(*config))
-	app.Command("devices ds", "Commands for dealing with multiple devices", devicesCmd(*config))
-	app.Command("hardware h", "Work with hardware profiles and vendors", hardwareCmd(*config))
-	app.Command("organization org", "Work with a specific organization", organizationCmd(*config))
-	app.Command("organizations orgs", "Work with organizations", organizationsCmd(*config))
-	app.Command("rack r", "Work with a single rack", rackCmd(*config))
-	app.Command("racks rs", "Work with datacenter racks", racksCmd(*config))
-	app.Command("relay", "Perform actions against a single relay", relayCmd(*config))
-	app.Command("relays", "Perform actions against the whole list of relays", relaysCmd(*config))
-	app.Command("roles", "Work with datacenter rack roles", rolesCmd(*config))
-	app.Command("role", "Work with a single rack role", roleCmd(*config))
-	app.Command("room", "Deal with a single datacenter room", roomCmd(*config))
-	app.Command("rooms", "Work with datacenter rooms", roomsCmd(*config))
-	app.Command("schema", "Get the server JSON Schema for a given request or response", schemaCmd(*config))
-	app.Command("user u", "Commands for dealing with the current user (you)", userCmd(*config))
-	app.Command("validation v", "Work with validations", validationCmd(*config))
-	app.Command("whoami", "Display details of the current user", whoamiCmd(*config))
+	app.Command("build b", "Work with a specific build", buildCmd)
+	app.Command("builds bs", "Work with builds", buildsCmd)
+	app.Command("datacenter dc", "Deal with a single datacenter", datacenterCmd)
+	app.Command("datacenters dcs", "Work with the datacenters you have access to", datacentersCmd)
+	app.Command("device d", "Perform actions against a single device", deviceCmd)
+	app.Command("device-report dr", "Deal with device reports", deviceReportCmd)
+	app.Command("devices ds", "Commands for dealing with multiple devices", devicesCmd)
+	app.Command("hardware h", "Work with hardware profiles and vendors", hardwareCmd)
+	app.Command("organization org", "Work with a specific organization", organizationCmd)
+	app.Command("organizations orgs", "Work with organizations", organizationsCmd)
+	app.Command("rack r", "Work with a single rack", rackCmd)
+	app.Command("racks rs", "Work with datacenter racks", racksCmd)
+	app.Command("relay", "Perform actions against a single relay", relayCmd)
+	app.Command("relays", "Perform actions against the whole list of relays", relaysCmd)
+	app.Command("roles", "Work with datacenter rack roles", rolesCmd)
+	app.Command("role", "Work with a single rack role", roleCmd)
+	app.Command("room", "Deal with a single datacenter room", roomCmd)
+	app.Command("rooms", "Work with datacenter rooms", roomsCmd)
+	app.Command("schema", "Get the server JSON Schema for a given request or response", schemaCmd)
+	app.Command("user u", "Commands for dealing with the current user (you)", userCmd)
+	app.Command("validation v", "Work with validations", validationCmd)
+	app.Command("whoami", "Display details of the current user", whoamiCmd)
 
 	app.Command("version", "Get more detailed version info than --version", func(cmd *cli.Cmd) {
 		cmd.Action = func() {
@@ -115,19 +118,13 @@ func NewApp(config *Config) *cli.Cli {
 	})
 
 	app.Before = func() {
-		if *conchToken == "" {
+		if config.ConchToken == "" {
 			fmt.Println("Need to provide --token or set KOSH_TOKEN")
 			cli.Exit(1)
 		}
-		config.ConchURL = *conchURL
-		config.ConchToken = *conchToken
-		config.OutputJSON = *outputJSON
-		config.Logger = logger.Logger{
-			LevelDebug: *levelDebug,
-			LevelInfo:  *levelInfo,
-		}
+
 		config.Debug("Starting App")
-		config.Info(*config)
+		config.Info(config)
 	}
 
 	return app
