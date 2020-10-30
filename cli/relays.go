@@ -12,7 +12,11 @@ func relaysCmd(cfg Config) func(cmd *cli.Cmd) {
 	display := cfg.Renderer()
 
 	return func(cmd *cli.Cmd) {
-		cmd.Command("get", "Get a list of relays", func(cmd *cli.Cmd) {
+		cmd.Action = func() {
+			conch := cfg.ConchClient()
+			display(conch.GetAllRelays())
+		}
+		cmd.Command("get ls", "Get a list of relays", func(cmd *cli.Cmd) {
 			cmd.Action = func() {
 				conch := cfg.ConchClient()
 				display(conch.GetAllRelays())
@@ -37,10 +41,10 @@ func relayCmd(cfg Config) func(cmd *cli.Cmd) {
 
 		cmd.Before = func() {
 			conch = cfg.ConchClient()
+			relay = conch.GetRelayBySerial(*relayArg)
 		}
 		cmd.Command("get", "Get data about a single relay", func(cmd *cli.Cmd) {
 			cmd.Action = func() {
-				relay = conch.GetRelayBySerial(*relayArg)
 				if (relay == types.Relay{}) {
 					fatal(errors.New("relay not found"))
 				}
@@ -68,7 +72,7 @@ func relayCmd(cfg Config) func(cmd *cli.Cmd) {
 
 		cmd.Command("delete rm", "Delete a relay", func(cmd *cli.Cmd) {
 			cmd.Action = func() {
-				conch.DeleteRelay(*relayArg)
+				conch.DeleteRelay(relay.ID.String())
 				display(conch.GetAllRelays())
 			}
 		})

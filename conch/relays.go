@@ -30,6 +30,7 @@ func (c *Client) GetRelayByID(id types.UUID) (relay types.Relay) {
 }
 
 // DeleteRelay (DELETE /relay/:relay_id_or_serial_number) removes a relay
+// BUG(perigrin): id here should be a UUID not a string
 func (c *Client) DeleteRelay(id string) error {
 	_, e := c.Relay(id).Delete().Send()
 	return e
