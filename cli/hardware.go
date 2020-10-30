@@ -54,6 +54,23 @@ func cmdListProducts(cfg Config) func(cmd *cli.Cmd) {
 	}
 }
 
+func cmdImportProduct(cfg Config) func(*cli.Cmd) {
+	return func(cmd *cli.Cmd) {
+		filePathArg := cmd.StringArg("FILE", "-", "Path to a JSON file that defines the new hardware product. '-' indicates STDIN")
+		cmd.Action = func() {
+			conch := cfg.ConchClient()
+
+			in, err := getInputReader(*filePathArg)
+			if err != nil {
+				fatal(err)
+			}
+
+			p := conch.ReadHardwareProduct(in)
+			conch.CreateHardwareProduct(p)
+		}
+	}
+}
+
 func hardwareCmd(cfg Config) func(*cli.Cmd) {
 	conch := cfg.ConchClient()
 	display := cfg.Renderer()
@@ -65,6 +82,7 @@ func hardwareCmd(cfg Config) func(*cli.Cmd) {
 
 		cmd.Command("products", "Work with hardware products", func(cmd *cli.Cmd) {
 			cmd.Command("create", "Create a hardware product", cmdCreateProduct(cfg))
+			cmd.Command("import", "Import a hardware product as a JSON file", cmdImportProduct(cfg))
 			cmd.Command("get ls", "Get a list of all hardware products", cmdListProducts(cfg))
 		})
 
