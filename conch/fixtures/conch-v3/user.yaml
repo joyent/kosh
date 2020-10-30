@@ -10,8 +10,7 @@ interactions:
     url: http://10.51.54.42:5000/user/me
     method: GET
   response:
-    body: '{"builds":[],"created":"2019-10-09T17:21:43.700385Z","email":"conch@exmaple.com","force_password_change":false,"id":"c3d2c2e6-e3c0-48ca-a8b0-f97e842888f5","is_admin":true,"last_login":null,"last_seen":"2020-01-13T23:16:24.355614Z","name":"conch","organizations":[],"refuse_session_auth":false,"workspaces":[{"description":"Global
-      workspace","id":"8bb8f3a8-0f1e-4f1d-92a9-3d108f5743c8","name":"GLOBAL","parent_workspace_id":null,"role":"admin"}]}'
+    body: '{"builds":[],"created":"2019-10-09T17:21:43.700385Z","email":"conch@exmaple.com","force_password_change":false,"id":"c3d2c2e6-e3c0-48ca-a8b0-f97e842888f5","is_admin":true,"last_login":null,"last_seen":"2020-01-13T23:16:24.355614Z","name":"conch","organizations":[],"refuse_session_auth":false}'
     headers:
       Cache-Control:
       - no-cache
