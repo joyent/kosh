@@ -2,30 +2,6 @@ package conch
 
 import "github.com/joyent/kosh/conch/types"
 
-// GetValidations ( GET /validation ) returns a list of all validations from
-// the server. See also
-// https://joyent.github.io/conch-api/modules/Conch%3A%3ARoute%3A%3AValidation#get-validations
-func (c *Client) GetValidations() (validations types.Validations) {
-	c.Validation().Receive(&validations)
-	return
-}
-
-// GetValidationByName (GET /validation/:validation_id_or_name ) returns a single
-// validation from the server for the given string. See also
-// https://joyent.github.io/conch-api/modules/Conch%3A%3ARoute%3A%3AValidation#get-validation
-func (c *Client) GetValidationByName(name string) (validation types.Validation) {
-	c.Validation(name).Receive(&validation)
-	return
-}
-
-// GetValidationByID (GET /validation/:validation_id_or_name ) returns a single
-// validation from the server for the given UUID. See also
-// https://joyent.github.io/conch-api/modules/Conch%3A%3ARoute%3A%3AValidation#get-validation
-func (c *Client) GetValidationByID(id types.UUID) (validation types.Validation) {
-	c.Validation(id.String()).Receive(&validation)
-	return
-}
-
 // GetAllValidationPlans ( GET /validation_plan ) returns a list of all
 // validations plans. See also
 // https://joyent.github.io/conch-api/modules/Conch%3A%3ARoute%3A%3AValidation#get-validation_plans
