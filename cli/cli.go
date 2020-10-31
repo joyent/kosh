@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -39,10 +40,12 @@ var config Config
 
 // NewApp creates a new kosh app, takes a cli.Config and returns an instance of cli.Cli
 func NewApp(cfg Config) *cli.Cli {
+	var URLSetByUser bool
+
 	config = cfg
 
 	app := cli.App("kosh", "Command line interface for Conch")
-	app.Spec = "[-vVdj]"
+	app.Spec = "[-dejutvV]"
 
 	app.Version("V version", config.Version)
 
@@ -53,11 +56,19 @@ func NewApp(cfg Config) *cli.Cli {
 		EnvVar: "KOSH_TOKEN",
 	})
 
+	app.StringPtr(&config.ConchENV, cli.StringOpt{
+		Name:   "env e",
+		Value:  "production",
+		Desc:   "This specifies the environment KOSH is pointing to",
+		EnvVar: "KOSH_ENV",
+	})
+
 	app.StringPtr(&config.ConchURL, cli.StringOpt{
-		Name:   "u url",
-		Value:  productionURL,
-		Desc:   "This specifies the API URL.",
-		EnvVar: "KOSH_URL",
+		Name:      "u url",
+		Value:     productionURL,
+		Desc:      "This specifies the API URL.",
+		EnvVar:    "KOSH_URL",
+		SetByUser: &URLSetByUser,
 	})
 
 	app.BoolPtr(&config.OutputJSON, cli.BoolOpt{
@@ -121,6 +132,19 @@ func NewApp(cfg Config) *cli.Cli {
 		if config.ConchToken == "" {
 			fmt.Println("Need to provide --token or set KOSH_TOKEN")
 			cli.Exit(1)
+		}
+
+		if !URLSetByUser {
+			switch config.ConchENV {
+			case "production":
+				config.ConchURL = productionURL
+			case "staging":
+				config.ConchURL = stagingURL
+			case "edge":
+				config.ConchURL = edgeURL
+			default:
+				fatal(errors.New("environment not one of production, staging, edge: perhaps you want --url?"))
+			}
 		}
 
 		config.Debug("Starting App")
