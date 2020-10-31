@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	cli "github.com/jawher/mow.cli"
-	"github.com/joyent/kosh/v3/conch"
+	"github.com/joyent/kosh/conch"
 )
 
 func schemaCmd(cmd *cli.Cmd) {

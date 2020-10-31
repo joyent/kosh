@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io"
 
-	"github.com/joyent/kosh/v3/conch/types"
+	"github.com/joyent/kosh/conch/types"
 )
 
 // CreateRack (POST /rack) creates a new rack

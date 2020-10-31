@@ -1,6 +1,6 @@
 package conch
 
-import "github.com/joyent/kosh/v3/conch/types"
+import "github.com/joyent/kosh/conch/types"
 
 // GetAllOrganizations (GET /organization) returns the list of organizations
 func (c *Client) GetAllOrganizations() (orgs types.Organizations) {
