@@ -113,6 +113,8 @@ func (c Config) RenderTo(w io.Writer) func(interface{}) {
 			fmt.Fprintln(w, s)
 		case tables.Tabulable:
 			fmt.Fprintln(w, tables.Render(t))
+		case fmt.Stringer:
+			fmt.Fprintln(w, t)
 		default:
 			fmt.Fprintln(w, renderJSON(t))
 		}

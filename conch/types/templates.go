@@ -579,13 +579,9 @@ func (r DatacenterRoomDetailed) Template() string { return roomTemplate }
 func (dr DatacenterRoomsDetailed) Len() int           { return len(dr) }
 func (dr DatacenterRoomsDetailed) Swap(i, j int)      { dr[i], dr[j] = dr[j], dr[i] }
 func (dr DatacenterRoomsDetailed) Less(i, j int) bool { return dr[i].Alias < dr[j].Alias }
-func (dr DatacenterRoomsDetailed) String() string {
-	sort.Sort(dr)
 
-	tableString := &strings.Builder{}
-	table := tables.NewTable(tableString)
-
-	table.SetHeader([]string{
+func (dr DatacenterRoomsDetailed) Headers() []string {
+	return []string{
 		"ID",
 		"Alias",
 		"AZ",
@@ -593,10 +589,12 @@ func (dr DatacenterRoomsDetailed) String() string {
 		"Datacenter ID",
 		"Created",
 		"Updated",
-	})
+	}
+}
 
+func (dr DatacenterRoomsDetailed) ForEach(do func([]string)) {
 	for _, r := range dr {
-		table.Append([]string{
+		do([]string{
 			template.CutUUID(r.ID.String()),
 			string(r.Alias),
 			string(r.AZ),
@@ -606,9 +604,6 @@ func (dr DatacenterRoomsDetailed) String() string {
 			template.TimeStr(r.Updated),
 		})
 	}
-
-	table.Render()
-	return tableString.String()
 }
 
 func (u UserSettings) Headers() []string {

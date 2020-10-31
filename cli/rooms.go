@@ -18,10 +18,10 @@ func roomsCmd(cmd *cli.Cmd) {
 		display = config.Renderer()
 	}
 
-	cmd.Command("get", "Get a list of all rooms", func(cmd *cli.Cmd) {
-		cmd.Action = func() {
-			display(conch.GetAllRooms())
-		}
+	cmd.Action = func() { display(conch.GetAllRooms()) }
+
+	cmd.Command("get ls", "Get a list of all rooms", func(cmd *cli.Cmd) {
+		cmd.Action = func() { display(conch.GetAllRooms()) }
 	})
 
 	cmd.Command("create", "Create a single room", func(cmd *cli.Cmd) {
