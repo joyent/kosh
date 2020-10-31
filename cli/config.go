@@ -19,9 +19,9 @@ type Config struct {
 	Version string
 	GitRev  string
 
-	ConchURL         string
-	ConchToken       string
-	ConchEnvironment string
+	ConchURL   string
+	ConchToken string
+	ConchENV   string
 
 	OutputJSON bool
 
@@ -44,9 +44,9 @@ const configTemplate = `
 * Version: {{ .Version }}
 * GitRev: {{ .GitRev }}
 
+* ConchENV: {{ .ConchENV }}
 * ConchURL: {{ .ConchURL }}
 * ConchToken: {{ .ConchToken }}
-* ConchEnvironment: {{ .ConchEnvironment }}
 
 * OutputJSON: {{ .OutputJSON }}
 
