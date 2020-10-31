@@ -1,6 +1,6 @@
 package conch
 
-import "github.com/joyent/kosh/v3/conch/types"
+import "github.com/joyent/kosh/conch/types"
 
 // GetCurrentUser (GET /user/me) retrieves the user associated with the current
 // authentication

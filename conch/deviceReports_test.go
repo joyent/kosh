@@ -8,7 +8,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/joyent/kosh/v3/conch"
+	"github.com/joyent/kosh/conch"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -2,7 +2,7 @@ package cli
 
 import (
 	cli "github.com/jawher/mow.cli"
-	"github.com/joyent/kosh/v3/conch/types"
+	"github.com/joyent/kosh/conch/types"
 )
 
 func whoamiCmd(cmd *cli.Cmd) { profileCmd(cmd) }

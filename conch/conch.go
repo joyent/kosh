@@ -5,7 +5,7 @@ this library wraps, please see: https://joyent.github.io/conch-api/
 */
 package conch
 
-import "github.com/joyent/kosh/v3/conch/types"
+import "github.com/joyent/kosh/conch/types"
 
 // Ping ( GET /ping ) checks to see if the API server is online and reachable.
 // See also https://joyent.github.io/conch-api/modules/Conch::Route#get-ping

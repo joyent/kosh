@@ -1,6 +1,6 @@
 package conch
 
-import "github.com/joyent/kosh/v3/conch/types"
+import "github.com/joyent/kosh/conch/types"
 
 // GetAllRooms (GET /room) returns a list of all datacenter rooms
 func (c *Client) GetAllRooms() (rooms types.DatacenterRoomsDetailed) {

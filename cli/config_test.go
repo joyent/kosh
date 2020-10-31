@@ -6,9 +6,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/joyent/kosh/v3/cli"
-	"github.com/joyent/kosh/v3/conch"
-	"github.com/joyent/kosh/v3/conch/types"
+	"github.com/joyent/kosh/cli"
+	"github.com/joyent/kosh/conch"
+	"github.com/joyent/kosh/conch/types"
 
 	"github.com/stretchr/testify/assert"
 )

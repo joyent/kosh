@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/joyent/kosh/v3/tables"
-	"github.com/joyent/kosh/v3/template"
+	"github.com/joyent/kosh/tables"
+	"github.com/joyent/kosh/template"
 )
 
 func (bl Builds) Len() int           { return len(bl) }

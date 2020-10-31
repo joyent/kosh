@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/dghubble/sling"
-	"github.com/joyent/kosh/v3/logger"
+	"github.com/joyent/kosh/logger"
 )
 
 var defaultTransport = &http.Transport{

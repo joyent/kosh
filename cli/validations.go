@@ -4,8 +4,8 @@ import (
 	"errors"
 
 	cli "github.com/jawher/mow.cli"
-	"github.com/joyent/kosh/v3/conch"
-	"github.com/joyent/kosh/v3/conch/types"
+	"github.com/joyent/kosh/conch"
+	"github.com/joyent/kosh/conch/types"
 )
 
 func validationCmd(cmd *cli.Cmd) {
