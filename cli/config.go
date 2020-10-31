@@ -8,10 +8,10 @@ import (
 	"os"
 	"strings"
 
-	"github.com/joyent/kosh/conch"
-	"github.com/joyent/kosh/logger"
-	"github.com/joyent/kosh/tables"
-	"github.com/joyent/kosh/template"
+	"github.com/joyent/kosh/v3/conch"
+	"github.com/joyent/kosh/v3/logger"
+	"github.com/joyent/kosh/v3/tables"
+	"github.com/joyent/kosh/v3/template"
 )
 
 // Config is the default configuration struct

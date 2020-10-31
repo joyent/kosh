@@ -8,8 +8,8 @@ import (
 	"github.com/dghubble/sling"
 	"github.com/dnaeon/go-vcr/cassette"
 	"github.com/dnaeon/go-vcr/recorder"
-	"github.com/joyent/kosh/conch"
-	"github.com/joyent/kosh/logger"
+	"github.com/joyent/kosh/v3/conch"
+	"github.com/joyent/kosh/v3/logger"
 )
 
 func NewTestClient(fixture string) *conch.Client {

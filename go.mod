@@ -1,4 +1,4 @@
-module github.com/joyent/kosh
+module github.com/joyent/kosh/v3
 
 go 1.15
 

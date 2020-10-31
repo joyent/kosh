@@ -1,6 +1,6 @@
 package conch
 
-import "github.com/joyent/kosh/conch/types"
+import "github.com/joyent/kosh/v3/conch/types"
 
 // GetValidations ( GET /validation ) returns a list of all validations from
 // the server. See also

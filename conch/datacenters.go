@@ -1,6 +1,6 @@
 package conch
 
-import "github.com/joyent/kosh/conch/types"
+import "github.com/joyent/kosh/v3/conch/types"
 
 // GetAllDatacenters ( GET /dc ) retrieves a list of all datacenters
 func (c *Client) GetAllDatacenters() (dc types.Datacenters) {

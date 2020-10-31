@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/joyent/kosh/cli"
+	"github.com/joyent/kosh/v3/cli"
 )
 
 var (
