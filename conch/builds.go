@@ -1,6 +1,6 @@
 package conch
 
-import "github.com/joyent/kosh/conch/types"
+import "github.com/joyent/kosh/v3/conch/types"
 
 // GetAllBuilds retrieves a list of all Builds
 // GET /builds

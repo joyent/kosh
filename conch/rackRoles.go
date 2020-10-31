@@ -1,6 +1,6 @@
 package conch
 
-import "github.com/joyent/kosh/conch/types"
+import "github.com/joyent/kosh/v3/conch/types"
 
 // GetAllRackRoles (GET /rack_role) returns a list of all rack roles
 func (c *Client) GetAllRackRoles() (roles types.RackRoles) {

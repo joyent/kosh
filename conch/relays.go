@@ -1,6 +1,6 @@
 package conch
 
-import "github.com/joyent/kosh/conch/types"
+import "github.com/joyent/kosh/v3/conch/types"
 
 // RegisterRelay (POST /relay/:relay_serial_number/register)
 // registers a relay with the given serial number

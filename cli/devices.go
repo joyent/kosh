@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	cli "github.com/jawher/mow.cli"
-	"github.com/joyent/kosh/conch"
+	"github.com/joyent/kosh/v3/conch"
 )
 
 func devicesCmd(cmd *cli.Cmd) {

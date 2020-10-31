@@ -3,7 +3,7 @@ package conch
 import (
 	"fmt"
 
-	"github.com/joyent/kosh/conch/types"
+	"github.com/joyent/kosh/v3/conch/types"
 )
 
 // FindDevicesBySetting (GET /device?:key=:value) returns a list of devices
