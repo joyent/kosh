@@ -20,33 +20,33 @@ func TestValidationRoutes(t *testing.T) {
 		{
 			URL:    "/validation_plan/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetAllValidationPlans() },
+			Do:     func(c *conch.Client) { c.GetAllValidationPlans() },
 		},
 		{
 			URL:    "/validation_plan/foo/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetValidationPlanByName("foo") },
+			Do:     func(c *conch.Client) { c.GetValidationPlanByName("foo") },
 		},
 		{
 			URL:    "/validation_plan/00000000-0000-0000-0000-000000000000/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetValidationPlanByID(types.UUID{}) },
+			Do:     func(c *conch.Client) { c.GetValidationPlanByID(types.UUID{}) },
 		},
 
 		{
 			URL:    "/validation_plan/foo/validation/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetValidationPlanValidations("foo") },
+			Do:     func(c *conch.Client) { c.GetValidationPlanValidations("foo") },
 		},
 		{
 			URL:    "/validation_state/foo/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetValidationStateByName("foo") },
+			Do:     func(c *conch.Client) { c.GetValidationStateByName("foo") },
 		},
 		{
 			URL:    "/validation_state/00000000-0000-0000-0000-000000000000/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetValidationStateByID(types.UUID{}) },
+			Do:     func(c *conch.Client) { c.GetValidationStateByID(types.UUID{}) },
 		},
 	}
 

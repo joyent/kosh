@@ -4,8 +4,8 @@ import "github.com/joyent/kosh/conch/types"
 
 // GetCurrentUser (GET /user/me) retrieves the user associated with the current
 // authentication
-func (c *Client) GetCurrentUser() (me types.UserDetailed) {
-	me = c.GetUserByEmail("me")
+func (c *Client) GetCurrentUser() (me types.UserDetailed, e error) {
+	me, e = c.GetUserByEmail("me")
 	return
 }
 
@@ -24,8 +24,8 @@ func (c *Client) ChangeCurrentUserPassword(setting types.UserSetting) error {
 
 // GetCurrentUserSettings (GET /user/me/settings) gets the settings for the
 // current user
-func (c *Client) GetCurrentUserSettings() (settings types.UserSettings) {
-	c.User("me").Settings("").Receive(&settings)
+func (c *Client) GetCurrentUserSettings() (settings types.UserSettings, e error) {
+	_, e = c.User("me").Settings("").Receive(&settings)
 	return
 }
 
@@ -38,8 +38,8 @@ func (c *Client) SetCurrentUserSettings(settings types.UserSettings) error {
 
 // GetCurrentUserSettingByName (GET /user/me/setting/:name) retrieves a single
 // user setting
-func (c *Client) GetCurrentUserSettingByName(name string) (setting types.UserSetting) {
-	c.User("me").Settings(name).Receive(&setting)
+func (c *Client) GetCurrentUserSettingByName(name string) (setting types.UserSetting, e error) {
+	_, e = c.User("me").Settings(name).Receive(&setting)
 	return
 }
 
@@ -58,23 +58,23 @@ func (c *Client) DeleteCurrentUserSetting(name string) error {
 }
 
 // GetCurrentUserTokens (GET /user/me/token) returns the list of API tokens for the current user
-func (c *Client) GetCurrentUserTokens() (tokens types.UserTokens) {
-	tokens = c.GetUserTokens("me")
+func (c *Client) GetCurrentUserTokens() (tokens types.UserTokens, e error) {
+	tokens, e = c.GetUserTokens("me")
 	return
 }
 
 // CreateCurrentUserToken (POST /user/me/token) creates a new API token for the
 // current user. This is the only time the actual token string will be readable
-func (c *Client) CreateCurrentUserToken(newToken types.NewUserToken) (token types.NewUserToken) {
-	c.User("me").Token().Post(newToken).Receive(&token)
+func (c *Client) CreateCurrentUserToken(newToken types.NewUserToken) (token types.NewUserToken, e error) {
+	_, e = c.User("me").Token().Post(newToken).Receive(&token)
 	return
 }
 
 // GetCurrentUserTokenByName (GET /user/me/token/:token_name) returns the
 // information for a single API token for the current user. The token string
 // itself is not readable.
-func (c *Client) GetCurrentUserTokenByName(name string) (token types.UserToken) {
-	token = c.GetUserTokenByName("me", name)
+func (c *Client) GetCurrentUserTokenByName(name string) (token types.UserToken, e error) {
+	token, e = c.GetUserTokenByName("me", name)
 	return
 }
 
@@ -86,15 +86,15 @@ func (c *Client) DeleteCurrentUserToken(name string) error {
 
 // GetUserByEmail (GET /user/:target_user_id_or_email) retrieves the user with
 // the given email
-func (c *Client) GetUserByEmail(email string) (user types.UserDetailed) {
-	c.User(email).Receive(&user)
+func (c *Client) GetUserByEmail(email string) (user types.UserDetailed, e error) {
+	_, e = c.User(email).Receive(&user)
 	return
 }
 
 // GetUserByID (GET /user/:target_user_id_or_email) retrieves the user with
 // the given UUID
-func (c *Client) GetUserByID(id types.UUID) (user types.UserDetailed) {
-	c.User(id.String()).Receive(&user)
+func (c *Client) GetUserByID(id types.UUID) (user types.UserDetailed, e error) {
+	_, e = c.User(id.String()).Receive(&user)
 	return
 }
 
@@ -129,30 +129,30 @@ func (c *Client) ChangeUserPassword(email string, setting types.UserSetting) err
 }
 
 // GetAllUsers (GET /user) retrieves a list of all users
-func (c *Client) GetAllUsers() (me types.Users) {
-	c.User("").Receive(&me)
+func (c *Client) GetAllUsers() (me types.Users, e error) {
+	_, e = c.User("").Receive(&me)
 	return
 }
 
 // CreateUser (POST /user?send_mail=<1|0>) create a new user in teh system and
 // optionally send them an email notification.
 // BUG(perigrin): sendEmail isn't implemented
-func (c *Client) CreateUser(newUser types.NewUser, sendEmail bool) (user types.NewUser) {
-	c.User().Post(newUser).Receive(&user)
+func (c *Client) CreateUser(newUser types.NewUser, sendEmail bool) (user types.NewUser, e error) {
+	_, e = c.User().Post(newUser).Receive(&user)
 	return
 }
 
 // GetUserTokens (GET /user/:target_user_id_or_email/token) retrieves the list
 // of API tokens for the given user.
-func (c *Client) GetUserTokens(email string) (tokens types.UserTokens) {
-	c.User(email).Token().Receive(&tokens)
+func (c *Client) GetUserTokens(email string) (tokens types.UserTokens, e error) {
+	_, e = c.User(email).Token().Receive(&tokens)
 	return
 }
 
 // GetUserTokenByName (GET /user/:target_user_id_or_email/token/:token_name)
 // retrieves a single named API token for the given user
-func (c *Client) GetUserTokenByName(email, name string) (token types.UserToken) {
-	c.User(email).Token(name).Receive(&token)
+func (c *Client) GetUserTokenByName(email, name string) (token types.UserToken, e error) {
+	_, e = c.User(email).Token(name).Receive(&token)
 	return
 }
 

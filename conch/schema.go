@@ -6,7 +6,7 @@ import (
 
 // GetSchema (GET /json_schema) retieves the json-schema defined with the given
 // path (/common/:name, /request/:name, /response/:name)
-func (c *Client) GetSchema(path string) (schema jsonschema.Schema) {
-	c.Schema(path).Receive(&schema)
+func (c *Client) GetSchema(path string) (schema jsonschema.Schema, e error) {
+	_, e = c.Schema(path).Receive(&schema)
 	return
 }

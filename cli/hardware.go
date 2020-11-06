@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"errors"
 	"fmt"
 
 	cli "github.com/jawher/mow.cli"
@@ -26,8 +27,15 @@ func cmdCreateProduct(cmd *cli.Cmd) {
 		conch := config.ConchClient()
 		display := config.Renderer()
 
-		validationPlan := conch.GetValidationPlanByName(*validationPlanOpt)
-		vendor := conch.GetHardwareVendorByName(*vendor)
+		validationPlan, e := conch.GetValidationPlanByName(*validationPlanOpt)
+		if e != nil {
+			fatal(e)
+		}
+
+		vendor, e := conch.GetHardwareVendorByName(*vendor)
+		if e != nil {
+			fatal(e)
+		}
 		create := types.HardwareProductCreate{
 			Name:             types.MojoStandardPlaceholder(*name),
 			Alias:            types.MojoStandardPlaceholder(*alias),
@@ -72,7 +80,7 @@ func cmdImportProduct(cmd *cli.Cmd) {
 
 func hardwareCmd(cmd *cli.Cmd) {
 	var conch *conch.Client
-	var display func(interface{})
+	var display func(interface{}, error)
 
 	cmd.Before = func() {
 		conch = config.ConchClient()
@@ -89,15 +97,18 @@ func hardwareCmd(cmd *cli.Cmd) {
 		var hp types.HardwareProduct
 		idArg := cmd.StringArg("PRODUCT", "", "The SKU, UUID, alias, or name of the hardware product.")
 		cmd.Before = func() {
-			hp = conch.GetHardwareProductByID(*idArg)
+			var e error
+			hp, e = conch.GetHardwareProductByID(*idArg)
+			if e != nil {
+				fatal(e)
+			}
 			if (hp == types.HardwareProduct{}) {
-				fmt.Println("Hardware Product not found for " + *idArg)
-				cli.Exit(1)
+				fatal(errors.New("Hardware Product not found for " + *idArg))
 			}
 		}
 		cmd.Action = func() { fmt.Println(hp) }
 		cmd.Command("get", "Show a hardware vendor's details", func(cmd *cli.Cmd) {
-			cmd.Action = func() { fmt.Println(hp) }
+			cmd.Action = func() { display(hp, nil) }
 		})
 		cmd.Command("delete rm", "Remove a hardware product", func(cmd *cli.Cmd) {
 			cmd.Action = func() {
@@ -128,16 +139,20 @@ func hardwareCmd(cmd *cli.Cmd) {
 
 		// grab the Vendor for the given ID
 		cmd.Before = func() {
-			hv = conch.GetHardwareVendorByName(*idArg)
+			var e error
+			hv, e = conch.GetHardwareVendorByName(*idArg)
+			if e != nil {
+				fatal(e)
+			}
 			if (hv == types.HardwareVendor{}) {
 				fmt.Println("Hardware Vendor not found for " + *idArg)
 				cli.Exit(1)
 			}
 		}
 
-		cmd.Action = func() { display(hv) }
+		cmd.Action = func() { display(hv, nil) }
 		cmd.Command("get", "Show a hardware vendor's details", func(cmd *cli.Cmd) {
-			cmd.Action = func() { display(hv) }
+			cmd.Action = func() { display(hv, nil) }
 		})
 		cmd.Command("delete rm", "Remove a hardware vendor", func(cmd *cli.Cmd) {
 			cmd.Action = func() {

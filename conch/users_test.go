@@ -20,122 +20,122 @@ func TestUser(t *testing.T) {
 		{
 			URL:    "/user/me/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetCurrentUser() },
+			Do:     func(c *conch.Client) { c.GetCurrentUser() },
 		},
 		{
 			URL:    "/user/me/revoke/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.RevokeCurrentUserCredentials() },
+			Do:     func(c *conch.Client) { c.RevokeCurrentUserCredentials() },
 		},
 		{
 			URL:    "/user/me/password/",
 			Method: "POST",
 			Do: func(c *conch.Client) {
-				_ = c.ChangeCurrentUserPassword(types.UserSetting("password"))
+				c.ChangeCurrentUserPassword(types.UserSetting("password"))
 			},
 		},
 		{
 			URL:    "/user/me/settings/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetCurrentUserSettings() },
+			Do:     func(c *conch.Client) { c.GetCurrentUserSettings() },
 		},
 		{
 			URL:    "/user/me/settings/foo/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetCurrentUserSettingByName("foo") },
+			Do:     func(c *conch.Client) { c.GetCurrentUserSettingByName("foo") },
 		},
 		{
 			URL:    "/user/me/settings/foo/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.SetCurrentUserSettingByName("foo", "bar") },
+			Do:     func(c *conch.Client) { c.SetCurrentUserSettingByName("foo", "bar") },
 		},
 		{
 			URL:    "/user/me/settings/foo/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteCurrentUserSetting("foo") },
+			Do:     func(c *conch.Client) { c.DeleteCurrentUserSetting("foo") },
 		},
 		{
 			URL:    "/user/me/token/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetCurrentUserTokens() },
+			Do:     func(c *conch.Client) { c.GetCurrentUserTokens() },
 		},
 		{
 			URL:    "/user/me/token/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.CreateCurrentUserToken(types.NewUserToken{"foo"}) },
+			Do:     func(c *conch.Client) { c.CreateCurrentUserToken(types.NewUserToken{"foo"}) },
 		},
 		{
 			URL:    "/user/me/token/foo/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetCurrentUserTokenByName("foo") },
+			Do:     func(c *conch.Client) { c.GetCurrentUserTokenByName("foo") },
 		},
 		{
 			URL:    "/user/me/token/foo/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteCurrentUserToken("foo") },
+			Do:     func(c *conch.Client) { c.DeleteCurrentUserToken("foo") },
 		},
 		{
 			URL:    "/user/foo@example.com/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetUserByEmail("foo@example.com") },
+			Do:     func(c *conch.Client) { c.GetUserByEmail("foo@example.com") },
 		},
 		{
 			URL:    "/user/foo/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.UpdateUser("foo", types.UpdateUser{}, false) },
+			Do:     func(c *conch.Client) { c.UpdateUser("foo", types.UpdateUser{}, false) },
 		},
 		{
 			URL:    "/user/foo/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.UpdateUser("foo", types.UpdateUser{}, true) },
+			Do:     func(c *conch.Client) { c.UpdateUser("foo", types.UpdateUser{}, true) },
 		},
 		{
 			URL:    "/user/foo/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteUser("foo") },
+			Do:     func(c *conch.Client) { c.DeleteUser("foo") },
 		},
 		{
 			URL:    "/user/foo/revoke/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.RevokeUserCredentials("foo") },
+			Do:     func(c *conch.Client) { c.RevokeUserCredentials("foo") },
 		},
 		{
 			URL:    "/user/foo/password/",
 			Method: "POST",
 			Do: func(c *conch.Client) {
-				_ = c.ChangeUserPassword("foo", types.UserSetting("password"))
+				c.ChangeUserPassword("foo", types.UserSetting("password"))
 			},
 		},
 		{
 			URL:    "/user/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetAllUsers() },
+			Do:     func(c *conch.Client) { c.GetAllUsers() },
 		},
 		{
 			URL:    "/user/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.CreateUser(types.NewUser{}, false) },
+			Do:     func(c *conch.Client) { c.CreateUser(types.NewUser{}, false) },
 		},
 		{
 			URL:    "/user/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.CreateUser(types.NewUser{}, true) },
+			Do:     func(c *conch.Client) { c.CreateUser(types.NewUser{}, true) },
 		},
 
 		{
 			URL:    "/user/foo/token/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetUserTokens("foo") },
+			Do:     func(c *conch.Client) { c.GetUserTokens("foo") },
 		},
 		{
 			URL:    "/user/foo/token/bar/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetUserTokenByName("foo", "bar") },
+			Do:     func(c *conch.Client) { c.GetUserTokenByName("foo", "bar") },
 		},
 		{
 			URL:    "/user/foo/token/bar/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteUserToken("foo", "bar") },
+			Do:     func(c *conch.Client) { c.DeleteUserToken("foo", "bar") },
 		},
 	}
 
@@ -161,10 +161,10 @@ func TestUserAPIIntergration(t *testing.T) {
 	c := NewTestClient("fixtures/conch-v3/user")
 
 	t.Run("me", func(t *testing.T) {
-		_ = c.GetCurrentUser()
+		c.GetCurrentUser()
 	})
 
 	t.Run("me-settings", func(t *testing.T) {
-		_ = c.GetCurrentUserSettings()
+		c.GetCurrentUserSettings()
 	})
 }

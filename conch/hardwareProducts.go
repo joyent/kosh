@@ -9,8 +9,8 @@ import (
 
 // GetHardwareProducts (GET /hardware_product) returns a list of known hardware
 // products
-func (c *Client) GetHardwareProducts() (products types.HardwareProducts) {
-	c.HardwareProduct().Receive(&products)
+func (c *Client) GetHardwareProducts() (products types.HardwareProducts, e error) {
+	_, e = c.HardwareProduct().Receive(&products)
 	return
 }
 
@@ -30,8 +30,8 @@ func (c *Client) ReadHardwareProduct(r io.Reader) (create types.HardwareProductC
 
 // GetHardwareProductByID (GET /hardware_product/:hardware_product_id_or_other)
 // returns a hardware product by the given id string
-func (c *Client) GetHardwareProductByID(id string) (products types.HardwareProduct) {
-	c.HardwareProduct(id).Receive(&products)
+func (c *Client) GetHardwareProductByID(id string) (products types.HardwareProduct, e error) {
+	_, e = c.HardwareProduct(id).Receive(&products)
 	return
 }
 

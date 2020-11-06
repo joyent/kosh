@@ -359,11 +359,18 @@ func (c *Client) Delete(data ...interface{}) *Client {
 func (c *Client) Send() (*http.Response, error) {
 	c.Debug("Send")
 	req, err := c.Sling.Request()
-	c.Info("URL: ", req.URL)
+	c.Info(fmt.Sprintf("URL: %v", req.URL))
 	c.Debug(req, err)
 
 	res, err := c.Sling.Do(req, nil, nil)
 	c.Debug(res, err)
+	if err != nil {
+		return res, err
+	}
+
+	if res.StatusCode >= 400 {
+		return res, fmt.Errorf("http error: %v", res.Status)
+	}
 
 	return res, err
 }
@@ -374,11 +381,17 @@ func (c *Client) Send() (*http.Response, error) {
 func (c *Client) Receive(data interface{}) (*http.Response, error) {
 	c.Debug("Receive")
 	req, err := c.Sling.Request()
-	c.Info("URL: ", req.URL)
+	c.Info(fmt.Sprintf("URL: %v", req.URL))
 	c.Debug(req, err)
 
 	res, err := c.Sling.ReceiveSuccess(data)
 	c.Debug(res, err)
+	if err != nil {
+		return res, err
+	}
 
+	if res.StatusCode >= 400 {
+		return res, fmt.Errorf("http error: %v", res.Status)
+	}
 	return res, err
 }

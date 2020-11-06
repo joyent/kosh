@@ -20,22 +20,22 @@ func TestHardwareVendorRoutes(t *testing.T) {
 		{
 			URL:    "/hardware_vendor/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetAllHardwareVendors() },
+			Do:     func(c *conch.Client) { c.GetAllHardwareVendors() },
 		},
 		{
 			URL:    "/hardware_vendor/foo/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetHardwareVendorByName("foo") },
+			Do:     func(c *conch.Client) { c.GetHardwareVendorByName("foo") },
 		},
 		{
 			URL:    "/hardware_vendor/00000000-0000-0000-0000-000000000000/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteHardwareVendor(types.UUID{}) },
+			Do:     func(c *conch.Client) { c.DeleteHardwareVendor(types.UUID{}) },
 		},
 		{
 			URL:    "/hardware_vendor/foo/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.CreateHardwareVendor("foo") },
+			Do:     func(c *conch.Client) { c.CreateHardwareVendor("foo") },
 		},
 	}
 

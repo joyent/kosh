@@ -20,28 +20,28 @@ func TestRelayRoutes(t *testing.T) {
 		{
 			URL:    "/relay/foo/register/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.RegisterRelay("foo", types.RegisterRelay{}) },
+			Do:     func(c *conch.Client) { c.RegisterRelay("foo", types.RegisterRelay{}) },
 		},
 		{
 			URL:    "/relay/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetAllRelays() },
+			Do:     func(c *conch.Client) { c.GetAllRelays() },
 		},
 		{
 			URL:    "/relay/foo/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetRelayBySerial("foo") },
+			Do:     func(c *conch.Client) { c.GetRelayBySerial("foo") },
 		},
 		{
 			URL:    "/relay/00000000-0000-0000-0000-000000000000/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetRelayByID(types.UUID{}) },
+			Do:     func(c *conch.Client) { c.GetRelayByID(types.UUID{}) },
 		},
 
 		{
 			URL:    "/relay/foo/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteRelay("foo") },
+			Do:     func(c *conch.Client) { c.DeleteRelay("foo") },
 		},
 	}
 

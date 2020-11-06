@@ -83,7 +83,7 @@ func (c Config) ConchClient() *conch.Client {
 }
 
 // Renderer returns a function that will render to STDOUT
-func (c Config) Renderer() func(interface{}) {
+func (c Config) Renderer() func(interface{}, error) {
 	return c.RenderTo(os.Stdout)
 }
 
@@ -97,8 +97,11 @@ func renderJSON(i interface{}) string {
 
 // RenderTo returns a function tha renders to a given io.Writer based on the
 // configuraton and datatype
-func (c Config) RenderTo(w io.Writer) func(interface{}) {
-	return func(i interface{}) {
+func (c Config) RenderTo(w io.Writer) func(interface{}, error) {
+	return func(i interface{}, e error) {
+		if e != nil {
+			fmt.Fprintln(w, e)
+		}
 		if c.OutputJSON {
 			c.Debug("Outputting JSON")
 			fmt.Fprintln(w, renderJSON(i))
@@ -116,6 +119,7 @@ func (c Config) RenderTo(w io.Writer) func(interface{}) {
 		case fmt.Stringer:
 			fmt.Fprintln(w, t)
 		default:
+			c.Debug("default renderer")
 			fmt.Fprintln(w, renderJSON(t))
 		}
 	}

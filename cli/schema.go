@@ -9,7 +9,7 @@ import (
 
 func schemaCmd(cmd *cli.Cmd) {
 	var conch *conch.Client
-	var display func(interface{})
+	var display func(interface{}, error)
 
 	cmd.Before = func() {
 		conch = config.ConchClient()

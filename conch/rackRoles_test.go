@@ -20,32 +20,32 @@ func TestRackRole(t *testing.T) {
 		{
 			URL:    "/rack_role/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetAllRackRoles() },
+			Do:     func(c *conch.Client) { c.GetAllRackRoles() },
 		},
 		{
 			URL:    "/rack_role/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.CreateRackRole(types.RackRoleCreate{}) },
+			Do:     func(c *conch.Client) { c.CreateRackRole(types.RackRoleCreate{}) },
 		},
 		{
 			URL:    "/rack_role/foo/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetRackRoleByName("foo") },
+			Do:     func(c *conch.Client) { c.GetRackRoleByName("foo") },
 		},
 		{
 			URL:    "/rack_role/00000000-0000-0000-0000-000000000000/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetRackRoleByID(types.UUID{}) },
+			Do:     func(c *conch.Client) { c.GetRackRoleByID(types.UUID{}) },
 		},
 		{
 			URL:    "/rack_role/00000000-0000-0000-0000-000000000000/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.UpdateRackRole(types.UUID{}, types.RackRoleUpdate{}) },
+			Do:     func(c *conch.Client) { c.UpdateRackRole(types.UUID{}, types.RackRoleUpdate{}) },
 		},
 		{
 			URL:    "/rack_role/00000000-0000-0000-0000-000000000000/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteRackRole(types.UUID{}) },
+			Do:     func(c *conch.Client) { c.DeleteRackRole(types.UUID{}) },
 		},
 	}
 

@@ -10,7 +10,7 @@ import (
 
 func rolesCmd(cmd *cli.Cmd) {
 	var conch *conch.Client
-	var display func(interface{})
+	var display func(interface{}, error)
 
 	cmd.Before = func() {
 		requireSysAdmin(config)()
@@ -47,7 +47,7 @@ func rolesCmd(cmd *cli.Cmd) {
 
 func roleCmd(cmd *cli.Cmd) {
 	var conch *conch.Client
-	var display func(interface{})
+	var display func(interface{}, error)
 	var role types.RackRole
 
 	nameArg := cmd.StringArg(
@@ -63,14 +63,18 @@ func roleCmd(cmd *cli.Cmd) {
 		conch := config.ConchClient()
 		display = config.Renderer()
 
-		role = conch.GetRackRoleByName(*nameArg)
+		var e error
+		role, e = conch.GetRackRoleByName(*nameArg)
+		if e != nil {
+			fatal(e)
+		}
 		if (role == types.RackRole{}) {
 			fatal(errors.New("couldn't find the role"))
 		}
 	}
 
 	cmd.Command("get", "Get information about a single rack role", func(cmd *cli.Cmd) {
-		cmd.Action = func() { display(role) }
+		cmd.Action = func() { display(role, nil) }
 	})
 
 	cmd.Command("update", "Update information about a single rack role", func(cmd *cli.Cmd) {

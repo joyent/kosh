@@ -20,44 +20,44 @@ func TestHardwareProductRoutes(t *testing.T) {
 		{
 			URL:    "/hardware_product/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetHardwareProducts() },
+			Do:     func(c *conch.Client) { c.GetHardwareProducts() },
 		},
 		{
 			URL:    "/hardware_product/",
 			Method: "POST",
 			Do: func(c *conch.Client) {
-				_ = c.CreateHardwareProduct(types.HardwareProductCreate{})
+				c.CreateHardwareProduct(types.HardwareProductCreate{})
 			},
 		},
 		{
 			URL:    "/hardware_product/foo/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetHardwareProductByID("foo") },
+			Do:     func(c *conch.Client) { c.GetHardwareProductByID("foo") },
 		},
 		{
 			URL:    "/hardware_product/foo/",
 			Method: "POST",
 			Do: func(c *conch.Client) {
-				_ = c.UpdateHardwareProduct("foo", types.HardwareProductUpdate{})
+				c.UpdateHardwareProduct("foo", types.HardwareProductUpdate{})
 			},
 		},
 		{
 			URL:    "/hardware_product/00000000-0000-0000-0000-000000000000/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteHardwareProduct(types.UUID{}) },
+			Do:     func(c *conch.Client) { c.DeleteHardwareProduct(types.UUID{}) },
 		},
 		{
 			URL:    "/hardware_product/foo/specification?path=%5B%2Fbar%5D%2F",
 			Method: "PUT",
 			Do: func(c *conch.Client) {
-				_ = c.UpdateHardwareProductSpecification("foo", "/bar", types.HardwareProductSpecification{})
+				c.UpdateHardwareProductSpecification("foo", "/bar", types.HardwareProductSpecification{})
 			},
 		},
 		{
 			URL:    "/hardware_product/foo/specification?path=%5B%2Fbar%5D%2F",
 			Method: "DELETE",
 			Do: func(c *conch.Client) {
-				_ = c.DeleteHardwareProductSpecification("foo", "/bar")
+				c.DeleteHardwareProductSpecification("foo", "/bar")
 			},
 		},
 	}

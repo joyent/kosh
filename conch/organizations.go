@@ -3,8 +3,8 @@ package conch
 import "github.com/joyent/kosh/conch/types"
 
 // GetAllOrganizations (GET /organization) returns the list of organizations
-func (c *Client) GetAllOrganizations() (orgs types.Organizations) {
-	c.Organization().Receive(&orgs)
+func (c *Client) GetAllOrganizations() (orgs types.Organizations, e error) {
+	_, e = c.Organization().Receive(&orgs)
 	return
 }
 
@@ -16,15 +16,15 @@ func (c *Client) CreateOrganization(org types.OrganizationCreate) error {
 
 // GetOrganizationByName (GET /organization/:organization_id_or_name) retrieves
 // an organziation by the given name
-func (c *Client) GetOrganizationByName(name string) (org types.Organization) {
-	c.Organization(name).Receive(&org)
+func (c *Client) GetOrganizationByName(name string) (org types.Organization, e error) {
+	_, e = c.Organization(name).Receive(&org)
 	return
 }
 
 // GetOrganizationByID (GET /organization/:organization_id_or_name) retrieves
 // an organization by the given UUID
-func (c *Client) GetOrganizationByID(id types.UUID) (org types.Organization) {
-	c.Organization(id.String()).Receive(&org)
+func (c *Client) GetOrganizationByID(id types.UUID) (org types.Organization, e error) {
+	_, e = c.Organization(id.String()).Receive(&org)
 	return
 }
 

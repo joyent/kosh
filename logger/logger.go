@@ -45,9 +45,9 @@ func (l Logger) Debug(messages ...interface{}) {
 				}
 				log.Println("Request:", string(dump))
 			case *http.Response:
-				dump, e := httputil.DumpResponse(t, true)
+				dump, e := httputil.DumpResponse(t, false)
 				if e != nil {
-					l.Debug("Dump Response Error:", e)
+					l.Debug(fmt.Sprintf("Dump Response Error: %s", e))
 				}
 				l.Debug("Response:", string(dump))
 
