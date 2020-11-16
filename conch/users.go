@@ -129,7 +129,7 @@ func (c *Client) ChangeUserPassword(email string, setting types.UserSetting) err
 }
 
 // GetAllUsers (GET /user) retrieves a list of all users
-func (c *Client) GetAllUsers() (me types.UsersDetailed) {
+func (c *Client) GetAllUsers() (me types.Users) {
 	c.User("").Receive(&me)
 	return
 }
