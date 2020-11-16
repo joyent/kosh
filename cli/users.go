@@ -22,7 +22,7 @@ func profileCmd(cmd *cli.Cmd) {
 	}
 }
 
-func settings(cmd *cli.Cmd) {
+func settingsCmd(cmd *cli.Cmd) {
 	cmd.Action = func() {
 		conch := config.ConchClient()
 		display := config.Renderer()

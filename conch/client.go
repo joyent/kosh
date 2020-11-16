@@ -47,22 +47,22 @@ func New(options ...Option) (client *Client) {
 
 // HTTPCLient sets the client used by the package for making HTTP Requests
 func HTTPClient(client *http.Client) Option {
-	return func(conch *Client) { conch.Sling.Client(client) }
+	return func(c *Client) { c.Sling.Client(client) }
 }
 
 // UserAgent sets the User-Agent used by the package
 func UserAgent(ua string) Option {
-	return func(conch *Client) { conch.Sling.Set("User-Agent", ua) }
+	return func(c *Client) { c.Sling.Set("User-Agent", ua) }
 }
 
 // API sets the base URL for the API
 func API(url string) Option {
-	return func(conch *Client) { conch.Sling.Base(url) }
+	return func(c *Client) { c.Sling.Base(url) }
 }
 
 // AuthToken sets the authentication token
 func AuthToken(token string) Option {
-	return func(conch *Client) { conch.Sling.Set("Authorization", "Bearer "+token) }
+	return func(c *Client) { c.Sling.Set("Authorization", "Bearer "+token) }
 }
 
 // Logger sets the logger used by the package
