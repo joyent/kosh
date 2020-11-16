@@ -62,7 +62,7 @@ func TestUser(t *testing.T) {
 		{
 			URL:    "/user/me/token/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { c.CreateCurrentUserToken(types.NewUserToken{"foo"}) },
+			Do:     func(c *conch.Client) { c.CreateCurrentUserToken(types.NewUserTokenRequest{"foo"}) },
 		},
 		{
 			URL:    "/user/me/token/foo/",

@@ -65,7 +65,7 @@ func (c *Client) GetCurrentUserTokens() (tokens types.UserTokens, e error) {
 
 // CreateCurrentUserToken (POST /user/me/token) creates a new API token for the
 // current user. This is the only time the actual token string will be readable
-func (c *Client) CreateCurrentUserToken(newToken types.NewUserToken) (token types.NewUserToken, e error) {
+func (c *Client) CreateCurrentUserToken(newToken types.NewUserTokenRequest) (token types.NewUserTokenResponse, e error) {
 	_, e = c.User("me").Token().Post(newToken).Receive(&token)
 	return
 }
