@@ -152,13 +152,13 @@ func (c *Client) GetUserTokens(email string) (tokens types.UserTokens, e error) 
 // GetUserTokenByName (GET /user/:target_user_id_or_email/token/:token_name)
 // retrieves a single named API token for the given user
 func (c *Client) GetUserTokenByName(email, name string) (token types.UserToken, e error) {
-	_, e = c.User(email).Token(name).Receive(&token)
+	_, e = c.User(email).Token(name).stripTrailingSlash().Receive(&token)
 	return
 }
 
 // DeleteUserToken (DELETE /user/:target_user_id_or_email/token/:token_name)
 // removes a named API token for the given user
 func (c *Client) DeleteUserToken(email, name string) error {
-	_, e := c.User(email).Token(name).Delete().Send()
+	_, e := c.User(email).Token(name).stripTrailingSlash().Delete().Send()
 	return e
 }

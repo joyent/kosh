@@ -484,11 +484,11 @@ type NewUserTokenResponse struct {
 }
 
 type UserToken struct {
-	Created    time.Time   `json:"created"`
-	Expires    time.Time   `json:"expires"`
-	LastIpaddr Ipaddr      `json:"last_ipaddr"`
-	LastUsed   interface{} `json:"last_used"`
-	Name       string      `json:"name"`
+	Created    time.Time `json:"created"`
+	Expires    time.Time `json:"expires"`
+	LastIpaddr Ipaddr    `json:"last_ipaddr"`
+	LastUsed   time.Time `json:"last_used"`
+	Name       string    `json:"name"`
 }
 
 type UserTokens []UserToken

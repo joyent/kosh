@@ -65,12 +65,12 @@ func TestUser(t *testing.T) {
 			Do:     func(c *conch.Client) { c.CreateCurrentUserToken(types.NewUserTokenRequest{"foo"}) },
 		},
 		{
-			URL:    "/user/me/token/foo/",
+			URL:    "/user/me/token/foo",
 			Method: "GET",
 			Do:     func(c *conch.Client) { c.GetCurrentUserTokenByName("foo") },
 		},
 		{
-			URL:    "/user/me/token/foo/",
+			URL:    "/user/me/token/foo",
 			Method: "DELETE",
 			Do:     func(c *conch.Client) { c.DeleteCurrentUserToken("foo") },
 		},
@@ -128,12 +128,12 @@ func TestUser(t *testing.T) {
 			Do:     func(c *conch.Client) { c.GetUserTokens("foo") },
 		},
 		{
-			URL:    "/user/foo/token/bar/",
+			URL:    "/user/foo/token/bar",
 			Method: "GET",
 			Do:     func(c *conch.Client) { c.GetUserTokenByName("foo", "bar") },
 		},
 		{
-			URL:    "/user/foo/token/bar/",
+			URL:    "/user/foo/token/bar",
 			Method: "DELETE",
 			Do:     func(c *conch.Client) { c.DeleteUserToken("foo", "bar") },
 		},

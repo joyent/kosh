@@ -821,7 +821,10 @@ func (ul UsersTerse) ForEach(do func([]string)) {
 
 const userTokenTemplate = `
 Token {{ .Name }}
+<<<<<<< HEAD
 =================
+=======
+>>>>>>> 3c81f5d (render output for User Tokens)
 
 * Created: {{ TimeStr .Created }}
 
@@ -832,6 +835,29 @@ Token {{ .Name }}
 `
 
 func (ut UserToken) Template() string { return userTokenTemplate }
+
+const newUserTokenTemplate = `
+Token {{ .Name }}
+=================
+
+* Created: {{ TimeStr .Created }}
+
+* Last IP: {{ .LastIpaddr }}
+* Last Used: {{ TimeStr .LastUsed }}
+
+* Expires: {{ TimeStr .Expires }}
+
+Token
+-----
+
+THIS TOKEN CANNOT BE RECOVERED FROM THE SERVER.
+THIS IS THE ONLY TIME IT WILL BE PRINTED, PLEASE RECORD IT NOW
+
+{{ .Token }}
+
+`
+
+func (ut NewUserTokenResponse) Template() string { return newUserTokenTemplate }
 
 func (ul UserTokens) Len() int           { return len(ul) }
 func (ul UserTokens) Swap(i, j int)      { ul[i], ul[j] = ul[j], ul[i] }
