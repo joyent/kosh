@@ -695,7 +695,6 @@ const validationStateWithResultsTemplate = `
 ID: {{ .ID }}
 Device: {{ CutUUID .DeviceID.String }}
 Hardware Product: {{ CutUUID .HardwareProductID.String }}
-Validation Plan: {{ CutUUID .ValidationPlanID.String }}
 Created: {{ TimeStr .Created }}
 Status: {{ .Status }}
 

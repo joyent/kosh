@@ -18,21 +18,6 @@ func TestValidationRoutes(t *testing.T) {
 		Do     func(c *conch.Client)
 	}{
 		{
-			URL:    "/validation/",
-			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetValidations() },
-		},
-		{
-			URL:    "/validation/foo/",
-			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetValidationByName("foo") },
-		},
-		{
-			URL:    "/validation/00000000-0000-0000-0000-000000000000/",
-			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetValidationByID(types.UUID{}) },
-		},
-		{
 			URL:    "/validation_plan/",
 			Method: "GET",
 			Do:     func(c *conch.Client) { _ = c.GetAllValidationPlans() },
