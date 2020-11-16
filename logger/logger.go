@@ -16,9 +16,14 @@ import (
 // for developer targeted output. While Info is for (verbose) user targeted
 // output.
 type Interface interface {
-	Deubg(...interface{})
+	Debug(...interface{})
 	Info(...interface{})
 }
+
+type NullLogger struct{}
+
+func (nl NullLogger) Debug(msgs ...interface{}) {}
+func (nl NullLogger) Info(msgs ...interface{})  {}
 
 // Logger is the default logger with configuration levels for debug (developer)
 // output, and info (verbose user) output.
