@@ -7,7 +7,7 @@ interactions:
     headers:
       User-Agent:
       - Conch/3.x-testing
-    url: http://10.51.54.42:5000/schema/request/DatacenterRoomCreate
+    url: http://10.51.54.42:5000/json_schema/request/DatacenterRoomCreate
     method: GET
   response:
     body: '{"$id":"urn:request.DatacenterRoomCreate.schema.json","$schema":"http:\/\/json-schema.org\/draft-07\/schema#","additionalProperties":false,"definitions":{"non_empty_string":{"minLength":1,"type":"string"},"uuid":{"pattern":"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$","type":"string"}},"properties":{"alias":{"$ref":"\/definitions\/non_empty_string"},"az":{"$ref":"\/definitions\/non_empty_string"},"datacenter_id":{"$ref":"\/definitions\/uuid"},"vendor_name":{"$ref":"\/definitions\/non_empty_string"}},"required":["datacenter_id","az","alias"],"title":"DatacenterRoomCreate","type":"object"}'
