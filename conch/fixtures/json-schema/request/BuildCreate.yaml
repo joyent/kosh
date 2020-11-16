@@ -7,7 +7,7 @@ interactions:
     headers:
       User-Agent:
       - Conch/3.x-testing
-    url: http://10.51.54.42:5000/schema/request/BuildCreate
+    url: http://10.51.54.42:5000/json_schema/request/BuildCreate
     method: GET
   response:
     body: '{"$id":"urn:request.BuildCreate.schema.json","$schema":"http:\/\/json-schema.org\/draft-07\/schema#","additionalProperties":false,"definitions":{"email_address":{"allOf":[{"format":"email","type":"string"},{"$ref":"\/definitions\/mojo_relaxed_placeholder"}]},"mojo_relaxed_placeholder":{"description":"see

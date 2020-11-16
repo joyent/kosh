@@ -7,7 +7,7 @@ interactions:
     headers:
       User-Agent:
       - Conch/3.x-testing
-    url: http://10.51.54.42:5000/schema/request/RackRoleCreate
+    url: http://10.51.54.42:5000/json_schema/request/RackRoleCreate
     method: GET
   response:
     body: '{"$id":"urn:request.RackRoleCreate.schema.json","$schema":"http:\/\/json-schema.org\/draft-07\/schema#","additionalProperties":false,"definitions":{"mojo_standard_placeholder":{"description":"see

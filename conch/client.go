@@ -231,10 +231,10 @@ func (c *Client) Interface(id ...string) *Client {
 	return c.Path("interface", id...)
 }
 
-// Schema sets the last element in the path to /schema and
+// Schema sets the last element in the path to /json_schema and
 // appends the given identifiers
 func (c *Client) Schema(name ...string) *Client {
-	return c.Path("schema", name...)
+	return c.Path("json_schema", name...)
 }
 
 // Field appends the given identifiers
