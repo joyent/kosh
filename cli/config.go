@@ -82,8 +82,10 @@ func (c Config) ConchClient() *conch.Client {
 	)
 }
 
+type Renderer func(interface{}, error)
+
 // Renderer returns a function that will render to STDOUT
-func (c Config) Renderer() func(interface{}, error) {
+func (c Config) Renderer() Renderer {
 	return c.RenderTo(os.Stdout)
 }
 

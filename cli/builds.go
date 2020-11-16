@@ -129,9 +129,7 @@ func buildCmd(cmd *cli.Cmd) {
 	cmd.Action = func() { display(build, nil) }
 
 	cmd.Command("get", "Get information about a single build by its name", func(cmd *cli.Cmd) {
-		cmd.Action = func() {
-			display(build, nil)
-		}
+		cmd.Action = func() { display(build, nil) }
 	})
 
 	cmd.Command("start", "Mark the build as started", func(cmd *cli.Cmd) {
