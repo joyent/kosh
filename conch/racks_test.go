@@ -20,96 +20,96 @@ func TestRacks(t *testing.T) {
 		{
 			URL:    "/rack/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.CreateRack(types.RackCreate{}) },
+			Do:     func(c *conch.Client) { c.CreateRack(types.RackCreate{}) },
 		},
 		{
 			URL:    "/rack/foo/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetRackByName("foo") },
+			Do:     func(c *conch.Client) { c.GetRackByName("foo") },
 		},
 		{
 			URL:    "/rack/00000000-0000-0000-0000-000000000000/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetRackByID(types.UUID{}) },
+			Do:     func(c *conch.Client) { c.GetRackByID(types.UUID{}) },
 		},
 		{
 			URL:    "/rack/00000000-0000-0000-0000-000000000000/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.UpdateRack(types.UUID{}, types.RackUpdate{}) },
+			Do:     func(c *conch.Client) { c.UpdateRack(types.UUID{}, types.RackUpdate{}) },
 		},
 		{
 			URL:    "/rack/00000000-0000-0000-0000-000000000000/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteRack(types.UUID{}) },
+			Do:     func(c *conch.Client) { c.DeleteRack(types.UUID{}) },
 		},
 		{
 			URL:    "/rack/00000000-0000-0000-0000-000000000000/layout/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetRackLayout(types.UUID{}) },
+			Do:     func(c *conch.Client) { c.GetRackLayout(types.UUID{}) },
 		},
 		{
 			URL:    "/rack/00000000-0000-0000-0000-000000000000/layout/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.UpdateRackLayout(types.UUID{}, types.RackLayoutUpdate{}) },
+			Do:     func(c *conch.Client) { c.UpdateRackLayout(types.UUID{}, types.RackLayoutUpdate{}) },
 		},
 		{
 			URL:    "/rack/00000000-0000-0000-0000-000000000000/assignment/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetRackAssignments(types.UUID{}) },
+			Do:     func(c *conch.Client) { c.GetRackAssignments(types.UUID{}) },
 		},
 		{
 			URL:    "/rack/00000000-0000-0000-0000-000000000000/assignment/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.UpdateRackAssignments(types.UUID{}, types.RackAssignmentUpdates{}) },
+			Do:     func(c *conch.Client) { c.UpdateRackAssignments(types.UUID{}, types.RackAssignmentUpdates{}) },
 		},
 		{
 			URL:    "/rack/00000000-0000-0000-0000-000000000000/assignment/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteRackAssignments(types.UUID{}, types.RackAssignmentDeletes{}) },
+			Do:     func(c *conch.Client) { c.DeleteRackAssignments(types.UUID{}, types.RackAssignmentDeletes{}) },
 		},
 		{
 			URL:    "/rack/00000000-0000-0000-0000-000000000000/phase/",
 			Method: "POST",
 			Do: func(c *conch.Client) {
-				_ = c.UpdateRackPhase(types.UUID{}, types.RackPhase{}, false)
+				c.UpdateRackPhase(types.UUID{}, types.RackPhase{}, false)
 			},
 		},
 		{
 			URL:    "/rack/00000000-0000-0000-0000-000000000000/phase/",
 			Method: "POST",
 			Do: func(c *conch.Client) {
-				_ = c.UpdateRackPhase(types.UUID{}, types.RackPhase{}, true)
+				c.UpdateRackPhase(types.UUID{}, types.RackPhase{}, true)
 			},
 		},
 		{
 			URL:    "/rack/00000000-0000-0000-0000-000000000000/links/",
 			Method: "POST",
 			Do: func(c *conch.Client) {
-				_ = c.UpdateRackLinks(types.UUID{}, types.RackLinks{})
+				c.UpdateRackLinks(types.UUID{}, types.RackLinks{})
 			},
 		},
 		{
 			URL:    "/rack/00000000-0000-0000-0000-000000000000/links/",
 			Method: "DELETE",
 			Do: func(c *conch.Client) {
-				_ = c.DeleteRackLinks(types.UUID{}, types.RackLinks{})
+				c.DeleteRackLinks(types.UUID{}, types.RackLinks{})
 			},
 		},
 		{
 			URL:    "/rack/00000000-0000-0000-0000-000000000000/layout/01/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetSingleRackLayoutByRU(types.UUID{}, "01") },
+			Do:     func(c *conch.Client) { c.GetSingleRackLayoutByRU(types.UUID{}, "01") },
 		},
 		{
 			URL:    "/rack/00000000-0000-0000-0000-000000000000/layout/00000000-0000-0000-0000-000000000000/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetSingleRackLayoutByID(types.UUID{}, types.UUID{}) },
+			Do:     func(c *conch.Client) { c.GetSingleRackLayoutByID(types.UUID{}, types.UUID{}) },
 		},
 		{
 			URL:    "/rack/00000000-0000-0000-0000-000000000000/layout/00000000-0000-0000-0000-000000000000/",
 			Method: "POST",
 			Do: func(c *conch.Client) {
-				_ = c.UpdateSingleRackLayout(
+				c.UpdateSingleRackLayout(
 					types.UUID{},
 					types.UUID{},
 					types.RackLayoutUpdate{},
@@ -119,7 +119,7 @@ func TestRacks(t *testing.T) {
 		{
 			URL:    "/rack/00000000-0000-0000-0000-000000000000/layout/00000000-0000-0000-0000-000000000000/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteSingleRackLayout(types.UUID{}, types.UUID{}) },
+			Do:     func(c *conch.Client) { c.DeleteSingleRackLayout(types.UUID{}, types.UUID{}) },
 		},
 	}
 

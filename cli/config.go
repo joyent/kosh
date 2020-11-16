@@ -82,9 +82,19 @@ func (c Config) ConchClient() *conch.Client {
 	)
 }
 
+type Renderer func(interface{}, error)
+
 // Renderer returns a function that will render to STDOUT
-func (c Config) Renderer() func(interface{}) {
+func (c Config) Renderer() Renderer {
 	return c.RenderTo(os.Stdout)
+}
+
+func (c Config) Before(checks ...func(c Config)) func() {
+	return func() {
+		for _, check := range checks {
+			check(config)
+		}
+	}
 }
 
 func renderJSON(i interface{}) string {
@@ -97,8 +107,11 @@ func renderJSON(i interface{}) string {
 
 // RenderTo returns a function tha renders to a given io.Writer based on the
 // configuraton and datatype
-func (c Config) RenderTo(w io.Writer) func(interface{}) {
-	return func(i interface{}) {
+func (c Config) RenderTo(w io.Writer) func(interface{}, error) {
+	return func(i interface{}, e error) {
+		if e != nil {
+			fmt.Fprintln(w, e)
+		}
 		if c.OutputJSON {
 			c.Debug("Outputting JSON")
 			fmt.Fprintln(w, renderJSON(i))
@@ -113,7 +126,10 @@ func (c Config) RenderTo(w io.Writer) func(interface{}) {
 			fmt.Fprintln(w, s)
 		case tables.Tabulable:
 			fmt.Fprintln(w, tables.Render(t))
+		case fmt.Stringer:
+			fmt.Fprintln(w, t)
 		default:
+			c.Debug("default renderer")
 			fmt.Fprintln(w, renderJSON(t))
 		}
 	}

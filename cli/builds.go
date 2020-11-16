@@ -3,6 +3,7 @@ package cli
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	cli "github.com/jawher/mow.cli"
 	"github.com/joyent/kosh/conch"
@@ -26,20 +27,57 @@ func okBuildRole(role string) bool {
 
 func buildsCmd(cmd *cli.Cmd) {
 	var conch *conch.Client
-	var display func(interface{})
-	cmd.Before = func() {
-		conch = config.ConchClient()
-		display = config.Renderer()
-	}
-	cmd.Action = func() {
-		config.Debug("display(conch.GetAllBuilds())")
-		display(conch.GetAllBuilds())
-	}
-	cmd.Command("get ls", "Get a list of all builds", func(cmd *cli.Cmd) {
-		cmd.Action = func() {
-			config.Debug("display(conch.GetAllBuilds())")
-			display(conch.GetAllBuilds())
+	var display func(interface{}, error)
+
+	cmd.Before = config.Before(
+		requireAuth,
+		func(config Config) {
+			conch = config.ConchClient()
+			display = config.Renderer()
+		},
+	)
+
+	var startedSetByUser bool
+	var completedSetByUser bool
+
+	started := cmd.Bool(cli.BoolOpt{
+		Name:      "s started",
+		Value:     false,
+		Desc:      "display started builds",
+		SetByUser: &startedSetByUser,
+	})
+
+	completed := cmd.Bool(cli.BoolOpt{
+		Name:      "c completed",
+		Value:     false,
+		Desc:      "display completed builds",
+		SetByUser: &completedSetByUser,
+	})
+
+	getAllBuilds := func() {
+		params := make(map[string]string)
+		if startedSetByUser {
+			if *started {
+				params["started"] = "1"
+			} else {
+				params["started"] = "0"
+			}
 		}
+		if completedSetByUser {
+			if *completed {
+				params["completed"] = "1"
+			} else {
+				params["completed"] = "0"
+			}
+		}
+		display(conch.GetAllBuilds(params))
+	}
+
+	// Default action is to get all builds
+	cmd.Action = getAllBuilds
+
+	cmd.Command("get ls", "Get a list of all builds", func(cmd *cli.Cmd) {
+		cmd.Action = getAllBuilds
 	})
 
 	cmd.Command("create", "Create a new build", func(cmd *cli.Cmd) {
@@ -61,31 +99,58 @@ func buildsCmd(cmd *cli.Cmd) {
 					Admins:      []types.Admin{types.Admin{Email: types.EmailAddress(*adminEmailArg)}},
 				},
 			)
-			display(conch.GetAllBuilds())
+			getAllBuilds()
 		}
 	})
 }
 
 func buildCmd(cmd *cli.Cmd) {
 	var conch *conch.Client
-	var display func(interface{})
+	var display func(interface{}, error)
+	var build types.Build
 
-	var b types.Build
 	buildNameArg := cmd.StringArg("NAME", "", "Name or ID of the build")
 	cmd.Spec = "NAME"
 
-	cmd.Before = func() {
-		conch = config.ConchClient()
-		display = config.Renderer()
+	cmd.Before = config.Before(
+		requireAuth,
+		func(config Config) {
+			conch = config.ConchClient()
+			display = config.Renderer()
 
-		b = conch.GetBuildByName(*buildNameArg)
-	}
+			var e error
+			build, e = conch.GetBuildByName(*buildNameArg)
+			if e != nil {
+				fatal(e)
+			}
+		},
+	)
 
-	cmd.Action = func() { display(b) }
+	cmd.Action = func() { display(build, nil) }
 
 	cmd.Command("get", "Get information about a single build by its name", func(cmd *cli.Cmd) {
+		cmd.Action = func() { display(build, nil) }
+	})
+
+	cmd.Command("start", "Mark the build as started", func(cmd *cli.Cmd) {
 		cmd.Action = func() {
-			display(b)
+			if e := conch.UpdateBuildByID(build.ID, types.BuildUpdate{
+				Started: time.Now(),
+			}); e != nil {
+				fatal(e)
+			}
+			display(conch.GetBuildByID(build.ID))
+		}
+	})
+
+	cmd.Command("complete", "Mark the build as completed", func(cmd *cli.Cmd) {
+		cmd.Action = func() {
+			update := types.BuildUpdate{Completed: time.Now()}
+
+			if e := conch.UpdateBuildByID(build.ID, update); e != nil {
+				fatal(e)
+			}
+			display(conch.GetBuildByID(build.ID))
 		}
 	})
 
@@ -192,7 +257,10 @@ func buildCmd(cmd *cli.Cmd) {
 						prettyBuildRoleList(),
 					))
 				}
-				org := conch.GetOrganizationByName(*orgNameArg)
+				org, e := conch.GetOrganizationByName(*orgNameArg)
+				if e != nil {
+					fatal(e)
+				}
 
 				conch.AddBuildOrganization(*buildNameArg, types.BuildAddOrganization{
 					org.ID,
@@ -228,10 +296,11 @@ func buildCmd(cmd *cli.Cmd) {
 	})
 
 	cmd.Command("devices ds", "Manage devices in a specific build", func(cmd *cli.Cmd) {
+		// list by default
+		cmd.Action = func() { display(conch.GetAllBuildDevices(*buildNameArg)) }
+
 		cmd.Command("get ls", "Get a list of devices in an build", func(cmd *cli.Cmd) {
-			cmd.Action = func() {
-				display(conch.GetAllBuildDevices(*buildNameArg))
-			}
+			cmd.Action = func() { display(conch.GetAllBuildDevices(*buildNameArg)) }
 		})
 
 		cmd.Command("add", "Add a device to an build", func(cmd *cli.Cmd) {
@@ -257,19 +326,26 @@ func buildCmd(cmd *cli.Cmd) {
 
 			cmd.Spec = "ID [OPTIONS]"
 			cmd.Action = func() {
-				build := conch.GetBuildByName(*buildNameArg)
-				device := conch.GetDeviceBySerial(*deviceIDArg)
-				conch.DeleteBuildDeviceByID(build.ID, device.ID)
+				b, e := conch.GetBuildByName(*buildNameArg)
+				if e != nil {
+					fatal(e)
+				}
+				d, e := conch.GetDeviceBySerial(*deviceIDArg)
+				if e != nil {
+					fatal(e)
+				}
+				conch.DeleteBuildDeviceByID(b.ID, d.ID)
 				display(conch.GetAllBuildDevices(*buildNameArg))
 			}
 		})
 	})
 
 	cmd.Command("racks", "Manage racks in a specific build", func(cmd *cli.Cmd) {
+		// default to list
+		cmd.Action = func() { display(conch.GetBuildRacks(*buildNameArg)) }
+
 		cmd.Command("get ls", "Get a list of racks in an build", func(cmd *cli.Cmd) {
-			cmd.Action = func() {
-				display(conch.GetBuildRacks(*buildNameArg))
-			}
+			cmd.Action = func() { display(conch.GetBuildRacks(*buildNameArg)) }
 		})
 
 		cmd.Command("add", "Add a rack to an build", func(cmd *cli.Cmd) {

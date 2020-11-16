@@ -15,15 +15,15 @@ func (c *Client) CreateRack(rack types.RackCreate) error {
 
 // GetRackByName (GET /rack/:rack_id_or_name) returns a rack with the given
 // name
-func (c *Client) GetRackByName(name string) (rack types.Rack) {
-	c.Rack(name).Receive(&rack)
+func (c *Client) GetRackByName(name string) (rack types.Rack, e error) {
+	_, e = c.Rack(name).Receive(&rack)
 	return
 }
 
 // GetRackByID (GET /rack/:rack_id_or_name) returns a rack with the given
 // UUID
-func (c *Client) GetRackByID(id types.UUID) (rack types.Rack) {
-	c.Rack(id.String()).Receive(&rack)
+func (c *Client) GetRackByID(id types.UUID) (rack types.Rack, e error) {
+	_, e = c.Rack(id.String()).Receive(&rack)
 	return
 }
 
@@ -41,8 +41,8 @@ func (c *Client) DeleteRack(id types.UUID) error {
 
 // GetRackLayout (GET /rack/:rack_id_or_name/layout) retrieves the rack layout
 // for the rack with the given UUID
-func (c *Client) GetRackLayout(id types.UUID) (rack types.RackLayouts) {
-	c.Rack(id.String()).Layout().Receive(&rack)
+func (c *Client) GetRackLayout(id types.UUID) (rack types.RackLayouts, e error) {
+	_, e = c.Rack(id.String()).Layout().Receive(&rack)
 	return
 }
 
@@ -62,8 +62,8 @@ func (c *Client) ReadRackLayoutUpdate(r io.Reader) (update types.RackLayoutUpdat
 
 // GetRackAssignments (GET /rack/:rack_id_or_name/assignment) gets the current
 // assignments for the rack
-func (c *Client) GetRackAssignments(id types.UUID) (rack types.RackAssignments) {
-	c.Rack(id.String()).Assignment().Receive(&rack)
+func (c *Client) GetRackAssignments(id types.UUID) (rack types.RackAssignments, e error) {
+	_, e = c.Rack(id.String()).Assignment().Receive(&rack)
 	return
 }
 
@@ -112,15 +112,15 @@ func (c *Client) DeleteRackLinks(id types.UUID, phase types.RackLinks) error {
 
 // GetSingleRackLayoutByRU (GET /rack/:rack_id_or_name/layout/:layout_id_or_rack_unit_start)
 // returns a single layout for the given RU
-func (c *Client) GetSingleRackLayoutByRU(id types.UUID, ru string) (rack types.RackLayout) {
-	c.Rack(id.String()).Layout(ru).Receive(&rack)
+func (c *Client) GetSingleRackLayoutByRU(id types.UUID, ru string) (rack types.RackLayout, e error) {
+	_, e = c.Rack(id.String()).Layout(ru).Receive(&rack)
 	return
 }
 
 // GetSingleRackLayoutByID (GET /rack/:rack_id_or_name/layout/:layout_id_or_rack_unit_start)
 // returns a single layout for the given UUID
-func (c *Client) GetSingleRackLayoutByID(rackID, layoutID types.UUID) (rack types.RackLayout) {
-	c.Rack(rackID.String()).Layout(layoutID.String()).Receive(&rack)
+func (c *Client) GetSingleRackLayoutByID(rackID, layoutID types.UUID) (rack types.RackLayout, e error) {
+	_, e = c.Rack(rackID.String()).Layout(layoutID.String()).Receive(&rack)
 	return
 }
 

@@ -10,7 +10,7 @@ import (
 
 func validationCmd(cmd *cli.Cmd) {
 	var conch *conch.Client
-	var display func(interface{})
+	var display func(interface{}, error)
 	cmd.Before = func() {
 		conch = config.ConchClient()
 		display = config.Renderer()
@@ -30,14 +30,19 @@ func validationCmd(cmd *cli.Cmd) {
 		cmd.Spec = "UUID"
 
 		cmd.Before = func() {
-			plan = conch.GetValidationPlanByName(*idArg)
+			var e error
+			plan, e = conch.GetValidationPlanByName(*idArg)
+			if e != nil {
+				fatal(e)
+			}
+
 			if (plan == types.ValidationPlan{}) {
 				fatal(errors.New("could not find the validation plan"))
 			}
 		}
 
 		cmd.Command("get", "Get information about a single build by its name", func(cmd *cli.Cmd) {
-			cmd.Action = func() { display(plan) }
+			cmd.Action = func() { display(plan, nil) }
 		})
 	})
 }

@@ -20,37 +20,37 @@ func TestDatacenterRoutes(t *testing.T) {
 		{
 			URL:    "/dc/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetAllDatacenters() },
+			Do:     func(c *conch.Client) { c.GetAllDatacenters() },
 		},
 		{
 			URL:    "/dc/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.CreateDatacenter(types.DatacenterCreate{}) },
+			Do:     func(c *conch.Client) { c.CreateDatacenter(types.DatacenterCreate{}) },
 		},
 		{
 			URL:    "/dc/foo/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetDatacenterByName("foo") },
+			Do:     func(c *conch.Client) { c.GetDatacenterByName("foo") },
 		},
 		{
 			URL:    "/dc/00000000-0000-0000-0000-000000000000/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetDatacenterByID(types.UUID{}) },
+			Do:     func(c *conch.Client) { c.GetDatacenterByID(types.UUID{}) },
 		},
 		{
 			URL:    "/dc/00000000-0000-0000-0000-000000000000/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.UpdateDatacenter(types.UUID{}, types.DatacenterUpdate{}) },
+			Do:     func(c *conch.Client) { c.UpdateDatacenter(types.UUID{}, types.DatacenterUpdate{}) },
 		},
 		{
 			URL:    "/dc/00000000-0000-0000-0000-000000000000/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteDatacenter(types.UUID{}) },
+			Do:     func(c *conch.Client) { c.DeleteDatacenter(types.UUID{}) },
 		},
 		{
 			URL:    "/dc/00000000-0000-0000-0000-000000000000/rooms/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetAllDatacenterRooms(types.UUID{}) },
+			Do:     func(c *conch.Client) { c.GetAllDatacenterRooms(types.UUID{}) },
 		},
 	}
 

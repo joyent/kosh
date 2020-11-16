@@ -8,57 +8,57 @@ import (
 
 // FindDevicesBySetting (GET /device?:key=:value) returns a list of devices
 // that have the matching setting
-func (c *Client) FindDevicesBySetting(key, value string) (device types.Devices) {
-	c.Device("").WithParams(map[string]string{key: value}).Receive(&device)
+func (c *Client) FindDevicesBySetting(key, value string) (device types.Devices, e error) {
+	_, e = c.Device("").WithParams(map[string]string{key: value}).Receive(&device)
 	return
 }
 
 // FindDevicesByTag (GET /device?:key=:value) returns a list of devices that
 // have the matching tag
-func (c *Client) FindDevicesByTag(key, value string) (device types.Devices) {
+func (c *Client) FindDevicesByTag(key, value string) (device types.Devices, e error) {
 	key = fmt.Sprintf("tag_%s", key)
-	c.Device("").WithParams(map[string]string{key: value}).Receive(&device)
+	_, e = c.Device("").WithParams(map[string]string{key: value}).Receive(&device)
 	return
 }
 
 // FindDevicesByField (GET /device?:key=:value) returns a list of devices that
 // have the matching field
-func (c *Client) FindDevicesByField(key, value string) (device types.Device) {
-	c.Device("").WithParams(map[string]string{key: value}).Receive(&device)
+func (c *Client) FindDevicesByField(key, value string) (device types.Device, e error) {
+	_, e = c.Device("").WithParams(map[string]string{key: value}).Receive(&device)
 	return
 }
 
 // GetDeviceBySerial (GET /device/:device_id_or_serial_number) retrieves a
 // specific device by the given serial number string
-func (c *Client) GetDeviceBySerial(serial string) (device types.DetailedDevice) {
-	c.Device(serial).Receive(&device)
+func (c *Client) GetDeviceBySerial(serial string) (device types.DetailedDevice, e error) {
+	_, e = c.Device(serial).Receive(&device)
 	return
 }
 
 // GetDeviceByID (GET /device/:device_id_or_serial_number) retrieves a specific
 // device by the given UUID
-func (c *Client) GetDeviceByID(id types.UUID) (device types.DetailedDevice) {
-	c.Device(id.String()).Receive(&device)
+func (c *Client) GetDeviceByID(id types.UUID) (device types.DetailedDevice, e error) {
+	_, e = c.Device(id.String()).Receive(&device)
 	return
 }
 
 // GetDevicePXE (GET /device/:device_id_or_serial_number/pxe) returns the PXE
 // information for the given device
-func (c *Client) GetDevicePXE(id string) (pxe types.DevicePXE) {
-	c.Device(id).PXE().Receive(&pxe)
+func (c *Client) GetDevicePXE(id string) (pxe types.DevicePXE, e error) {
+	_, e = c.Device(id).PXE().Receive(&pxe)
 	return
 }
 
 // GetDevicePhase (GET /device/:device_id_or_serial_number/phase) returns teh
 // Phase for the given device
-func (c *Client) GetDevicePhase(id string) (phase types.DevicePhase) {
-	c.Device(id).Phase().Receive(&phase)
+func (c *Client) GetDevicePhase(id string) (phase types.DevicePhase, e error) {
+	_, e = c.Device(id).Phase().Receive(&phase)
 	return
 }
 
 // GetDeviceSKU (GET /device/:device_id_or_serial_number/sku) returns the SKU
 // for the given device
-func (c *Client) GetDeviceSKU(id string) (sku types.DeviceSku) {
+func (c *Client) GetDeviceSKU(id string) (sku types.DeviceSku, e error) {
 	c.Device(id).SKU().Receive(&sku)
 	return
 }
@@ -115,8 +115,8 @@ func (c *Client) SetDeviceBuild(id string, build types.DeviceBuild) error {
 // GetDeviceLocation (GET /device/:device_id_or_serial_number/location) returns
 // the known location data for the given device, this data is only accurate
 // whhile the device is in preflight
-func (c *Client) GetDeviceLocation(id string) (location types.DeviceLocation) {
-	c.Device(id).Location().Receive(&location)
+func (c *Client) GetDeviceLocation(id string) (location types.DeviceLocation, e error) {
+	_, e = c.Device(id).Location().Receive(&location)
 	return
 }
 
@@ -136,8 +136,8 @@ func (c *Client) DeleteDeviceLocation(id string) error {
 
 // GetDeviceSettings (GET /device/:device_id_or_serial_number/settings)
 // retrieves the current settings for teh given device
-func (c *Client) GetDeviceSettings(id string) (settings types.DeviceSettings) {
-	c.Device(id).Settings("").Receive(&settings)
+func (c *Client) GetDeviceSettings(id string) (settings types.DeviceSettings, e error) {
+	_, e = c.Device(id).Settings("").Receive(&settings)
 	return
 }
 
@@ -150,23 +150,23 @@ func (c *Client) SetDeviceSettings(id string, settings types.DeviceSettings) err
 
 // GetDeviceSettingByName (GET /device/:device_id_or_serial_number/settings/:key)
 // retrieves a single device setting by name
-func (c *Client) GetDeviceSettingByName(id, name string) (setting types.DeviceSetting) {
-	c.Device(id).Settings(name).Receive(&setting)
+func (c *Client) GetDeviceSettingByName(id, name string) (setting types.DeviceSetting, e error) {
+	_, e = c.Device(id).Settings(name).Receive(&setting)
 	return
 }
 
 // GetDeviceTags (GET /device/:device_id_or_serial_number/settings/:key)
 // retrieves the tags for a given device
-func (c *Client) GetDeviceTags(id string) (tags types.DeviceSettings) {
-	c.Device(id).Settings("").Receive(&tags)
+func (c *Client) GetDeviceTags(id string) (tags types.DeviceSettings, e error) {
+	_, e = c.Device(id).Settings("").Receive(&tags)
 	return
 }
 
 // GetDeviceTagByName (GET /device/:device_id_or_serial_number/settings/:key)
 // retrieves a current tag by name for a given device
-func (c *Client) GetDeviceTagByName(id, name string) (tag types.DeviceSetting) {
+func (c *Client) GetDeviceTagByName(id, name string) (tag types.DeviceSetting, e error) {
 	name = fmt.Sprintf("tag_%s", name)
-	c.Device(id).Settings(name).Receive(&tag)
+	_, e = c.Device(id).Settings(name).Receive(&tag)
 	return
 }
 
@@ -203,35 +203,35 @@ func (c *Client) DeleteDeviceSetting(id, name string) error {
 // RunValidationForDevice (POST /device/:device_id_or_serial_number/validation/:validation_id)
 // runs a named validation for the given device and returns (but does not save)
 // the results
-func (c *Client) RunValidationForDevice(device, validation string, report types.DeviceReport) (results types.ValidationResults) {
-	c.Device(device).Validation(validation).Post(report).Receive(&results)
+func (c *Client) RunValidationForDevice(device, validation string, report types.DeviceReport) (results types.ValidationResults, e error) {
+	_, e = c.Device(device).Validation(validation).Post(report).Receive(&results)
 	return
 }
 
 // GetDeviceValidationStates ( GET /device/:device_id_or_serial_number/validation_state?status=<pass|fail|error>&status=...)
 // retrieves the given validation results for teh given device
-func (c *Client) GetDeviceValidationStates(id string, states ...string) (validations types.ValidationStateWithResults) {
-	c.Device(id).ValidationStates(states...).Receive(&validations)
+func (c *Client) GetDeviceValidationStates(id string, states ...string) (validations types.ValidationStateWithResults, e error) {
+	_, e = c.Device(id).ValidationStates(states...).Receive(&validations)
 	return
 }
 
 // GetDeviceInterfaces (GET /device/:device_id_or_serial_number/interface)
 // returns the reported interface information for the given device
-func (c *Client) GetDeviceInterfaces(id string) (nics types.DeviceNics) {
-	c.Device(id).Interface("").Receive(&nics)
+func (c *Client) GetDeviceInterfaces(id string) (nics types.DeviceNics, e error) {
+	_, e = c.Device(id).Interface("").Receive(&nics)
 	return
 }
 
 // GetDeviceInterfaceByName (GET /device/:device_id_or_serial_number/interface)
 // returns the information for a specific interface for the given device
-func (c *Client) GetDeviceInterfaceByName(id, name string) (nic types.DeviceNic) {
-	c.Device(id).Interface(name).Receive(&nic)
+func (c *Client) GetDeviceInterfaceByName(id, name string) (nic types.DeviceNic, e error) {
+	_, e = c.Device(id).Interface(name).Receive(&nic)
 	return
 }
 
 // GetDeviceInterfaceField (GET /device/:device_id_or_serial_number/interface)
 // retrieves a specific property of the named interface for a given device
-func (c *Client) GetDeviceInterfaceField(id, name, field string) (nicField types.DeviceNicField) {
-	c.Device(id).Interface(name).Field(field).Receive(&nicField)
+func (c *Client) GetDeviceInterfaceField(id, name, field string) (nicField types.DeviceNicField, e error) {
+	_, e = c.Device(id).Interface(name).Field(field).Receive(&nicField)
 	return
 }

@@ -10,18 +10,21 @@ import (
 
 func roomsCmd(cmd *cli.Cmd) {
 	var conch *conch.Client
-	var display func(interface{})
+	var display func(interface{}, error)
 
-	cmd.Before = func() {
-		requireSysAdmin(config)()
-		conch = config.ConchClient()
-		display = config.Renderer()
-	}
+	cmd.Before = config.Before(
+		requireAuth,
+		requireSysAdmin,
+		func(c Config) {
+			conch = config.ConchClient()
+			display = config.Renderer()
+		},
+	)
 
-	cmd.Command("get", "Get a list of all rooms", func(cmd *cli.Cmd) {
-		cmd.Action = func() {
-			display(conch.GetAllRooms())
-		}
+	cmd.Action = func() { display(conch.GetAllRooms()) }
+
+	cmd.Command("get ls", "Get a list of all rooms", func(cmd *cli.Cmd) {
+		cmd.Action = func() { display(conch.GetAllRooms()) }
 	})
 
 	cmd.Command("create", "Create a single room", func(cmd *cli.Cmd) {
@@ -47,7 +50,10 @@ func roomsCmd(cmd *cli.Cmd) {
 				fatal(errors.New("--datacenter-id is required"))
 			}
 
-			datacenter := conch.GetDatacenterByName(*datacenterIDOpt)
+			datacenter, e := conch.GetDatacenterByName(*datacenterIDOpt)
+			if e != nil {
+				fatal(e)
+			}
 			if (datacenter == types.Datacenter{}) {
 				fatal(errors.New("could not find the datacenter"))
 			}
@@ -64,7 +70,7 @@ func roomsCmd(cmd *cli.Cmd) {
 
 func roomCmd(cmd *cli.Cmd) {
 	var conch *conch.Client
-	var display func(interface{})
+	var display func(interface{}, error)
 	var room types.DatacenterRoomDetailed
 
 	aliasArg := cmd.StringArg(
@@ -75,20 +81,26 @@ func roomCmd(cmd *cli.Cmd) {
 
 	cmd.Spec = "ALIAS"
 
-	cmd.Before = func() {
-		requireSysAdmin(config)()
+	cmd.Before = config.Before(
+		requireAuth,
+		requireSysAdmin,
+		func(config Config) {
+			conch = config.ConchClient()
+			display = config.Renderer()
 
-		conch = config.ConchClient()
-		display = config.Renderer()
-
-		room = conch.GetRoomByAlias(*aliasArg)
-		if (room == types.DatacenterRoomDetailed{}) {
-			fatal(errors.New("could not find the room"))
-		}
-	}
+			var e error
+			room, e = conch.GetRoomByAlias(*aliasArg)
+			if e != nil {
+				fatal(e)
+			}
+			if (room == types.DatacenterRoomDetailed{}) {
+				fatal(errors.New("could not find the room"))
+			}
+		},
+	)
 
 	cmd.Command("get", "Information about a single room", func(cmd *cli.Cmd) {
-		cmd.Action = func() { display(room) }
+		cmd.Action = func() { display(room, nil) }
 	})
 
 	cmd.Command("update", "Update information about a single room", func(cmd *cli.Cmd) {
@@ -100,7 +112,10 @@ func roomCmd(cmd *cli.Cmd) {
 		)
 
 		cmd.Action = func() {
-			dc := conch.GetDatacenterByName(*datacenterIDOpt)
+			dc, e := conch.GetDatacenterByName(*datacenterIDOpt)
+			if e != nil {
+				fatal(e)
+			}
 			if (dc == types.Datacenter{}) {
 				fatal(errors.New("could not find the datacenter"))
 			}

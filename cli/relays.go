@@ -2,7 +2,6 @@ package cli
 
 import (
 	"errors"
-	"fmt"
 
 	cli "github.com/jawher/mow.cli"
 	"github.com/joyent/kosh/conch"
@@ -10,24 +9,24 @@ import (
 )
 
 func relaysCmd(cmd *cli.Cmd) {
-	cmd.Action = func() {
-		conch := config.ConchClient()
-		display := config.Renderer()
-		display(conch.GetAllRelays())
+	var conch *conch.Client
+	var display func(interface{}, error)
+
+	cmd.Before = func() {
+		conch = config.ConchClient()
+		display = config.Renderer()
 	}
 
+	cmd.Action = func() { display(conch.GetAllRelays()) }
+
 	cmd.Command("get ls", "Get a list of relays", func(cmd *cli.Cmd) {
-		cmd.Action = func() {
-			conch := config.ConchClient()
-			display := config.Renderer()
-			display(conch.GetAllRelays())
-		}
+		cmd.Action = func() { display(conch.GetAllRelays()) }
 	})
 }
 
 func relayCmd(cmd *cli.Cmd) {
 	var conch *conch.Client
-	var display func(interface{})
+	var display func(interface{}, error)
 
 	var relay types.Relay
 	relayArg := cmd.StringArg(
@@ -41,15 +40,21 @@ func relayCmd(cmd *cli.Cmd) {
 	cmd.Before = func() {
 		conch = config.ConchClient()
 		display = config.Renderer()
-		relay = conch.GetRelayBySerial(*relayArg)
-	}
-	cmd.Command("get", "Get data about a single relay", func(cmd *cli.Cmd) {
-		cmd.Action = func() {
-			if (relay == types.Relay{}) {
-				fatal(errors.New("relay not found"))
-			}
-			fmt.Println(relay)
+
+		var e error
+		relay, e = conch.GetRelayBySerial(*relayArg)
+		if e != nil {
+			fatal(e)
 		}
+		if (relay == types.Relay{}) {
+			fatal(errors.New("relay not found"))
+		}
+	}
+	// default action is to display the relay
+	cmd.Action = func() { display(relay, nil) }
+
+	cmd.Command("get", "Get data about a single relay", func(cmd *cli.Cmd) {
+		cmd.Action = func() { display(relay, nil) }
 	})
 
 	cmd.Command("register", "Register a relay with the API", func(cmd *cli.Cmd) {

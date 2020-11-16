@@ -20,53 +20,53 @@ func TestOrganizationRoutes(t *testing.T) {
 		{
 			URL:    "/organization/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetAllOrganizations() },
+			Do:     func(c *conch.Client) { c.GetAllOrganizations() },
 		},
 		{
 			URL:    "/organization/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.CreateOrganization(types.OrganizationCreate{}) },
+			Do:     func(c *conch.Client) { c.CreateOrganization(types.OrganizationCreate{}) },
 		},
 		{
 			URL:    "/organization/foo/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.GetOrganizationByName("foo") },
+			Do:     func(c *conch.Client) { c.GetOrganizationByName("foo") },
 		},
 		{
 			URL:    "/organization/foo/",
 			Method: "POST",
 			Do: func(c *conch.Client) {
-				_ = c.UpdateOrganization("foo", types.OrganizationUpdate{})
+				c.UpdateOrganization("foo", types.OrganizationUpdate{})
 			},
 		},
 		{
 			URL:    "/organization/00000000-0000-0000-0000-000000000000/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteOrganization(types.UUID{}) },
+			Do:     func(c *conch.Client) { c.DeleteOrganization(types.UUID{}) },
 		},
 		{
 			URL:    "/organization/00000000-0000-0000-0000-000000000000/user/",
 			Method: "POST",
 			Do: func(c *conch.Client) {
-				_ = c.AddOrganizationUser(types.UUID{}, types.OrganizationAddUser{}, false)
+				c.AddOrganizationUser(types.UUID{}, types.OrganizationAddUser{}, false)
 			},
 		},
 		{
 			URL:    "/organization/00000000-0000-0000-0000-000000000000/user/",
 			Method: "POST",
 			Do: func(c *conch.Client) {
-				_ = c.AddOrganizationUser(types.UUID{}, types.OrganizationAddUser{}, true)
+				c.AddOrganizationUser(types.UUID{}, types.OrganizationAddUser{}, true)
 			},
 		},
 		{
 			URL:    "/organization/00000000-0000-0000-0000-000000000000/user/bar/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteOrganizationUser(types.UUID{}, "bar", false) },
+			Do:     func(c *conch.Client) { c.DeleteOrganizationUser(types.UUID{}, "bar", false) },
 		},
 		{
 			URL:    "/organization/00000000-0000-0000-0000-000000000000/user/bar/",
 			Method: "DELETE",
-			Do:     func(c *conch.Client) { _ = c.DeleteOrganizationUser(types.UUID{}, "bar", true) },
+			Do:     func(c *conch.Client) { c.DeleteOrganizationUser(types.UUID{}, "bar", true) },
 		},
 	}
 

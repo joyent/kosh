@@ -10,22 +10,22 @@ func (c *Client) RegisterRelay(serial string, relay types.RegisterRelay) error {
 }
 
 // GetAllRelays (GET /relay) returns a list of all relays
-func (c *Client) GetAllRelays() (relays types.Relays) {
-	c.Relay().Receive(&relays)
+func (c *Client) GetAllRelays() (relays types.Relays, e error) {
+	_, e = c.Relay().Receive(&relays)
 	return
 }
 
 // GetRelayBySerial (GET /relay/:relay_id_or_serial_number) retrieves a relay
 // with the given serial number
-func (c *Client) GetRelayBySerial(serial string) (relay types.Relay) {
-	c.Relay(serial).Receive(&relay)
+func (c *Client) GetRelayBySerial(serial string) (relay types.Relay, e error) {
+	_, e = c.Relay(serial).Receive(&relay)
 	return
 }
 
 // GetRelayByID (GET /relay/:relay_id_or_serial_number) retrieves a relay
 // with the given UUID
-func (c *Client) GetRelayByID(id types.UUID) (relay types.Relay) {
-	c.Relay(id.String()).Receive(&relay)
+func (c *Client) GetRelayByID(id types.UUID) (relay types.Relay, e error) {
+	_, e = c.Relay(id.String()).Receive(&relay)
 	return
 }
 

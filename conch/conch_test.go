@@ -19,27 +19,27 @@ func TestDefaultRoutes(t *testing.T) {
 		{
 			URL:    "/ping/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.Ping() },
+			Do:     func(c *conch.Client) { c.Ping() },
 		},
 		{
 			URL:    "/version/",
 			Method: "GET",
-			Do:     func(c *conch.Client) { _ = c.Version() },
+			Do:     func(c *conch.Client) { c.Version() },
 		},
 		{
 			URL:    "/login/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.Login("foo", "bar") },
+			Do:     func(c *conch.Client) { c.Login("foo", "bar") },
 		},
 		{
 			URL:    "/logout/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.Logout() },
+			Do:     func(c *conch.Client) { c.Logout() },
 		},
 		{
 			URL:    "/refresh_token/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { _ = c.RefreshToken() },
+			Do:     func(c *conch.Client) { c.RefreshToken() },
 		},
 	}
 

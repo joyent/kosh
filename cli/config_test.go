@@ -61,7 +61,6 @@ func TestRender(t *testing.T) {
 			Name: "	display(conch.GetAllBuilds())",
 			Do: func() { display(conch.GetAllBuilds()) },
 		},
-
 		{
 			Name: "	display(conch.GetAllDatacenterRooms(dc.ID))",
 			Do: func() { display(conch.GetAllDatacenterRooms(types.UUID{})) },

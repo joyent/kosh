@@ -37,7 +37,7 @@ func New(options ...Option) (client *Client) {
 		Client(&http.Client{Transport: defaultTransport}).
 		Set("User-Agent", defaultUserAgent())
 
-	client = &Client{Sling: s}
+	client = &Client{Sling: s, Logger: logger.NullLogger{}}
 
 	for _, set := range options {
 		set(client)
@@ -47,33 +47,33 @@ func New(options ...Option) (client *Client) {
 
 // HTTPCLient sets the client used by the package for making HTTP Requests
 func HTTPClient(client *http.Client) Option {
-	return func(conch *Client) { conch.Sling.Client(client) }
+	return func(c *Client) { c.Sling.Client(client) }
 }
 
 // UserAgent sets the User-Agent used by the package
 func UserAgent(ua string) Option {
-	return func(conch *Client) { conch.Sling.Set("User-Agent", ua) }
+	return func(c *Client) { c.Sling.Set("User-Agent", ua) }
 }
 
 // API sets the base URL for the API
 func API(url string) Option {
-	return func(conch *Client) { conch.Sling.Base(url) }
+	return func(c *Client) { c.Sling.Base(url) }
 }
 
 // AuthToken sets the authentication token
 func AuthToken(token string) Option {
-	return func(conch *Client) { conch.Sling.Set("Authorization", "Bearer "+token) }
+	return func(c *Client) { c.Sling.Set("Authorization", "Bearer "+token) }
 }
 
 // Logger sets the logger used by the package
-func Logger(logger logger.Logger) Option {
-	return func(conch *Client) { conch.Logger = logger }
+func Logger(logger logger.Interface) Option {
+	return func(c *Client) { c.Logger = logger }
 }
 
 // Client is a struct that represnts the current Conch client.
 type Client struct {
-	Sling *sling.Sling
-	logger.Logger
+	Sling  *sling.Sling
+	Logger logger.Interface
 }
 
 // New performs a shallow clone of the current client and returns the
@@ -88,6 +88,12 @@ func (c *Client) New() *Client {
 func (c *Client) UserAgent(ua string) *Client {
 	c = c.New()
 	c.Sling.Set("User-Agent", ua)
+	return c
+}
+
+func (c *Client) Authorization(auth string) *Client {
+	c = c.New()
+	c.Sling.Set("Authorization", auth)
 	return c
 }
 
@@ -357,13 +363,20 @@ func (c *Client) Delete(data ...interface{}) *Client {
 // Send sends a HTTP request to the API server  without expecting a return data
 // structure. It returns the *http.Response and/or error from the request.
 func (c *Client) Send() (*http.Response, error) {
-	c.Debug("Send")
+	c.Logger.Debug("Send")
 	req, err := c.Sling.Request()
-	c.Info("URL: ", req.URL)
-	c.Debug(req, err)
+	c.Logger.Info(fmt.Sprintf("URL: %v", req.URL))
+	c.Logger.Debug(req, err)
 
 	res, err := c.Sling.Do(req, nil, nil)
-	c.Debug(res, err)
+	c.Logger.Debug(res, err)
+	if err != nil {
+		return res, err
+	}
+
+	if res.StatusCode >= 400 {
+		return res, fmt.Errorf("http error: %v", res.Status)
+	}
 
 	return res, err
 }
@@ -372,13 +385,25 @@ func (c *Client) Send() (*http.Response, error) {
 // the provided structure structure. It returns the *http.Response and/or error
 // from the request.
 func (c *Client) Receive(data interface{}) (*http.Response, error) {
-	c.Debug("Receive")
+	if c.Logger != nil {
+		c.Logger.Debug("Receive")
+	}
 	req, err := c.Sling.Request()
-	c.Info("URL: ", req.URL)
-	c.Debug(req, err)
+	if c.Logger != nil {
+		c.Logger.Info(fmt.Sprintf("URL: %v", req.URL))
+		c.Logger.Debug(req, err)
+	}
 
 	res, err := c.Sling.ReceiveSuccess(data)
-	c.Debug(res, err)
+	if c.Logger != nil {
+		c.Logger.Debug(res, err)
+	}
+	if err != nil {
+		return res, err
+	}
 
+	if res.StatusCode >= 400 {
+		return res, fmt.Errorf("http error: %v", res.Status)
+	}
 	return res, err
 }

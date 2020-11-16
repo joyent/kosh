@@ -10,7 +10,7 @@ import (
 
 func organizationsCmd(cmd *cli.Cmd) {
 	var conch *conch.Client
-	var display func(interface{})
+	var display func(interface{}, error)
 
 	cmd.Before = func() {
 		conch = config.ConchClient()
@@ -51,7 +51,7 @@ func organizationsCmd(cmd *cli.Cmd) {
 
 func organizationCmd(cmd *cli.Cmd) {
 	var conch *conch.Client
-	var display func(interface{})
+	var display func(interface{}, error)
 	var o types.Organization
 
 	organizationNameArg := cmd.StringArg("NAME", "", "Name or ID of the Organization")
@@ -60,7 +60,12 @@ func organizationCmd(cmd *cli.Cmd) {
 	cmd.Before = func() {
 		conch = config.ConchClient()
 		display = config.Renderer()
-		o = conch.GetOrganizationByName(*organizationNameArg)
+
+		var e error
+		o, e = conch.GetOrganizationByName(*organizationNameArg)
+		if e != nil {
+			fatal(e)
+		}
 	}
 
 	cmd.Command("get", "Get information about a single organization by its name", func(cmd *cli.Cmd) {
@@ -78,7 +83,7 @@ func organizationCmd(cmd *cli.Cmd) {
 	cmd.Command("users", "Manage users in a specific organization", func(cmd *cli.Cmd) {
 		cmd.Command("get ls", "Get a list of users in an organization", func(cmd *cli.Cmd) {
 			cmd.Action = func() {
-				display(o.Users)
+				display(o.Users, nil)
 			}
 		})
 

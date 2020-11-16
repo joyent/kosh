@@ -11,10 +11,12 @@ import (
 )
 
 func devicesCmd(cmd *cli.Cmd) {
+	cmd.Before = config.Before(requireAuth)
 	cmd.Command("search s", "Search for devices", deviceSearchCmd)
 }
 
 func deviceSearchCmd(cmd *cli.Cmd) {
+	cmd.Before = config.Before(requireAuth)
 	cmd.Command("setting", "Search for devices by exact setting value", searchBySettingCmd)
 	cmd.Command("tag", "Search for devices by exact tag value", searchByTagCmd)
 	cmd.Command("hostname", "Search for devices by exact hostname", searchByHostnameCmd)
@@ -115,7 +117,7 @@ func deviceSettingsCmd(id *string) func(cmd *cli.Cmd) {
 func deviceSettingCmd(id *string) func(cmd *cli.Cmd) {
 	return func(cmd *cli.Cmd) {
 		var conch *conch.Client
-		var display func(interface{})
+		var display func(interface{}, error)
 
 		key := *cmd.StringArg(
 			"NAME",
@@ -169,7 +171,7 @@ func deviceTagsCmd(id *string) func(cmd *cli.Cmd) {
 func deviceTagCmd(id *string) func(cmd *cli.Cmd) {
 	return func(cmd *cli.Cmd) {
 		var conch *conch.Client
-		var display func(interface{})
+		var display func(interface{}, error)
 
 		name := *cmd.StringArg("NAME", "", "Name of the tag")
 		cmd.Spec = "NAME"
@@ -220,13 +222,16 @@ func deviceInterfaceCmd(id *string) func(cmd *cli.Cmd) {
 func devicePreflightCmd(id *string) func(cmd *cli.Cmd) {
 	return func(cmd *cli.Cmd) {
 		var conch *conch.Client
-		var display func(interface{})
+		var display func(interface{}, error)
 
 		cmd.Before = func() {
 			conch = config.ConchClient()
 			display = config.Renderer()
-
-			if conch.GetDevicePhase(*id) != "integration" {
+			phase, e := conch.GetDevicePhase(*id)
+			if e != nil {
+				fatal(e)
+			}
+			if phase != "integration" {
 				os.Stderr.WriteString("Warning: This device is no longer in the 'integration' phase. This data is likely to be inaccurate\n")
 			}
 		}
@@ -237,7 +242,10 @@ func devicePreflightCmd(id *string) func(cmd *cli.Cmd) {
 
 		cmd.Command("ipmi", "IPMI address for a device in preflight", func(cmd *cli.Cmd) {
 			cmd.Action = func() {
-				iface := conch.GetDeviceInterfaceByName(*id, "ipmi1")
+				iface, e := conch.GetDeviceInterfaceByName(*id, "ipmi1")
+				if e != nil {
+					fatal(e)
+				}
 				fmt.Println(iface.Ipaddr)
 			}
 		})
@@ -269,7 +277,7 @@ func okPhase(phase string) bool {
 func devicePhaseCmd(id *string) func(cmd *cli.Cmd) {
 	return func(cmd *cli.Cmd) {
 		var conch *conch.Client
-		var display func(interface{})
+		var display func(interface{}, error)
 
 		cmd.Before = func() {
 			conch = config.ConchClient()
@@ -299,8 +307,8 @@ func deviceDeviceReportCmd(id *string) func(cmd *cli.Cmd) {
 		cmd.Action = func() {
 			conch := config.ConchClient()
 			display := config.Renderer()
-
-			display(conch.GetDeviceBySerial(*id).LatestReport)
+			d, e := conch.GetDeviceBySerial(*id)
+			display(d.LatestReport, e)
 		}
 	}
 }

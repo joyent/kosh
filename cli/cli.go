@@ -27,12 +27,17 @@ func getInputReader(filePathArg string) (io.Reader, error) {
 	return os.Open(filePathArg)
 }
 
-func requireSysAdmin(c Config) func() {
-	return func() {
-		if !c.ConchClient().IsSysAdmin() {
-			fmt.Println("This action requires Conch systems administrator privileges")
-			cli.Exit(1)
-		}
+func requireAuth(c Config) {
+	if c.ConchToken == "" {
+		fmt.Println("Need to provide --token or set KOSH_TOKEN")
+		cli.Exit(1)
+	}
+}
+
+func requireSysAdmin(c Config) {
+	if !c.ConchClient().IsSysAdmin() {
+		fmt.Println("This action requires Conch systems administrator privileges")
+		cli.Exit(1)
 	}
 }
 
@@ -129,11 +134,6 @@ func NewApp(cfg Config) *cli.Cli {
 	})
 
 	app.Before = func() {
-		if config.ConchToken == "" {
-			fmt.Println("Need to provide --token or set KOSH_TOKEN")
-			cli.Exit(1)
-		}
-
 		if !URLSetByUser {
 			switch config.ConchENV {
 			case "production":

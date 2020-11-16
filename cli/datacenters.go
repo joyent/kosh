@@ -11,12 +11,17 @@ import (
 
 func datacentersCmd(cmd *cli.Cmd) {
 	var conch *conch.Client
-	var display func(interface{})
+	var display func(interface{}, error)
 
-	cmd.Before = func() {
-		conch = config.ConchClient()
-		display = config.Renderer()
-	}
+	cmd.Before = config.Before(
+		requireAuth,
+		requireSysAdmin,
+		func(config Config) {
+			conch = config.ConchClient()
+			display = config.Renderer()
+		},
+	)
+
 	cmd.Command("get", "Get a list of all datacenters", func(cmd *cli.Cmd) {
 		cmd.Action = func() {
 			display(conch.GetAllDatacenters())
@@ -61,7 +66,7 @@ func datacentersCmd(cmd *cli.Cmd) {
 
 func datacenterCmd(cmd *cli.Cmd) {
 	var conch *conch.Client
-	var display func(interface{})
+	var display func(interface{}, error)
 	var dc types.Datacenter
 
 	idArg := cmd.StringArg(
@@ -71,18 +76,26 @@ func datacenterCmd(cmd *cli.Cmd) {
 	)
 	cmd.Spec = "UUID"
 
-	cmd.Before = func() {
-		conch = config.ConchClient()
-		display = config.Renderer()
+	cmd.Before = config.Before(
+		requireAuth,
+		requireSysAdmin,
+		func(config Config) {
+			conch = config.ConchClient()
+			display = config.Renderer()
 
-		dc = conch.GetDatacenterByName(*idArg)
-		if (dc == types.Datacenter{}) {
-			fatal(errors.New("couldn't find datacenter"))
-		}
-	}
+			var e error
+			dc, e = conch.GetDatacenterByName(*idArg)
+			if e != nil {
+				fatal(e)
+			}
+			if (dc == types.Datacenter{}) {
+				fatal(errors.New("couldn't find datacenter"))
+			}
+		},
+	)
 
 	cmd.Command("get", "Information about a single datacenter", func(cmd *cli.Cmd) {
-		cmd.Action = func() { display(dc) }
+		cmd.Action = func() { display(dc, nil) }
 	})
 
 	cmd.Command("delete", "Delete a single datacenter", func(cmd *cli.Cmd) {
