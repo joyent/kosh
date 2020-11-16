@@ -91,6 +91,12 @@ func (c *Client) UserAgent(ua string) *Client {
 	return c
 }
 
+func (c *Client) Authorization(auth string) *Client {
+	c = c.New()
+	c.Sling.Set("Authorization", auth)
+	return c
+}
+
 // Path sets the sling path to the given path, optionally appending 0 or
 // more IDs to the end of the path
 func (c *Client) Path(path string, ids ...string) *Client {
