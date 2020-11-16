@@ -34,16 +34,20 @@ func (bl Builds) ForEach(do func([]string)) {
 }
 
 const buildTemplate = `
-# Build {{ .Name }}
+Build {{ .Name }}
+=================
 
 {{ .Description }}
 
-## Admins ##
+Admins
+------
+
 {{ range .Admins }}
 * {{ .Name }} - {{ .Email }}
 {{ end }}
 
-## Links ##
+Links
+-----
 {{ range .Links }}
 * {{ . }}
 {{ end }}
@@ -128,6 +132,9 @@ func (dl Datacenters) ForEach(do func([]string)) {
 }
 
 const datacenterTemplate = `
+Datacenter
+==========
+
 ID: {{ .ID }}
 Vendor: {{ .Vendor }}
 Vendor Name: {{ .VendorName }}
@@ -160,6 +167,9 @@ func (ds DeviceSettings) String() string {
 }
 
 const detailedDeviceTemplate = `
+Device {{ .SerialNumber }}
+==========================
+
 ID: {{ .ID }}
 Serial: {{ .SerialNumber }}
 Asset Tag: {{ .AssetTag }}
@@ -210,6 +220,9 @@ Disks:{{range $name, $slots := .Disks}}
 func (d DetailedDevice) Template() string { return detailedDeviceTemplate }
 
 const deviceTemplate = `
+Device {{ .SerialNumber }}
+==========================
+
 ID: {{ .ID }}
 Serial: {{ .SerialNumber }}
 Asset Tag: {{ .AssetTag }}
@@ -271,6 +284,9 @@ const deviceReportTemplate = ``
 func (d DeviceReport) Template() string { return deviceReportTemplate }
 
 const hardwareProductTemplate = `
+Hardware Product {{ .Name }}
+============================
+
 ID: {{ .ID }}
 Name: {{ .Name }}
 SKU: {{ .SKU }}
@@ -315,6 +331,9 @@ func (h HardwareProducts) String() string {
 }
 
 const hardwareVendorTemplate = `
+Hardware Vendor {{ .Name }}
+===========================
+
 Name: {{ .Name }}
 ID: {{ .ID }}
 Created: {{ TimeStr .Created }}
@@ -347,7 +366,8 @@ func (h HardwareVendors) ForEach(do func([]string)) {
 }
 
 const organizationTemplate = `
-Name: {{ .Name }}
+Organization {{ .Name }}
+========================
 ID: {{ .ID }}
 Description: {{ .Description }}
 `
@@ -377,6 +397,9 @@ func (o Organizations) ForEach(do func([]string)) {
 func (o Organizations) String() { tables.Render(o) }
 
 const rackTemplate = `
+Rack {{ .Name }}
+================
+
 ID: {{ .ID }}
 Name: {{ .Name }}
 Serial Number: {{ .SerialNumber }}
@@ -508,6 +531,9 @@ func (rl RackRoles) String() string {
 }
 
 const rackRoleTemplate = `
+Rack Role {{ .Name }}
+=====================
+
 Name: {{ .Name }}
 Rack Size: {{ .RackSize }}
 
@@ -518,6 +544,9 @@ Updated: {{ TimeStr .Updated }}
 func (r RackRole) Template() string { return rackRoleTemplate }
 
 const relayTemplate = `
+Relay {{ .Name }}
+=================
+
 ID: {{ .ID }}
 Serial Number: {{ .SerialNumber }}
 Name: {{ .Name }}
@@ -564,6 +593,9 @@ func (rl Relays) String() string {
 }
 
 const roomTemplate = `
+Room {{ .Alias }}
+=================
+
 ID: {{ .ID }}
 Alias: {{ .Alias }}
 AZ: {{ .AZ }}
@@ -629,7 +661,8 @@ func (u UserSettings) ForEach(do func([]string)) {
 }
 
 const detailedUserTemplate = `
-# {{ .Name }}
+User {{ .Name }}
+================
 
 * ID: {{ .ID }}
 * Email: {{ .Email }}
@@ -639,7 +672,8 @@ Created: {{ TimeStr .Created }}
 
 Last Login: {{ if $.LastLogin.IsZero }}Never/Unknown{{ else }}{{ TimeStr .LastLogin }}{{ end }}
 
-## Organizations
+Organizations
+-------------
 
 {{ Table .Organizations }}
 `
@@ -647,6 +681,9 @@ Last Login: {{ if $.LastLogin.IsZero }}Never/Unknown{{ else }}{{ TimeStr .LastLo
 func (u UserDetailed) Template() string { return detailedUserTemplate }
 
 const validationPlanTemplate = `
+Validation Plan {{ .Name }}
+===========================
+
 ID: {{ .ID }}
 Name: {{ .Name }}
 Description: {{ .Description }}
@@ -687,6 +724,9 @@ func (v ValidationPlans) String() string {
 }
 
 const validationStateWithResultsTemplate = `
+Validation State
+================
+
 ID: {{ .ID }}
 Device: {{ CutUUID .DeviceID.String }}
 Hardware Product: {{ CutUUID .HardwareProductID.String }}
@@ -731,6 +771,9 @@ func (v ValidationResults) String() string {
 }
 
 const deviceNicTemplate = `
+Nic {{ .IfaceName }}
+====================
+
 Name: {{ .IfaceName }}
 Vendor: {{ .IfaceVendor }}
 Type: {{ .IfaceType }}
@@ -746,6 +789,9 @@ Device ID: {{ .DeviceID }}
 func (dn DeviceNic) Template() string { return deviceNicTemplate }
 
 const deviceLocationTemplate = `
+Location
+========
+
 Rack {{ .Rack }}
 Rack Unit Start: {{ .RackUnitStart }}
 DatacenterRoom: {{ .DatacenterRoom }}
@@ -769,6 +815,45 @@ func (ul UsersTerse) ForEach(do func([]string)) {
 		do([]string{
 			string(u.Name),
 			string(u.Email),
+		})
+	}
+}
+
+const userTokenTemplate = `
+Token {{ .Name }}
+=================
+
+* Created: {{ TimeStr .Created }}
+
+* Last IP: {{ .LastIpaddr }}
+* Last Used: {{ TimeStr .LastUsed }}
+
+* Expires: {{ TimeStr .Expires }}
+`
+
+func (ut UserToken) Template() string { return userTokenTemplate }
+
+func (ul UserTokens) Len() int           { return len(ul) }
+func (ul UserTokens) Swap(i, j int)      { ul[i], ul[j] = ul[j], ul[i] }
+func (ul UserTokens) Less(i, j int) bool { return ul[i].Name < ul[j].Name }
+func (ul UserTokens) Headers() []string {
+	return []string{
+		"Name",
+		"Created",
+		"Last IP",
+		"Last Used",
+		"Expires",
+	}
+}
+
+func (ul UserTokens) ForEach(do func([]string)) {
+	for _, u := range ul {
+		do([]string{
+			string(u.Name),
+			template.TimeStr(u.Created),
+			string(u.LastIpaddr),
+			template.TimeStr(u.LastUsed),
+			template.TimeStr(u.Expires),
 		})
 	}
 }
