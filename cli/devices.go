@@ -11,10 +11,12 @@ import (
 )
 
 func devicesCmd(cmd *cli.Cmd) {
+	cmd.Before = config.Before(requireAuth)
 	cmd.Command("search s", "Search for devices", deviceSearchCmd)
 }
 
 func deviceSearchCmd(cmd *cli.Cmd) {
+	cmd.Before = config.Before(requireAuth)
 	cmd.Command("setting", "Search for devices by exact setting value", searchBySettingCmd)
 	cmd.Command("tag", "Search for devices by exact tag value", searchByTagCmd)
 	cmd.Command("hostname", "Search for devices by exact hostname", searchByHostnameCmd)

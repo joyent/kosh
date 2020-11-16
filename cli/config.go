@@ -87,6 +87,14 @@ func (c Config) Renderer() func(interface{}, error) {
 	return c.RenderTo(os.Stdout)
 }
 
+func (c Config) Before(checks ...func(c Config)) func() {
+	return func() {
+		for _, check := range checks {
+			check(config)
+		}
+	}
+}
+
 func renderJSON(i interface{}) string {
 	b, e := json.Marshal(i)
 	if e != nil {

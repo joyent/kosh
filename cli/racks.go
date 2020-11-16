@@ -12,10 +12,13 @@ import (
 func racksCmd(cmd *cli.Cmd) {
 	var conch *conch.Client
 
-	cmd.Before = func() {
-		requireSysAdmin(config)()
-		conch = config.ConchClient()
-	}
+	cmd.Before = config.Before(
+		requireAuth,
+		requireSysAdmin,
+		func(c Config) {
+			conch = config.ConchClient()
+		},
+	)
 
 	cmd.Command("create", "Create a new rack", func(cmd *cli.Cmd) {
 		var (
@@ -101,19 +104,21 @@ func rackCmd(cmd *cli.Cmd) {
 
 	cmd.Spec = "UUID"
 
-	cmd.Before = func() {
-		conch = config.ConchClient()
-		display = config.Renderer()
+	cmd.Before = config.Before(
+		requireAuth,
+		func(config Config) {
+			conch = config.ConchClient()
+			display = config.Renderer()
 
-		var e error
-		rack, e = conch.GetRackByName(*idArg)
-		if e != nil {
-			fatal(e)
-		}
-		if (rack == types.Rack{}) {
-			fatal(errors.New("could not find the rack"))
-		}
-	}
+			var e error
+			rack, e = conch.GetRackByName(*idArg)
+			if e != nil {
+				fatal(e)
+			}
+			if (rack == types.Rack{}) {
+				fatal(errors.New("could not find the rack"))
+			}
+		})
 
 	cmd.Command("get", "Get a single rack", func(cmd *cli.Cmd) {
 		cmd.Action = func() { display(rack, nil) }
@@ -192,7 +197,10 @@ func rackCmd(cmd *cli.Cmd) {
 	})
 
 	cmd.Command("delete rm", "Delete a rack", func(cmd *cli.Cmd) {
-		cmd.Before = requireSysAdmin(config)
+		cmd.Before = config.Before(
+			requireAuth,
+			requireSysAdmin,
+		)
 		cmd.Action = func() {
 			conch.DeleteRack(rack.ID)
 			fmt.Println("OK")

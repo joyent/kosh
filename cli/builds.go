@@ -29,10 +29,13 @@ func buildsCmd(cmd *cli.Cmd) {
 	var conch *conch.Client
 	var display func(interface{}, error)
 
-	cmd.Before = func() {
-		conch = config.ConchClient()
-		display = config.Renderer()
-	}
+	cmd.Before = config.Before(
+		requireAuth,
+		func(config Config) {
+			conch = config.ConchClient()
+			display = config.Renderer()
+		},
+	)
 
 	var startedSetByUser bool
 	var completedSetByUser bool
@@ -109,16 +112,19 @@ func buildCmd(cmd *cli.Cmd) {
 	buildNameArg := cmd.StringArg("NAME", "", "Name or ID of the build")
 	cmd.Spec = "NAME"
 
-	cmd.Before = func() {
-		conch = config.ConchClient()
-		display = config.Renderer()
+	cmd.Before = config.Before(
+		requireAuth,
+		func(config Config) {
+			conch = config.ConchClient()
+			display = config.Renderer()
 
-		var e error
-		build, e = conch.GetBuildByName(*buildNameArg)
-		if e != nil {
-			fatal(e)
-		}
-	}
+			var e error
+			build, e = conch.GetBuildByName(*buildNameArg)
+			if e != nil {
+				fatal(e)
+			}
+		},
+	)
 
 	cmd.Action = func() { display(build, nil) }
 
