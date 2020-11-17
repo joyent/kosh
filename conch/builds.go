@@ -45,8 +45,7 @@ func (c *Client) GetBuildByID(id types.UUID) (build types.Build, e error) {
 	return
 }
 
-// UpdateBuild  updates a named build
-// POST /build/:build_id_or_name
+// UpdateBuild (POST /build/:build_id_or_name) updates a named build
 func (c *Client) UpdateBuild(name string, update types.BuildUpdate) error {
 	return c.UpdateBuildByName(name, update)
 }
@@ -58,53 +57,55 @@ func (c *Client) UpdateBuildByID(buildID types.UUID, update types.BuildUpdate) e
 	return e
 }
 
-// UpdateBuild  updates a named build
-// POST /build/:build_id_or_name
+// UpdateBuildByName (POST /build/:build_id_or_name) updates a named build
 func (c *Client) UpdateBuildByName(name string, update types.BuildUpdate) error {
 	c.Logger.Info(fmt.Sprintf("updating build %v: %v", name, update))
 	_, e := c.Build(name).Post(update).Send()
 	return e
 }
 
-// GetBuildUsers retrieves a list of users associated with the given build
-// GET /build/:build_id_or_name/user
+// GetBuildUsers (GET /build/:build_id_or_name/user) retrieves a list of users
+// associated with the given build
 func (c *Client) GetBuildUsers(name string) (build types.BuildUsers, e error) {
 	c.Logger.Info(fmt.Sprintf("getting users for build: %s", name))
 	_, e = c.Build(name).User("").Receive(&build)
 	return
 }
 
-// AddBuildUser associates a new user with the build, optionally tell the API to email the user too
-// POST /build/:build_id_or_name/user
+// AddBuildUser (POST /build/:build_id_or_name/user) associates a new user with
+// the build, optionally tell the API to email the user too
 func (c *Client) AddBuildUser(name string, update types.BuildAddUser, sendEmail bool) error {
 	c.Logger.Info(fmt.Sprintf("adding users to build %v: %v", name, update))
 	_, e := c.Build(name).User("").Post(update).Send()
 	return e
 }
 
-// DeleteBuildUser removes a user from being associated with the build
-// DELETE /build/:build_id_or_name/user/#target_user_id_or_email
+// DeleteBuildUser (DELETE /build/:build_id_or_name/user/#target_user_id_or_email)
+// removes a user from being associated with the build
 func (c *Client) DeleteBuildUser(name, user string, sendEmail bool) error {
 	c.Logger.Info(fmt.Sprintf("removing user from build %v: %v", name, user))
 	_, e := c.Build(name).User(user).Delete().Send()
 	return e
 }
 
-// GetAllBuildOrganizations - GET /build/:build_id_or_name/user
+// GetAllBuildOrganizations (GET /build/:build_id_or_name/user) retrieves a
+// list of all organizations associated with the named build
 func (c *Client) GetAllBuildOrganizations(name string) (build types.BuildOrganizations, e error) {
 	c.Logger.Info(fmt.Sprintf("getting organizations for build: %s", name))
 	_, e = c.Build(name).Organization("").Receive(&build)
 	return
 }
 
-// AddBuildOrganization - POST /build/:build_id_or_name/user
+// AddBuildOrganization (POST /build/:build_id_or_name/user) adds an
+// organization to the named build.
 func (c *Client) AddBuildOrganization(name string, update types.BuildAddOrganization, sendEmail bool) error {
 	c.Logger.Info(fmt.Sprintf("adding organization to build %v: %v", name, update))
 	_, e := c.Build(name).Organization("").Post(update).Send()
 	return e
 }
 
-// DeleteBuildOrganization - DELETE /build/:build_id_or_name/user/#target_user_id_or_email
+// DeleteBuildOrganization (DELETE /build/:build_id_or_name/user/#target_user_id_or_email)
+// removes an organization from the named build
 func (c *Client) DeleteBuildOrganization(build, org string, sendEmail bool) error {
 	c.Logger.Info(fmt.Sprintf("removing organization from build %v: %v", build, org))
 	_, e := c.Build(build).Organization(org).Delete().Send()

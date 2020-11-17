@@ -29,6 +29,8 @@ func defaultUserAgent() string {
 	return fmt.Sprintf("go-conch %s", filepath.Base(f))
 }
 
+// Option is a function that takes a Conch client pointer and applies a
+// configuration option to it
 type Option func(*Client)
 
 // New takes a Config struct and returns a new instance of Client
@@ -45,27 +47,28 @@ func New(options ...Option) (client *Client) {
 	return
 }
 
-// HTTPCLient sets the client used by the package for making HTTP Requests
+// HTTPClient returns an Option that sets the client used by the package for
+// making HTTP Requests
 func HTTPClient(client *http.Client) Option {
 	return func(c *Client) { c.Sling.Client(client) }
 }
 
-// UserAgent sets the User-Agent used by the package
+// UserAgent returns an Option that sets the User-Agent used by the package
 func UserAgent(ua string) Option {
 	return func(c *Client) { c.Sling.Set("User-Agent", ua) }
 }
 
-// API sets the base URL for the API
+// API returns an Option that sets the base URL for the API
 func API(url string) Option {
 	return func(c *Client) { c.Sling.Base(url) }
 }
 
-// AuthToken sets the authentication token
+// AuthToken returns an Option that sets the authentication token
 func AuthToken(token string) Option {
 	return func(c *Client) { c.Sling.Set("Authorization", "Bearer "+token) }
 }
 
-// Logger sets the logger used by the package
+// Logger returns an Option that sets the logger used by the package
 func Logger(logger logger.Interface) Option {
 	return func(c *Client) { c.Logger = logger }
 }
@@ -84,13 +87,14 @@ func (c *Client) New() *Client {
 	return &Client{s, l}
 }
 
-// UserAgent sets the client's User-Agent header to the given string
+// UserAgent sets the client's User-Agent header in the request
 func (c *Client) UserAgent(ua string) *Client {
 	c = c.New()
 	c.Sling.Set("User-Agent", ua)
 	return c
 }
 
+// Authorization sets the Authorization header in the request
 func (c *Client) Authorization(auth string) *Client {
 	c = c.New()
 	c.Sling.Set("Authorization", auth)
