@@ -16,14 +16,20 @@ import (
 // for developer targeted output. While Info is for (verbose) user targeted
 // output.
 type Interface interface {
+	// Debug outputs developer targeted messaging.
 	Debug(...interface{})
+	// Info outputs more verbose user targed information
 	Info(...interface{})
 }
 
+// NullLogger is a default logger that doesn't output anything.
 type NullLogger struct{}
 
+// Debug outputs developer targeted messaging.
 func (nl NullLogger) Debug(msgs ...interface{}) {}
-func (nl NullLogger) Info(msgs ...interface{})  {}
+
+// Info outputs more verbose user targed information
+func (nl NullLogger) Info(msgs ...interface{}) {}
 
 // Logger is the default logger with configuration levels for debug (developer)
 // output, and info (verbose user) output.

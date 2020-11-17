@@ -82,6 +82,8 @@ func (c Config) ConchClient() *conch.Client {
 	)
 }
 
+// Renderer is a function that takes some kind of data and an error and renders
+// the output
 type Renderer func(interface{}, error)
 
 // Renderer returns a function that will render to STDOUT
@@ -89,6 +91,8 @@ func (c Config) Renderer() Renderer {
 	return c.RenderTo(os.Stdout)
 }
 
+// Before takes a list of checks and initializers and returns a function
+// suitable for running in a commmand's before block
 func (c Config) Before(checks ...func(c Config)) func() {
 	return func() {
 		for _, check := range checks {

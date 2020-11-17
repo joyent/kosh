@@ -13,6 +13,8 @@ import (
 func (bl Builds) Len() int           { return len(bl) }
 func (bl Builds) Swap(i, j int)      { bl[i], bl[j] = bl[j], bl[i] }
 func (bl Builds) Less(i, j int) bool { return bl[i].Name < bl[j].Name }
+
+// Headers returns the list of headers for the table view
 func (bl Builds) Headers() []string {
 	return []string{
 		"Name",
@@ -22,6 +24,7 @@ func (bl Builds) Headers() []string {
 	}
 }
 
+// ForEach iterates over each item in the list and applies a function to it
 func (bl Builds) ForEach(do func([]string)) {
 	for _, b := range bl {
 		do([]string{
@@ -58,11 +61,14 @@ Links
 * Completed: {{ TimeStr .Completed }} by {{ .CompletedUser.Name }}({{ .CompletedUser.Email }})
 `
 
+// Template returns a template string for rendering to Markdown
 func (b Build) Template() string { return buildTemplate }
 
 func (bu BuildUsers) Len() int           { return len(bu) }
 func (bu BuildUsers) Swap(i, j int)      { bu[i], bu[j] = bu[j], bu[i] }
 func (bu BuildUsers) Less(i, j int) bool { return bu[i].Name < bu[j].Name }
+
+// Headers returns the list of headers for the table view
 func (bu BuildUsers) Headers() []string {
 	return []string{
 		"ID",
@@ -72,6 +78,7 @@ func (bu BuildUsers) Headers() []string {
 	}
 }
 
+// ForEach iterates over each item in the list and applies a function to it
 func (bu BuildUsers) ForEach(do func([]string)) {
 	for _, u := range bu {
 		do([]string{
@@ -86,6 +93,8 @@ func (bu BuildUsers) ForEach(do func([]string)) {
 func (bo BuildOrganizations) Len() int           { return len(bo) }
 func (bo BuildOrganizations) Swap(i, j int)      { bo[i], bo[j] = bo[j], bo[i] }
 func (bo BuildOrganizations) Less(i, j int) bool { return bo[i].Name < bo[j].Name }
+
+// Headers returns the list of headers for the table view
 func (bo BuildOrganizations) Headers() []string {
 	return []string{
 		"ID",
@@ -95,6 +104,7 @@ func (bo BuildOrganizations) Headers() []string {
 	}
 }
 
+// ForEach iterates over each item in the list and applies a function to it
 func (bo BuildOrganizations) ForEach(do func([]string)) {
 	for _, o := range bo {
 		do([]string{
@@ -109,6 +119,8 @@ func (bo BuildOrganizations) ForEach(do func([]string)) {
 func (dl Datacenters) Len() int           { return len(dl) }
 func (dl Datacenters) Swap(i, j int)      { dl[i], dl[j] = dl[j], dl[i] }
 func (dl Datacenters) Less(i, j int) bool { return dl[i].VendorName < dl[j].VendorName }
+
+// Headers returns the list of headers for the table view
 func (dl Datacenters) Headers() []string {
 	return []string{
 		"ID",
@@ -119,6 +131,7 @@ func (dl Datacenters) Headers() []string {
 	}
 }
 
+// ForEach iterates over each item in the list and applies a function to it
 func (dl Datacenters) ForEach(do func([]string)) {
 	for _, d := range dl {
 		do([]string{
@@ -145,6 +158,7 @@ Created: {{ TimeStr .Created }}
 Updated: {{ TimeStr .Updated }}
 `
 
+// Template returns a template string for rendering to Markdown
 func (d Datacenter) Template() string { return datacenterTemplate }
 
 func (ds DeviceSettings) String() string {
@@ -217,6 +231,7 @@ Disks:{{range $name, $slots := .Disks}}
 {{ end }}{{ end }}
 `
 
+// Template returns a template string for rendering to Markdown
 func (d DetailedDevice) Template() string { return detailedDeviceTemplate }
 
 const deviceTemplate = `
@@ -248,11 +263,14 @@ Links: {{ range .Links }}
 
 `
 
+// Template returns a template string for rendering to Markdown
 func (d Device) Template() string { return deviceTemplate }
 
 func (d Devices) Len() int           { return len(d) }
 func (d Devices) Swap(i, j int)      { d[i], d[j] = d[j], d[i] }
 func (d Devices) Less(i, j int) bool { return d[i].SerialNumber < d[j].SerialNumber }
+
+// Headers returns the list of headers for the table view
 func (d Devices) Headers() []string {
 	return []string{
 		"Serial",
@@ -265,6 +283,7 @@ func (d Devices) Headers() []string {
 	}
 }
 
+// ForEach iterates over each item in the list and applies a function to it
 func (d Devices) ForEach(do func([]string)) {
 	for _, device := range d {
 		do([]string{
@@ -281,6 +300,7 @@ func (d Devices) ForEach(do func([]string)) {
 
 const deviceReportTemplate = ``
 
+// Template returns a template string for rendering to Markdown
 func (d DeviceReport) Template() string { return deviceReportTemplate }
 
 const hardwareProductTemplate = `
@@ -298,6 +318,7 @@ Created: {{ TimeStr .Created }}
 Updated: {{ TimeStr .Updated }}
 `
 
+// Template returns a template string for rendering to Markdown
 func (hp HardwareProduct) Template() string { return hardwareProductTemplate }
 
 // TODO sort interface, tabulable interface
@@ -340,11 +361,14 @@ Created: {{ TimeStr .Created }}
 Updated: {{ TimeStr .Updated }}
 `
 
+// Template returns a template string for rendering to Markdown
 func (h HardwareVendor) Template() string { return hardwareVendorTemplate }
 
 func (h HardwareVendors) Len() int           { return len(h) }
 func (h HardwareVendors) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
 func (h HardwareVendors) Less(i, j int) bool { return h[i].Name < h[j].Name }
+
+// Headers returns the list of headers for the table view
 func (h HardwareVendors) Headers() []string {
 	return []string{
 		"Name",
@@ -354,6 +378,7 @@ func (h HardwareVendors) Headers() []string {
 	}
 }
 
+// ForEach iterates over each item in the list and applies a function to it
 func (h HardwareVendors) ForEach(do func([]string)) {
 	for _, v := range h {
 		do([]string{
@@ -372,11 +397,14 @@ ID: {{ .ID }}
 Description: {{ .Description }}
 `
 
+// Template returns a template string for rendering to Markdown
 func (o Organization) Template() string { return organizationTemplate }
 
 func (o Organizations) Len() int           { return len(o) }
 func (o Organizations) Swap(i, j int)      { o[i], o[j] = o[j], o[i] }
 func (o Organizations) Less(i, j int) bool { return o[i].Name < o[j].Name }
+
+// Headers returns the list of headers for the table view
 func (o Organizations) Headers() []string {
 	return []string{
 		"Name",
@@ -385,6 +413,7 @@ func (o Organizations) Headers() []string {
 	}
 }
 
+// ForEach iterates over each item in the list and applies a function to it
 func (o Organizations) ForEach(do func([]string)) {
 	for _, org := range o {
 		do([]string{
@@ -412,11 +441,14 @@ Created: {{ TimeStr .Created }}
 Updated: {{ TimeStr .Updated }}
 `
 
+// Template returns a template string for rendering to Markdown
 func (r Rack) Template() string { return rackTemplate }
 
-func (r Racks) Len() int           { return len(r) }
-func (r Racks) Swap(i, j int)      { r[i], r[j] = r[j], r[i] }
-func (r Racks) Less(i, j int) bool { return r[i].SerialNumber > r[j].SerialNumber }
+func (rl Racks) Len() int           { return len(rl) }
+func (rl Racks) Swap(i, j int)      { rl[i], rl[j] = rl[j], rl[i] }
+func (rl Racks) Less(i, j int) bool { return rl[i].SerialNumber > rl[j].SerialNumber }
+
+// Headers returns the list of headers for the table view
 func (rl Racks) Headers() []string {
 	return []string{
 		"ID",
@@ -431,6 +463,7 @@ func (rl Racks) Headers() []string {
 	}
 }
 
+// ForEach iterates over each item in the list and applies a function to it
 func (rl Racks) ForEach(do func([]string)) {
 	for _, r := range rl {
 		do([]string{
@@ -447,10 +480,11 @@ func (rl Racks) ForEach(do func([]string)) {
 	}
 }
 
-func (r RackLayouts) Len() int           { return len(r) }
-func (r RackLayouts) Swap(i, j int)      { r[i], r[j] = r[j], r[i] }
-func (r RackLayouts) Less(i, j int) bool { return r[i].RackUnitStart > r[j].RackUnitStart }
+func (rl RackLayouts) Len() int           { return len(rl) }
+func (rl RackLayouts) Swap(i, j int)      { rl[i], rl[j] = rl[j], rl[i] }
+func (rl RackLayouts) Less(i, j int) bool { return rl[i].RackUnitStart > rl[j].RackUnitStart }
 
+// Headers returns the list of headers for the table view
 func (rl RackLayouts) Headers() []string {
 	return []string{
 		"Rack Unit Start",
@@ -462,6 +496,7 @@ func (rl RackLayouts) Headers() []string {
 	}
 }
 
+// ForEach iterates over each item in the list and applies a function to it
 func (rl RackLayouts) ForEach(do func([]string)) {
 	for _, r := range rl {
 		do([]string{
@@ -479,6 +514,7 @@ func (ra RackAssignments) Len() int           { return len(ra) }
 func (ra RackAssignments) Swap(i, j int)      { ra[i], ra[j] = ra[j], ra[i] }
 func (ra RackAssignments) Less(i, j int) bool { return ra[i].RackUnitStart > ra[j].RackUnitStart }
 
+// Headers returns the list of headers for the table view
 func (ra RackAssignments) Headers() []string {
 	return []string{
 		"Device Serial",
@@ -489,6 +525,7 @@ func (ra RackAssignments) Headers() []string {
 	}
 }
 
+// ForEach iterates over each item in the list and applies a function to it
 func (ra RackAssignments) ForEach(do func([]string)) {
 	for _, r := range ra {
 		do([]string{
@@ -501,9 +538,9 @@ func (ra RackAssignments) ForEach(do func([]string)) {
 	}
 }
 
-func (r RackRoles) Len() int           { return len(r) }
-func (r RackRoles) Swap(i, j int)      { r[i], r[j] = r[j], r[i] }
-func (r RackRoles) Less(i, j int) bool { return r[i].Name < r[j].Name }
+func (rl RackRoles) Len() int           { return len(rl) }
+func (rl RackRoles) Swap(i, j int)      { rl[i], rl[j] = rl[j], rl[i] }
+func (rl RackRoles) Less(i, j int) bool { return rl[i].Name < rl[j].Name }
 func (rl RackRoles) String() string {
 	sort.Sort(rl)
 
@@ -541,6 +578,7 @@ Created: {{ TimeStr .Created }}
 Updated: {{ TimeStr .Updated }}
 `
 
+// Template returns a template string for rendering to Markdown
 func (r RackRole) Template() string { return rackRoleTemplate }
 
 const relayTemplate = `
@@ -558,11 +596,12 @@ IP Address: {{ .IpAddr }}
 SSH Port: {{ .SshPort }}
 `
 
+// Template returns a template string for rendering to Markdown
 func (r Relay) Template() string { return relayTemplate }
 
-func (r Relays) Len() int           { return len(r) }
-func (r Relays) Swap(i, j int)      { r[i], r[j] = r[j], r[i] }
-func (r Relays) Less(i, j int) bool { return r[i].Updated.Before(r[j].Updated) }
+func (rl Relays) Len() int           { return len(rl) }
+func (rl Relays) Swap(i, j int)      { rl[i], rl[j] = rl[j], rl[i] }
+func (rl Relays) Less(i, j int) bool { return rl[i].Updated.Before(rl[j].Updated) }
 
 func (rl Relays) String() string {
 	sort.Sort(rl)
@@ -606,12 +645,14 @@ Created: {{ TimeStr .Created }}
 Updated: {{ TimeStr .Updated }}
 `
 
+// Template returns a template string for rendering to Markdown
 func (r DatacenterRoomDetailed) Template() string { return roomTemplate }
 
 func (dr DatacenterRoomsDetailed) Len() int           { return len(dr) }
 func (dr DatacenterRoomsDetailed) Swap(i, j int)      { dr[i], dr[j] = dr[j], dr[i] }
 func (dr DatacenterRoomsDetailed) Less(i, j int) bool { return dr[i].Alias < dr[j].Alias }
 
+// Headers returns the list of headers for the table view
 func (dr DatacenterRoomsDetailed) Headers() []string {
 	return []string{
 		"ID",
@@ -624,6 +665,7 @@ func (dr DatacenterRoomsDetailed) Headers() []string {
 	}
 }
 
+// ForEach iterates over each item in the list and applies a function to it
 func (dr DatacenterRoomsDetailed) ForEach(do func([]string)) {
 	for _, r := range dr {
 		do([]string{
@@ -638,6 +680,7 @@ func (dr DatacenterRoomsDetailed) ForEach(do func([]string)) {
 	}
 }
 
+// Headers returns the list of headers for the table view
 func (u UserSettings) Headers() []string {
 	return []string{
 		"Key",
@@ -645,6 +688,7 @@ func (u UserSettings) Headers() []string {
 	}
 }
 
+// ForEach iterates over each item in the list and applies a function to it
 func (u UserSettings) ForEach(do func([]string)) {
 	keys := make([]string, 0)
 	for setting := range u {
@@ -678,6 +722,7 @@ Organizations
 {{ Table .Organizations }}
 `
 
+// Template returns a template string for rendering to Markdown
 func (u UserDetailed) Template() string { return detailedUserTemplate }
 
 const validationPlanTemplate = `
@@ -690,6 +735,7 @@ Description: {{ .Description }}
 Created: {{ .Created }}
 `
 
+// Template returns a template string for rendering to Markdown
 func (v ValidationPlan) Template() string { return validationPlanTemplate }
 
 func (v ValidationPlans) Len() int           { return len(v) }
@@ -737,6 +783,7 @@ Results:
 {{ .Results }}
 `
 
+// Template returns a template string for rendering to Markdown
 func (v ValidationStateWithResults) Template() string { return validationStateWithResultsTemplate }
 
 func (v ValidationResults) Len() int           { return len(v) }
@@ -786,6 +833,7 @@ State: {{ .State }}
 Device ID: {{ .DeviceID }}
 `
 
+// Template returns a template string for rendering to Markdown
 func (dn DeviceNic) Template() string { return deviceNicTemplate }
 
 const deviceLocationTemplate = `
@@ -798,11 +846,14 @@ DatacenterRoom: {{ .DatacenterRoom }}
 AZ: {{ .Az }}
 `
 
+// Template returns a template string for rendering to Markdown
 func (dl DeviceLocation) Template() string { return deviceLocationTemplate }
 
 func (ul UsersTerse) Len() int           { return len(ul) }
 func (ul UsersTerse) Swap(i, j int)      { ul[i], ul[j] = ul[j], ul[i] }
 func (ul UsersTerse) Less(i, j int) bool { return ul[i].Name < ul[j].Name }
+
+// Headers returns the list of headers for the table view
 func (ul UsersTerse) Headers() []string {
 	return []string{
 		"Name",
@@ -810,6 +861,7 @@ func (ul UsersTerse) Headers() []string {
 	}
 }
 
+// ForEach iterates over each item in the list and applies a function to it
 func (ul UsersTerse) ForEach(do func([]string)) {
 	for _, u := range ul {
 		do([]string{
@@ -834,6 +886,7 @@ Token {{ .Name }}
 * Expires: {{ TimeStr .Expires }}
 `
 
+// Template returns a template string for rendering to Markdown
 func (ut UserToken) Template() string { return userTokenTemplate }
 
 const newUserTokenTemplate = `
@@ -857,11 +910,14 @@ THIS IS THE ONLY TIME IT WILL BE PRINTED, PLEASE RECORD IT NOW
 
 `
 
+// Template returns a template string for rendering to Markdown
 func (ut NewUserTokenResponse) Template() string { return newUserTokenTemplate }
 
 func (ul UserTokens) Len() int           { return len(ul) }
 func (ul UserTokens) Swap(i, j int)      { ul[i], ul[j] = ul[j], ul[i] }
 func (ul UserTokens) Less(i, j int) bool { return ul[i].Name < ul[j].Name }
+
+// Headers returns the list of headers for the table view
 func (ul UserTokens) Headers() []string {
 	return []string{
 		"Name",
@@ -872,6 +928,7 @@ func (ul UserTokens) Headers() []string {
 	}
 }
 
+// ForEach iterates over each item in the list and applies a function to it
 func (ul UserTokens) ForEach(do func([]string)) {
 	for _, u := range ul {
 		do([]string{
