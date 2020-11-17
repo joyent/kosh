@@ -12,7 +12,6 @@ import (
 const (
 	productionURL = "https://conch.joyent.us"
 	stagingURL    = "https://staging.conch.joyent.us"
-	edgeURL       = "https://edge.conch.joyent.us"
 )
 
 func fatal(e error) {
@@ -44,11 +43,7 @@ func requireSysAdmin(c Config) {
 var config Config
 
 // NewApp creates a new kosh app, takes a cli.Config and returns an instance of cli.Cli
-func NewApp(cfg Config) *cli.Cli {
-	var URLSetByUser bool
-
-	config = cfg
-
+func NewApp(config Config) *cli.Cli {
 	app := cli.App("kosh", "Command line interface for Conch")
 	app.Spec = "[-dejutvV]"
 
@@ -58,22 +53,21 @@ func NewApp(cfg Config) *cli.Cli {
 		Name:   "t token",
 		Value:  "",
 		Desc:   "API token",
-		EnvVar: "KOSH_TOKEN",
+		EnvVar: "KOSH_TOKEN CONCH_TOKEN",
 	})
 
 	app.StringPtr(&config.ConchENV, cli.StringOpt{
 		Name:   "env e",
 		Value:  "production",
 		Desc:   "This specifies the environment KOSH is pointing to",
-		EnvVar: "KOSH_ENV",
+		EnvVar: "KOSH_ENV CONCH_ENV",
 	})
 
 	app.StringPtr(&config.ConchURL, cli.StringOpt{
-		Name:      "u url",
-		Value:     productionURL,
-		Desc:      "This specifies the API URL.",
-		EnvVar:    "KOSH_URL",
-		SetByUser: &URLSetByUser,
+		Name:   "u url",
+		Value:  "",
+		Desc:   "This specifies the API URL.",
+		EnvVar: "KOSH_URL CONCH_URL",
 	})
 
 	app.BoolPtr(&config.OutputJSON, cli.BoolOpt{
@@ -87,14 +81,14 @@ func NewApp(cfg Config) *cli.Cli {
 		Name:   "d debug",
 		Value:  false,
 		Desc:   "Enable Debugging output (for debugging purposes *very* noisy). ",
-		EnvVar: "KOSH_DEBUG_MODE",
+		EnvVar: "KOSH_DEBUG_MODE KOSH_DEBUG", // TODO in 4.0 remove KOSH_DEBUG_MODE
 	})
 
 	app.BoolPtr(&config.Logger.LevelInfo, cli.BoolOpt{
 		Name:   "v verbose",
 		Value:  false,
 		Desc:   "Enable Verbose Output",
-		EnvVar: "KOSH_VERBOSE_MODE",
+		EnvVar: "KOSH_VERBOSE_MODE KOSH_VERBOSE", // TODO in 4.0 remove KOSH_VERBOSE_MODE
 	})
 
 	app.Command("build b", "Work with a specific build", buildCmd)
@@ -134,14 +128,12 @@ func NewApp(cfg Config) *cli.Cli {
 	})
 
 	app.Before = func() {
-		if !URLSetByUser {
+		if config.ConchURL == "" {
 			switch config.ConchENV {
 			case "production":
 				config.ConchURL = productionURL
 			case "staging":
 				config.ConchURL = stagingURL
-			case "edge":
-				config.ConchURL = edgeURL
 			default:
 				fatal(errors.New("environment not one of production, staging, edge: perhaps you want --url?"))
 			}
