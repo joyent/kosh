@@ -10,15 +10,13 @@ import (
 
 func rolesCmd(cmd *cli.Cmd) {
 	var conch *conch.Client
-	var display func(interface{}, error)
+	var display Renderer
 
-	cmd.Before = config.Before(
-		requireSysAdmin,
-		func(config Config) {
-			conch = config.ConchClient()
-			display = config.Renderer()
-		},
-	)
+	cmd.Before = func() {
+		config.requireSysAdmin()
+		conch = config.ConchClient()
+		display = config.Renderer()
+	}
 
 	cmd.Command("get", "Get a list of all rack roles", func(cmd *cli.Cmd) {
 		cmd.Action = func() { display(conch.GetAllRackRoles()) }
@@ -33,11 +31,11 @@ func rolesCmd(cmd *cli.Cmd) {
 		cmd.Spec = "--name --rack-size"
 		cmd.Action = func() {
 			if *nameOpt == "" {
-				fatal(errors.New("--name is required"))
+				fatalIf(errors.New("--name is required"))
 			}
 
 			if *rackSizeOpt == 0 {
-				fatal(errors.New("--rack-size is required and cannot be 0"))
+				fatalIf(errors.New("--rack-size is required and cannot be 0"))
 			}
 			conch.CreateRackRole(types.RackRoleCreate{
 				Name:     types.MojoStandardPlaceholder(*nameOpt),
@@ -60,23 +58,22 @@ func roleCmd(cmd *cli.Cmd) {
 
 	cmd.Spec = "NAME"
 
-	cmd.Before = config.Before(
-		requireAuth,
-		requireSysAdmin,
-		func(config Config) {
-			conch := config.ConchClient()
-			display = config.Renderer()
+	cmd.Before = func() {
+		config.requireAuth()
+		config.requireSysAdmin()
 
-			var e error
-			role, e = conch.GetRackRoleByName(*nameArg)
-			if e != nil {
-				fatal(e)
-			}
-			if (role == types.RackRole{}) {
-				fatal(errors.New("couldn't find the role"))
-			}
-		},
-	)
+		conch := config.ConchClient()
+		display = config.Renderer()
+
+		var e error
+		role, e = conch.GetRackRoleByName(*nameArg)
+		if e != nil {
+			fatalIf(e)
+		}
+		if (role == types.RackRole{}) {
+			fatalIf(errors.New("couldn't find the role"))
+		}
+	}
 
 	cmd.Command("get", "Get information about a single rack role", func(cmd *cli.Cmd) {
 		cmd.Action = func() { display(role, nil) }

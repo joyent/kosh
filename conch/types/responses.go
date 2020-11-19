@@ -451,17 +451,17 @@ type Role string
 
 // UserDetailed is a struct
 type UserDetailed struct {
-	Builds              Builds        `json:"builds"`
-	Created             time.Time     `json:"created"`
-	Email               EmailAddress  `json:"email"`
-	ForcePasswordChange bool          `json:"force_password_change"`
-	ID                  UUID          `json:"id"`
-	IsAdmin             bool          `json:"is_admin"`
-	LastLogin           time.Time     `json:"last_login"`
-	LastSeen            time.Time     `json:"last_seen"`
-	Name                string        `json:"name"`
-	Organizations       Organizations `json:"organizations"`
-	RefuseSessionAuth   bool          `json:"refuse_session_auth"`
+	Builds              Builds         `json:"builds"`
+	Created             time.Time      `json:"created"`
+	Email               EmailAddress   `json:"email"`
+	ForcePasswordChange bool           `json:"force_password_change"`
+	ID                  UUID           `json:"id"`
+	IsAdmin             bool           `json:"is_admin"`
+	LastLogin           time.Time      `json:"last_login"`
+	LastSeen            time.Time      `json:"last_seen"`
+	Name                NonEmptyString `json:"name"`
+	Organizations       Organizations  `json:"organizations"`
+	RefuseSessionAuth   bool           `json:"refuse_session_auth"`
 }
 
 // Users is a slice of structs

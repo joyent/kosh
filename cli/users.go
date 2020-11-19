@@ -9,9 +9,13 @@ import (
 	"github.com/joyent/kosh/conch/types"
 )
 
-func whoamiCmd(cmd *cli.Cmd) { profileCmd(cmd) }
+func whoamiCmd(cmd *cli.Cmd) {
+	cmd.Before = config.requireAuth
+	profileCmd(cmd)
+}
 
 func userCmd(cmd *cli.Cmd) {
+	cmd.Before = config.requireAuth
 	cmd.Command("profile", "View your Conch profile", profileCmd)
 	cmd.Command("settings", "Get the settings for the current user", settingsCmd)
 	cmd.Command("setting", "Commands for dealing with a single setting for the current user", userSetting)
@@ -32,7 +36,7 @@ func tokensCmd(cmd *cli.Cmd) {
 	cmd.Command("get ls", "list the tokens for the current user", func(cmd *cli.Cmd) {
 		cmd.Action = func() { display(conch.GetCurrentUserTokens()) }
 	})
-	cmd.Command("create new", "Get the settings for the current user", func(cmd *cli.Cmd) {
+	cmd.Command("create new add", "Get the settings for the current user", func(cmd *cli.Cmd) {
 		name := cmd.StringArg("NAME", "", "The string name of a setting")
 		user := cmd.StringOpt("user u", "", "User name to use for authentication")
 		pass := cmd.StringOpt("pass p", "", "Password to use for authentication")
@@ -40,7 +44,7 @@ func tokensCmd(cmd *cli.Cmd) {
 			if *user != "" && *pass != "" {
 				loginToken, e := conch.Login(*user, *pass)
 				if e != nil {
-					fatal(e)
+					fatalIf(e)
 				}
 				config.Debug(fmt.Sprintf("%+v", loginToken))
 				conch = conch.Authorization("Bearer " + loginToken.JwtToken)
@@ -64,11 +68,11 @@ func tokenCmd(cmd *cli.Cmd) {
 
 		var e error
 		if name == nil {
-			fatal(errors.New("must provide a valid token name"))
+			fatalIf(errors.New("must provide a valid token name"))
 		}
 		token, e = conch.GetCurrentUserTokenByName(*name)
 		if e != nil {
-			fatal(e)
+			fatalIf(e)
 		}
 	}
 
@@ -108,7 +112,7 @@ func userSetting(cmd *cli.Cmd) {
 	cmd.Spec = "NAME"
 	cmd.Command("get", "Get a setting for the current user", userSettingGet(name))
 	cmd.Command("set", "Set a setting for the current user", userSettingSet(name))
-	cmd.Command("delete", "Delete a setting for the current user", userSettingDelete(name))
+	cmd.Command("delete rm", "Delete a setting for the current user", userSettingDelete(name))
 }
 
 func userSettingGet(setting string) func(cmd *cli.Cmd) {
@@ -131,7 +135,7 @@ func userSettingSet(setting string) func(cmd *cli.Cmd) {
 			conch := config.ConchClient()
 			display := config.Renderer()
 			if e := conch.SetCurrentUserSettingByName(setting, types.UserSetting(value)); e != nil {
-				fatal(e)
+				fatalIf(e)
 			}
 			display(conch.GetCurrentUserSettingByName(setting))
 		}
@@ -143,7 +147,7 @@ func userSettingDelete(setting string) func(cmd *cli.Cmd) {
 		cmd.Action = func() {
 			conch := config.ConchClient()
 			if e := conch.DeleteCurrentUserSetting(setting); e != nil {
-				fatal(e)
+				fatalIf(e)
 			}
 		}
 	}

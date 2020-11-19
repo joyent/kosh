@@ -15,6 +15,14 @@ import (
 
 const dateFormat = "2006-01-02 15:04:05 -0700 MST"
 
+// YesOrNo transforms a bool into "yes" or "no" depending on it's truth
+func YesOrNo(p bool) string {
+	if p {
+		return "Yes"
+	}
+	return "No"
+}
+
 // CutUUID - trims a UUID down to a short readable version
 func CutUUID(id string) string {
 	re := regexp.MustCompile("^(.+?)-")
@@ -41,7 +49,7 @@ func Table(t tables.Tabulable) string {
 // NewTemplate returns a new template instance
 func NewTemplate() *template.Template {
 	return template.New("wat").Funcs(template.FuncMap{
-		"CutUUID": func(id string) string { return CutUUID(id) },
+		"CutUUID": CutUUID, // func(id string) string { return CutUUID(id) },
 		"TimeStr": func(t time.Time) string { return TimeStr(t) },
 		"Table":   Table,
 	})

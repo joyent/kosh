@@ -91,21 +91,9 @@ func (c Config) Renderer() Renderer {
 	return c.RenderTo(os.Stdout)
 }
 
-// Before takes a list of checks and initializers and returns a function
-// suitable for running in a commmand's before block
-func (c Config) Before(checks ...func(c Config)) func() {
-	return func() {
-		for _, check := range checks {
-			check(config)
-		}
-	}
-}
-
 func renderJSON(i interface{}) string {
 	b, e := json.Marshal(i)
-	if e != nil {
-		fatal(e)
-	}
+	fatalIf(e)
 	return string(b)
 }
 
@@ -124,9 +112,8 @@ func (c Config) RenderTo(w io.Writer) func(interface{}, error) {
 		switch t := i.(type) {
 		case template.Templated:
 			s, e := template.Render(t)
-			if e != nil {
-				fatal(e)
-			}
+			fatalIf(e)
+
 			fmt.Fprintln(w, s)
 		case tables.Tabulable:
 			fmt.Fprintln(w, tables.Render(t))

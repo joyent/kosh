@@ -12,9 +12,7 @@ func deviceReportCmd(cmd *cli.Cmd) {
 		filePathArg := cmd.StringArg("FILE", "-", "Path to a JSON file that defines the layout. '-' indicates STDIN")
 
 		input, err := getInputReader(*filePathArg)
-		if err != nil {
-			fatal(err)
-		}
+		fatalIf(err)
 
 		cmd.Before = func() { conch = config.ConchClient() }
 		cmd.Action = func() { conch.SendDeviceReport(input) }

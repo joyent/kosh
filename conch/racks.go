@@ -53,7 +53,7 @@ func (c *Client) UpdateRackLayout(id types.UUID, layout types.RackLayoutUpdate) 
 	return e
 }
 
-// ReadRackLayoutUpdate takes an io reader and returns a RackLayoutUpdate
+// ReadRackLayoutUpdate takes an io.Reader and returns a RackLayoutUpdate
 // struct suitable for UpdateRackLayout
 func (c *Client) ReadRackLayoutUpdate(r io.Reader) (update types.RackLayoutUpdate) {
 	json.NewDecoder(r).Decode(&update)

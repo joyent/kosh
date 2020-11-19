@@ -44,10 +44,10 @@ func relayCmd(cmd *cli.Cmd) {
 		var e error
 		relay, e = conch.GetRelayBySerial(*relayArg)
 		if e != nil {
-			fatal(e)
+			fatalIf(e)
 		}
 		if (relay == types.Relay{}) {
-			fatal(errors.New("relay not found"))
+			fatalIf(errors.New("relay not found"))
 		}
 	}
 	// default action is to display the relay

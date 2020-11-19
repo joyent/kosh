@@ -28,14 +28,11 @@ func cmdCreateProduct(cmd *cli.Cmd) {
 		display := config.Renderer()
 
 		validationPlan, e := conch.GetValidationPlanByName(*validationPlanOpt)
-		if e != nil {
-			fatal(e)
-		}
+		fatalIf(e)
 
 		vendor, e := conch.GetHardwareVendorByName(*vendor)
-		if e != nil {
-			fatal(e)
-		}
+		fatalIf(e)
+
 		create := types.HardwareProductCreate{
 			Name:             types.MojoStandardPlaceholder(*name),
 			Alias:            types.MojoStandardPlaceholder(*alias),
@@ -68,9 +65,7 @@ func cmdImportProduct(cmd *cli.Cmd) {
 		display := config.Renderer()
 
 		in, err := getInputReader(*filePathArg)
-		if err != nil {
-			fatal(err)
-		}
+		fatalIf(err)
 
 		p := conch.ReadHardwareProduct(in)
 		conch.CreateHardwareProduct(p)
@@ -99,11 +94,10 @@ func hardwareCmd(cmd *cli.Cmd) {
 		cmd.Before = func() {
 			var e error
 			hp, e = conch.GetHardwareProductByID(*idArg)
-			if e != nil {
-				fatal(e)
-			}
+			fatalIf(e)
+
 			if (hp == types.HardwareProduct{}) {
-				fatal(errors.New("Hardware Product not found for " + *idArg))
+				fatalIf(errors.New("Hardware Product not found for " + *idArg))
 			}
 		}
 		cmd.Action = func() { fmt.Println(hp) }
@@ -141,9 +135,8 @@ func hardwareCmd(cmd *cli.Cmd) {
 		cmd.Before = func() {
 			var e error
 			hv, e = conch.GetHardwareVendorByName(*idArg)
-			if e != nil {
-				fatal(e)
-			}
+			fatalIf(e)
+
 			if (hv == types.HardwareVendor{}) {
 				fmt.Println("Hardware Vendor not found for " + *idArg)
 				cli.Exit(1)

@@ -63,9 +63,7 @@ func organizationCmd(cmd *cli.Cmd) {
 
 		var e error
 		o, e = conch.GetOrganizationByName(*organizationNameArg)
-		if e != nil {
-			fatal(e)
-		}
+		fatalIf(e)
 	}
 
 	cmd.Command("get", "Get information about a single organization by its name", func(cmd *cli.Cmd) {
@@ -109,7 +107,7 @@ func organizationCmd(cmd *cli.Cmd) {
 			cmd.Spec = "EMAIL [OPTIONS]"
 			cmd.Action = func() {
 				if !okBuildRole(*roleOpt) {
-					fatal(fmt.Errorf(
+					fatalIf(fmt.Errorf(
 						"'role' value must be one of: %s",
 						prettyBuildRoleList(),
 					))
