@@ -116,6 +116,7 @@ func NewApp(c Config) *cli.Cli {
 	app.Command("rooms", "Work with datacenter rooms", roomsCmd)
 	app.Command("schema", "Get the server JSON Schema for a given request or response", schemaCmd)
 	app.Command("user u", "Commands for dealing with the current user (you)", userCmd)
+	app.Command("update", "commands for updating kosh", updateCmd)
 	app.Command("validation v", "Work with validations", validationCmd)
 	app.Command("whoami", "Display details of the current user", whoamiCmd)
 
@@ -144,8 +145,7 @@ func NewApp(c Config) *cli.Cli {
 			}
 		}
 
-		config.Debug("Starting App")
-		config.Info(config)
+		config.Debug(config)
 	}
 
 	return app

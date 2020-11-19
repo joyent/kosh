@@ -3,6 +3,7 @@ module github.com/joyent/kosh
 go 1.15
 
 require (
+	github.com/blang/semver v3.5.1+incompatible
 	github.com/dghubble/sling v1.3.0
 	github.com/dnaeon/go-vcr v1.0.1
 	github.com/gofrs/uuid v3.2.0+incompatible
