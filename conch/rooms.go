@@ -4,34 +4,34 @@ import "github.com/joyent/kosh/conch/types"
 
 // GetAllRooms (GET /room) returns a list of all datacenter rooms
 func (c *Client) GetAllRooms() (rooms types.DatacenterRoomsDetailed, e error) {
-	_, e = c.Room().Receive(rooms)
+	_, e = c.Room().Receive(&rooms)
 	return
 }
 
 // CreateRoom (POST /room) creates a new datacenter room
 func (c *Client) CreateRoom(room types.DatacenterRoomCreate) error {
-	_, e := c.Room().Post(room).Send()
+	_, e := c.Room().Post(&room).Send()
 	return e
 }
 
 // GetRoomByAlias (GET /room/:datacenter_room_id_or_alias) retrieves the
 // datacenter room with the given alias
 func (c *Client) GetRoomByAlias(alias string) (room types.DatacenterRoomDetailed, e error) {
-	_, e = c.Room(alias).Receive(room)
+	_, e = c.Room(alias).Receive(&room)
 	return
 }
 
 // GetRoomByID (GET /room/:datacenter_room_id_or_alias) retrieves the
 // datacenter room with the given UUID
 func (c *Client) GetRoomByID(id types.UUID) (room types.DatacenterRoomDetailed, e error) {
-	_, e = c.Room(id.String()).Receive(room)
+	_, e = c.Room(id.String()).Receive(&room)
 	return
 }
 
 // UpdateRoom (POST /room/:datacenter_room_id_or_alias)
 // updates the datacenter room with the given UUID
 func (c *Client) UpdateRoom(id types.UUID, room types.DatacenterRoomUpdate) error {
-	_, e := c.Room(id.String()).Post(room).Send()
+	_, e := c.Room(id.String()).Post(&room).Send()
 	return e
 }
 
@@ -45,21 +45,21 @@ func (c *Client) DeleteRoom(id types.UUID) error {
 // GetAllRoomRacks (GET /room/:datacenter_room_id_or_alias/rack)
 // returns a list of all racks in the room with the given UUID
 func (c *Client) GetAllRoomRacks(id types.UUID) (racks types.Racks, e error) {
-	_, e = c.Room(id.String()).Rack().Receive(racks)
+	_, e = c.Room(id.String()).Rack().Receive(&racks)
 	return
 }
 
 // GetRoomRackByName (GET /room/:datacenter_room_id_or_alias/rack/:rack_id_or_name)
 // returns the specific rack with the given name in the room with the given UUID
 func (c *Client) GetRoomRackByName(id types.UUID, name string) (rack types.Rack, e error) {
-	_, e = c.Room(id.String()).Rack(name).Receive(rack)
+	_, e = c.Room(id.String()).Rack(name).Receive(&rack)
 	return
 }
 
 // GetRoomRackByID (GET /room/:datacenter_room_id_or_alias/rack/:rack_id_or_name)
 // returns the specific rack with the given UUID in the room with the given UUID
 func (c *Client) GetRoomRackByID(roomID, rackID types.UUID) (rack types.Rack, e error) {
-	_, e = c.Room(roomID.String()).Rack(rackID.String()).Receive(rack)
+	_, e = c.Room(roomID.String()).Rack(rackID.String()).Receive(&rack)
 	return
 }
 
@@ -80,7 +80,7 @@ func (c *Client) DeleteRoomRack(roomID, rackID types.UUID) error {
 // GetRoomRackLayout (GET /room/:datacenter_room_id_or_alias/rack/:rack_id_or_name/layout)
 // get the rack layout for the rack in the given room
 func (c *Client) GetRoomRackLayout(roomID, rackID types.UUID) (rack types.RackLayouts, e error) {
-	_, e = c.Room(roomID.String()).Rack(roomID.String()).Layout().Receive(rack)
+	_, e = c.Room(roomID.String()).Rack(roomID.String()).Layout().Receive(&rack)
 	return
 }
 
@@ -94,7 +94,7 @@ func (c *Client) UpdateRoomRackLayout(roomID, rackID types.UUID, layout types.Ra
 // GetRoomRackAssignments (GET /room/:datacenter_room_id_or_alias/rack/:rack_id_or_name/assignment)
 // retrieve the rack assignments for the rack in the given room
 func (c *Client) GetRoomRackAssignments(roomID, rackID types.UUID) (rack types.RackAssignments, e error) {
-	_, e = c.Room(roomID.String()).Rack(rackID.String()).Assignment().Receive(rack)
+	_, e = c.Room(roomID.String()).Rack(rackID.String()).Assignment().Receive(&rack)
 	return
 }
 
@@ -136,14 +136,14 @@ func (c *Client) DeleteRoomRackLinks(roomID, rackID types.UUID, phase types.Rack
 // GetSingleRoomRackLayoutByRU (GET /room/:datacenter_room_id_or_alias/rack/:rack_id_or_name/layout/:layout_id_or_rack_unit_start)
 // get the rack layout for a single named RU in a rack in a room
 func (c *Client) GetSingleRoomRackLayoutByRU(roomID, rackID types.UUID, ru string) (rack types.RackLayout, e error) {
-	_, e = c.Room(roomID.String()).Rack(rackID.String()).Layout(ru).Receive(rack)
+	_, e = c.Room(roomID.String()).Rack(rackID.String()).Layout(ru).Receive(&rack)
 	return
 }
 
 // GetSingleRoomRackLayoutByID (GET /room/:datacenter_room_id_or_alias/rack/:rack_id_or_name/layout/:layout_id_or_rack_unit_start)
 // get the rack layout for given UUID in a rack in a room
 func (c *Client) GetSingleRoomRackLayoutByID(roomID, rackID, layoutID types.UUID) (rack types.RackLayout, e error) {
-	_, e = c.Room(rackID.String()).Rack(rackID.String()).Layout(layoutID.String()).Receive(rack)
+	_, e = c.Room(rackID.String()).Rack(rackID.String()).Layout(layoutID.String()).Receive(&rack)
 	return
 }
 
