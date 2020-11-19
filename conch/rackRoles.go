@@ -4,7 +4,7 @@ import "github.com/joyent/kosh/conch/types"
 
 // GetAllRackRoles (GET /rack_role) returns a list of all rack roles
 func (c *Client) GetAllRackRoles() (roles types.RackRoles, e error) {
-	_, e = c.RackRole().Receive(roles)
+	_, e = c.RackRole().Receive(&roles)
 	return
 }
 
@@ -17,14 +17,14 @@ func (c *Client) CreateRackRole(role types.RackRoleCreate) error {
 // GetRackRoleByName (GET /rack_role/:rack_role_id_or_name)
 // retrieves the rack role for the given name
 func (c *Client) GetRackRoleByName(name string) (role types.RackRole, e error) {
-	_, e = c.RackRole(name).Receive(role)
+	_, e = c.RackRole(name).Receive(&role)
 	return
 }
 
 // GetRackRoleByID (GET /rack_role/:rack_role_id_or_name) retrieves the rack
 // role for the given UUID
 func (c *Client) GetRackRoleByID(id types.UUID) (role types.RackRole, e error) {
-	_, e = c.RackRole(id.String()).Receive(role)
+	_, e = c.RackRole(id.String()).Receive(&role)
 	return
 }
 
