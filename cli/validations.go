@@ -32,12 +32,10 @@ func validationCmd(cmd *cli.Cmd) {
 		cmd.Before = func() {
 			var e error
 			plan, e = conch.GetValidationPlanByName(*idArg)
-			if e != nil {
-				fatal(e)
-			}
+			fatalIf(e)
 
 			if (plan == types.ValidationPlan{}) {
-				fatal(errors.New("could not find the validation plan"))
+				fatalIf(errors.New("could not find the validation plan"))
 			}
 		}
 

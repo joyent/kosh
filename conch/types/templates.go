@@ -871,6 +871,40 @@ func (ul UsersTerse) ForEach(do func([]string)) {
 	}
 }
 
+func (ul Users) Len() int           { return len(ul) }
+func (ul Users) Swap(i, j int)      { ul[i], ul[j] = ul[j], ul[i] }
+func (ul Users) Less(i, j int) bool { return ul[i].Name < ul[j].Name }
+
+// Headers returns the list of headers for the table view
+func (ul Users) Headers() []string {
+	return []string{
+		"ID",
+		"Name",
+		"Email",
+		"Admin",
+		"Created",
+		"Last Seen",
+		"Last Login",
+		"PW",
+	}
+}
+
+// ForEach iterates over each item in the list and applies a function to it
+func (ul Users) ForEach(do func([]string)) {
+	for _, u := range ul {
+		do([]string{
+			template.CutUUID(u.ID.String()),
+			string(u.Name),
+			string(u.Email),
+			template.YesOrNo(u.IsAdmin),
+			template.TimeStr(u.Created),
+			template.TimeStr(u.LastSeen),
+			template.TimeStr(u.LastLogin),
+			template.YesOrNo(u.ForcePasswordChange),
+		})
+	}
+}
+
 const userTokenTemplate = `
 Token {{ .Name }}
 <<<<<<< HEAD

@@ -29,13 +29,11 @@ func buildsCmd(cmd *cli.Cmd) {
 	var conch *conch.Client
 	var display func(interface{}, error)
 
-	cmd.Before = config.Before(
-		requireAuth,
-		func(config Config) {
-			conch = config.ConchClient()
-			display = config.Renderer()
-		},
-	)
+	cmd.Before = func() {
+		config.requireAuth()
+		conch = config.ConchClient()
+		display = config.Renderer()
+	}
 
 	var startedSetByUser bool
 	var completedSetByUser bool
@@ -112,19 +110,16 @@ func buildCmd(cmd *cli.Cmd) {
 	buildNameArg := cmd.StringArg("NAME", "", "Name or ID of the build")
 	cmd.Spec = "NAME"
 
-	cmd.Before = config.Before(
-		requireAuth,
-		func(config Config) {
-			conch = config.ConchClient()
-			display = config.Renderer()
+	cmd.Before = func() {
+		config.requireAuth()
 
-			var e error
-			build, e = conch.GetBuildByName(*buildNameArg)
-			if e != nil {
-				fatal(e)
-			}
-		},
-	)
+		conch = config.ConchClient()
+		display = config.Renderer()
+
+		var e error
+		build, e = conch.GetBuildByName(*buildNameArg)
+		fatalIf(e)
+	}
 
 	cmd.Action = func() { display(build, nil) }
 
@@ -134,11 +129,10 @@ func buildCmd(cmd *cli.Cmd) {
 
 	cmd.Command("start", "Mark the build as started", func(cmd *cli.Cmd) {
 		cmd.Action = func() {
-			if e := conch.UpdateBuildByID(build.ID, types.BuildUpdate{
+			e := conch.UpdateBuildByID(build.ID, types.BuildUpdate{
 				Started: time.Now(),
-			}); e != nil {
-				fatal(e)
-			}
+			})
+			fatalIf(e)
 			display(conch.GetBuildByID(build.ID))
 		}
 	})
@@ -147,9 +141,9 @@ func buildCmd(cmd *cli.Cmd) {
 		cmd.Action = func() {
 			update := types.BuildUpdate{Completed: time.Now()}
 
-			if e := conch.UpdateBuildByID(build.ID, update); e != nil {
-				fatal(e)
-			}
+			e := conch.UpdateBuildByID(build.ID, update)
+			fatalIf(e)
+
 			display(conch.GetBuildByID(build.ID))
 		}
 	})
@@ -186,7 +180,7 @@ func buildCmd(cmd *cli.Cmd) {
 			cmd.Spec = "EMAIL [OPTIONS]"
 			cmd.Action = func() {
 				if !okBuildRole(*roleOpt) {
-					fatal(fmt.Errorf(
+					fatalIf(fmt.Errorf(
 						"'role' value must be one of: %s",
 						prettyBuildRoleList(),
 					))
@@ -252,15 +246,13 @@ func buildCmd(cmd *cli.Cmd) {
 			cmd.Spec = "NAME [OPTIONS]"
 			cmd.Action = func() {
 				if !okBuildRole(*roleOpt) {
-					fatal(fmt.Errorf(
+					fatalIf(fmt.Errorf(
 						"'role' value must be one of: %s",
 						prettyBuildRoleList(),
 					))
 				}
 				org, e := conch.GetOrganizationByName(*orgNameArg)
-				if e != nil {
-					fatal(e)
-				}
+				fatalIf(e)
 
 				conch.AddBuildOrganization(*buildNameArg, types.BuildAddOrganization{
 					org.ID,
@@ -327,13 +319,11 @@ func buildCmd(cmd *cli.Cmd) {
 			cmd.Spec = "ID [OPTIONS]"
 			cmd.Action = func() {
 				b, e := conch.GetBuildByName(*buildNameArg)
-				if e != nil {
-					fatal(e)
-				}
+				fatalIf(e)
+
 				d, e := conch.GetDeviceBySerial(*deviceIDArg)
-				if e != nil {
-					fatal(e)
-				}
+				fatalIf(e)
+
 				conch.DeleteBuildDeviceByID(b.ID, d.ID)
 				display(conch.GetAllBuildDevices(*buildNameArg))
 			}

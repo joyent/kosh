@@ -12,13 +12,11 @@ import (
 func racksCmd(cmd *cli.Cmd) {
 	var conch *conch.Client
 
-	cmd.Before = config.Before(
-		requireAuth,
-		requireSysAdmin,
-		func(c Config) {
-			conch = config.ConchClient()
-		},
-	)
+	cmd.Before = func() {
+		config.requireAuth()
+		config.requireSysAdmin()
+		conch = config.ConchClient()
+	}
 
 	cmd.Command("create", "Create a new rack", func(cmd *cli.Cmd) {
 		var (
@@ -41,41 +39,40 @@ func racksCmd(cmd *cli.Cmd) {
 			// `--name ""` which will pass the cli lib's requirement
 			// check but is still crap
 			if *nameOpt == "" {
-				fatal(errors.New("--name is required"))
+				fatalIf(errors.New("--name is required"))
 			}
 
 			if *roomAliasOpt == "" {
-				fatal(errors.New("--room is required"))
+				fatalIf(errors.New("--room is required"))
 			} else {
 				room, e := conch.GetRoomByAlias(*roomAliasOpt)
-				if e != nil {
-					fatal(e)
-				}
+				fatalIf(e)
+
 				if (room == types.DatacenterRoomDetailed{}) {
-					fatal(errors.New("could not find room"))
+					fatalIf(errors.New("could not find room"))
 				}
 				roomID = room.ID
 			}
 
 			if *roleNameOpt == "" {
-				fatal(errors.New("--role is required"))
+				fatalIf(errors.New("--role is required"))
 			} else {
 				role, e := conch.GetRackRoleByName(*roleNameOpt)
 				if e != nil {
-					fatal(e)
+					fatalIf(e)
 				}
 				if (role == types.RackRole{}) {
-					fatal(errors.New("could not find rack role"))
+					fatalIf(errors.New("could not find rack role"))
 				}
 				roleID = role.ID
 			}
 
 			if *buildNameOpt == "" {
-				fatal(errors.New("--build is required"))
+				fatalIf(errors.New("--build is required"))
 			} else {
 				build, e := conch.GetBuildByName(*buildNameOpt)
 				if e != nil {
-					fatal(e)
+					fatalIf(e)
 				}
 				buildID = build.ID
 			}
@@ -104,21 +101,20 @@ func rackCmd(cmd *cli.Cmd) {
 
 	cmd.Spec = "UUID"
 
-	cmd.Before = config.Before(
-		requireAuth,
-		func(config Config) {
-			conch = config.ConchClient()
-			display = config.Renderer()
+	cmd.Before = func() {
+		config.requireAuth()
+		conch = config.ConchClient()
+		display = config.Renderer()
 
-			var e error
-			rack, e = conch.GetRackByName(*idArg)
-			if e != nil {
-				fatal(e)
-			}
-			if (rack == types.Rack{}) {
-				fatal(errors.New("could not find the rack"))
-			}
-		})
+		var e error
+		rack, e = conch.GetRackByName(*idArg)
+		if e != nil {
+			fatalIf(e)
+		}
+		if (rack == types.Rack{}) {
+			fatalIf(errors.New("could not find the rack"))
+		}
+	}
 
 	cmd.Command("get", "Get a single rack", func(cmd *cli.Cmd) {
 		cmd.Action = func() { display(rack, nil) }
@@ -149,20 +145,20 @@ func rackCmd(cmd *cli.Cmd) {
 			if *roomAliasOpt != "" {
 				room, e := conch.GetRoomByAlias(*roomAliasOpt)
 				if e != nil {
-					fatal(e)
+					fatalIf(e)
 				}
 				if (room == types.DatacenterRoomDetailed{}) {
-					fatal(errors.New("could not find room"))
+					fatalIf(errors.New("could not find room"))
 				}
 				roomID = room.ID
 			}
 			if *roleNameOpt != "" {
 				role, e := conch.GetRackRoleByName(*roomAliasOpt)
 				if e != nil {
-					fatal(e)
+					fatalIf(e)
 				}
 				if (role == types.RackRole{}) {
-					fatal(errors.New("could not find rack role"))
+					fatalIf(errors.New("could not find rack role"))
 				}
 				roleID = role.ID
 			}
@@ -197,10 +193,11 @@ func rackCmd(cmd *cli.Cmd) {
 	})
 
 	cmd.Command("delete rm", "Delete a rack", func(cmd *cli.Cmd) {
-		cmd.Before = config.Before(
-			requireAuth,
-			requireSysAdmin,
-		)
+		cmd.Before = func() {
+			config.requireAuth()
+			config.requireSysAdmin()
+		}
+
 		cmd.Action = func() {
 			conch.DeleteRack(rack.ID)
 			fmt.Println("OK")
@@ -218,31 +215,30 @@ func rackCmd(cmd *cli.Cmd) {
 			cmd.Action = func() {
 				l, e := conch.GetRackLayout(rack.ID)
 				if e != nil {
-					fatal(e)
+					fatalIf(e)
 				}
 				fmt.Println(renderJSON(l))
 			}
 		})
 
 		cmd.Command("import", "Import the layout of this rack (using the same format as 'export')", func(cmd *cli.Cmd) {
-			var (
-				filePathArg  = cmd.StringArg("FILE", "-", "Path to a JSON file that defines the layout. '-' indicates STDIN")
-				overwriteOpt = cmd.BoolOpt("overwrite", false, "If the rack has an existing layout, *overwrite* it. This is a destructive action")
-			)
+			filePathArg := cmd.StringArg("FILE", "-", "Path to a JSON file that defines the layout. '-' indicates STDIN")
+			overwriteOpt := cmd.BoolOpt("overwrite", false, "If the rack has an existing layout, *overwrite* it. This is a destructive action")
+
 			cmd.Action = func() {
 				layout, e := conch.GetRackLayout(rack.ID)
 				if e != nil {
-					fatal(e)
+					fatalIf(e)
 				}
 				if len(layout) > 0 {
 					if !*overwriteOpt {
-						fatal(errors.New("rack already has a layout. use --overwrite to force"))
+						fatalIf(errors.New("rack already has a layout. use --overwrite to force"))
 					}
 				}
 
 				input, e := getInputReader(*filePathArg)
 				if e != nil {
-					fatal(e)
+					fatalIf(e)
 				}
 
 				update := conch.ReadRackLayoutUpdate(input)
@@ -257,7 +253,7 @@ func rackCmd(cmd *cli.Cmd) {
 		cmd.Action = func() {
 			input, err := getInputReader(*filePathArg)
 			if err != nil {
-				fatal(err)
+				fatalIf(err)
 			}
 			update := conch.ReadRackAssignmentUpdate(input)
 			conch.UpdateRackAssignments(rack.ID, update)

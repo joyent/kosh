@@ -14,9 +14,11 @@ const (
 	stagingURL    = "https://staging.conch.joyent.us"
 )
 
-func fatal(e error) {
-	fmt.Println(e)
-	cli.Exit(1)
+func fatalIf(e error) {
+	if e != nil {
+		fmt.Println(e)
+		cli.Exit(1)
+	}
 }
 
 func getInputReader(filePathArg string) (io.Reader, error) {
@@ -26,24 +28,26 @@ func getInputReader(filePathArg string) (io.Reader, error) {
 	return os.Open(filePathArg)
 }
 
-func requireAuth(c Config) {
+var config Config
+
+func (c Config) requireAuth() {
 	if c.ConchToken == "" {
 		fmt.Println("Need to provide --token or set KOSH_TOKEN")
 		cli.Exit(1)
 	}
 }
 
-func requireSysAdmin(c Config) {
+func (c Config) requireSysAdmin() {
 	if !c.ConchClient().IsSysAdmin() {
 		fmt.Println("This action requires Conch systems administrator privileges")
 		cli.Exit(1)
 	}
 }
 
-var config Config
-
 // NewApp creates a new kosh app, takes a cli.Config and returns an instance of cli.Cli
-func NewApp(config Config) *cli.Cli {
+func NewApp(c Config) *cli.Cli {
+	config = c
+
 	app := cli.App("kosh", "Command line interface for Conch")
 	app.Spec = "[-dejutvV]"
 
@@ -80,17 +84,18 @@ func NewApp(config Config) *cli.Cli {
 	app.BoolPtr(&config.Logger.LevelDebug, cli.BoolOpt{
 		Name:   "d debug",
 		Value:  false,
-		Desc:   "Enable Debugging output (for debugging purposes *very* noisy). ",
+		Desc:   "Enable Debugging output (*very* noisy). ",
 		EnvVar: "KOSH_DEBUG_MODE KOSH_DEBUG", // TODO in 4.0 remove KOSH_DEBUG_MODE
 	})
 
 	app.BoolPtr(&config.Logger.LevelInfo, cli.BoolOpt{
 		Name:   "v verbose",
 		Value:  false,
-		Desc:   "Enable Verbose Output",
+		Desc:   "Enable Verbose output",
 		EnvVar: "KOSH_VERBOSE_MODE KOSH_VERBOSE", // TODO in 4.0 remove KOSH_VERBOSE_MODE
 	})
 
+	app.Command("admin", "System Administration Commands", adminCmd)
 	app.Command("build b", "Work with a specific build", buildCmd)
 	app.Command("builds bs", "Work with builds", buildsCmd)
 	app.Command("datacenter dc", "Deal with a single datacenter", datacenterCmd)
@@ -135,7 +140,7 @@ func NewApp(config Config) *cli.Cli {
 			case "staging":
 				config.ConchURL = stagingURL
 			default:
-				fatal(errors.New("environment not one of production, staging, edge: perhaps you want --url?"))
+				fatalIf(errors.New("environment not one of production, staging, edge: perhaps you want --url?"))
 			}
 		}
 

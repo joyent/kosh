@@ -1,6 +1,11 @@
 package conch
 
-import "github.com/joyent/kosh/conch/types"
+import (
+	"encoding/json"
+	"io"
+
+	"github.com/joyent/kosh/conch/types"
+)
 
 // GetCurrentUser (GET /user/me) retrieves the user associated with the current
 // authentication
@@ -88,6 +93,7 @@ func (c *Client) DeleteCurrentUserToken(name string) error {
 // the given email
 func (c *Client) GetUserByEmail(email string) (user types.UserDetailed, e error) {
 	_, e = c.User(email).Receive(&user)
+	c.Logger.Debug(user)
 	return
 }
 
@@ -95,6 +101,12 @@ func (c *Client) GetUserByEmail(email string) (user types.UserDetailed, e error)
 // the given UUID
 func (c *Client) GetUserByID(id types.UUID) (user types.UserDetailed, e error) {
 	_, e = c.User(id.String()).Receive(&user)
+	return
+}
+
+// ReadUser takes an io.Reader and returns a UserDetailed object
+func (c *Client) ReadUser(r io.Reader) (user types.UserDetailed) {
+	json.NewDecoder(r).Decode(&user)
 	return
 }
 

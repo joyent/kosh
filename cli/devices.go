@@ -11,12 +11,12 @@ import (
 )
 
 func devicesCmd(cmd *cli.Cmd) {
-	cmd.Before = config.Before(requireAuth)
+	cmd.Before = config.requireAuth
 	cmd.Command("search s", "Search for devices", deviceSearchCmd)
 }
 
 func deviceSearchCmd(cmd *cli.Cmd) {
-	cmd.Before = config.Before(requireAuth)
+	cmd.Before = config.requireAuth
 	cmd.Command("setting", "Search for devices by exact setting value", searchBySettingCmd)
 	cmd.Command("tag", "Search for devices by exact tag value", searchByTagCmd)
 	cmd.Command("hostname", "Search for devices by exact hostname", searchByHostnameCmd)
@@ -228,9 +228,8 @@ func devicePreflightCmd(id *string) func(cmd *cli.Cmd) {
 			conch = config.ConchClient()
 			display = config.Renderer()
 			phase, e := conch.GetDevicePhase(*id)
-			if e != nil {
-				fatal(e)
-			}
+			fatalIf(e)
+
 			if phase != "integration" {
 				os.Stderr.WriteString("Warning: This device is no longer in the 'integration' phase. This data is likely to be inaccurate\n")
 			}
@@ -243,9 +242,7 @@ func devicePreflightCmd(id *string) func(cmd *cli.Cmd) {
 		cmd.Command("ipmi", "IPMI address for a device in preflight", func(cmd *cli.Cmd) {
 			cmd.Action = func() {
 				iface, e := conch.GetDeviceInterfaceByName(*id, "ipmi1")
-				if e != nil {
-					fatal(e)
-				}
+				fatalIf(e)
 				fmt.Println(iface.Ipaddr)
 			}
 		})
