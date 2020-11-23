@@ -15,7 +15,6 @@ func whoamiCmd(cmd *cli.Cmd) {
 }
 
 func userCmd(cmd *cli.Cmd) {
-	cmd.Before = config.requireAuth
 	cmd.Command("profile", "View your Conch profile", profileCmd)
 	cmd.Command("settings", "Get the settings for the current user", settingsCmd)
 	cmd.Command("setting", "Commands for dealing with a single setting for the current user", userSetting)
@@ -31,11 +30,17 @@ func tokensCmd(cmd *cli.Cmd) {
 		conch = config.ConchClient()
 		display = config.Renderer()
 	}
-	cmd.Action = func() { display(conch.GetCurrentUserTokens()) }
+
+	cmd.Action = func() {
+		config.requireAuth()
+		display(conch.GetCurrentUserTokens())
+	}
 
 	cmd.Command("get ls", "list the tokens for the current user", func(cmd *cli.Cmd) {
+		cmd.Before = config.requireAuth
 		cmd.Action = func() { display(conch.GetCurrentUserTokens()) }
 	})
+
 	cmd.Command("create new add", "Get the settings for the current user", func(cmd *cli.Cmd) {
 		name := cmd.StringArg("NAME", "", "The string name of a setting")
 		user := cmd.StringOpt("user u", "", "User name to use for authentication")
@@ -63,6 +68,8 @@ func tokenCmd(cmd *cli.Cmd) {
 	cmd.Spec = "NAME"
 
 	cmd.Before = func() {
+		config.requireAuth()
+
 		conch = config.ConchClient()
 		display = config.Renderer()
 
@@ -91,6 +98,7 @@ func tokenCmd(cmd *cli.Cmd) {
 }
 
 func profileCmd(cmd *cli.Cmd) {
+	cmd.Before = config.requireAuth
 	cmd.Action = func() {
 		conch := config.ConchClient()
 		display := config.Renderer()
@@ -100,6 +108,7 @@ func profileCmd(cmd *cli.Cmd) {
 }
 
 func settingsCmd(cmd *cli.Cmd) {
+	cmd.Before = config.requireAuth
 	cmd.Action = func() {
 		conch := config.ConchClient()
 		display := config.Renderer()
@@ -108,6 +117,7 @@ func settingsCmd(cmd *cli.Cmd) {
 }
 
 func userSetting(cmd *cli.Cmd) {
+	cmd.Before = config.requireAuth
 	name := *cmd.StringArg("NAME", "", "The string name of a setting")
 	cmd.Spec = "NAME"
 	cmd.Command("get", "Get a setting for the current user", userSettingGet(name))
