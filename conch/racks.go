@@ -7,6 +7,13 @@ import (
 	"github.com/joyent/kosh/conch/types"
 )
 
+// ReadRackCreate takes an io.Reader and returns a RackCreate
+// struct suitable for CreateRack
+func (c *Client) ReadRackCreate(r io.Reader) (rackCreate types.RackCreate) {
+	json.NewDecoder(r).Decode(&rackCreate)
+	return
+}
+
 // CreateRack (POST /rack) creates a new rack
 func (c *Client) CreateRack(rack types.RackCreate) error {
 	_, e := c.Rack().Post(rack).Send()

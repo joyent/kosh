@@ -85,6 +85,17 @@ func racksCmd(cmd *cli.Cmd) {
 			})
 		}
 	})
+	cmd.Command("import", "Import a new rack from json", func(cmd *cli.Cmd) {
+		cmd.Action = func() {
+			filePathArg := cmd.StringArg("FILE", "-", "Path to a JSON file that defines the layout. '-' indicates STDIN")
+
+			input, e := getInputReader(*filePathArg)
+			fatalIf(e)
+
+			rackCreate := conch.ReadRackCreate(input)
+			conch.CreateRack(rackCreate)
+		}
+	})
 }
 
 func rackCmd(cmd *cli.Cmd) {
@@ -237,9 +248,7 @@ func rackCmd(cmd *cli.Cmd) {
 				}
 
 				input, e := getInputReader(*filePathArg)
-				if e != nil {
-					fatalIf(e)
-				}
+				fatalIf(e)
 
 				update := conch.ReadRackLayoutUpdate(input)
 				conch.UpdateRackLayout(rack.ID, update)
