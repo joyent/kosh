@@ -107,7 +107,7 @@ func rackCmd(cmd *cli.Cmd) {
 	idArg := cmd.StringArg(
 		"UUID",
 		"",
-		"The UUID of the rack. Short UUIDs are *not* accepted, unless you are a Conch sysadmin",
+		"The UUID of the rack.",
 	)
 
 	cmd.Spec = "UUID"
