@@ -11,6 +11,7 @@ import (
 
 func racksCmd(cmd *cli.Cmd) {
 	var conch *conch.Client
+	var display func(interface{}, error)
 
 	cmd.Before = func() {
 		config.requireAuth()
@@ -83,6 +84,7 @@ func racksCmd(cmd *cli.Cmd) {
 				Phase:            types.DevicePhase(*phaseOpt),
 				BuildID:          buildID,
 			})
+			display(conch.GetRackByName(*nameOpt))
 		}
 	})
 	cmd.Command("import", "Import a new rack from json", func(cmd *cli.Cmd) {
@@ -94,6 +96,7 @@ func racksCmd(cmd *cli.Cmd) {
 
 			rackCreate := conch.ReadRackCreate(input)
 			conch.CreateRack(rackCreate)
+			display(conch.GetRackByName(string(rackCreate.Name)))
 		}
 	})
 }
