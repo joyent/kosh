@@ -73,7 +73,7 @@ func (c *Client) SetDeviceAssetTag(id string, tag types.DeviceAssetTag) error {
 // SetDeviceValidated (POST /device/:device_id_or_serial_number/validated) sets
 // the validated field on the given device. THIS IS DEPRECATED.
 func (c *Client) SetDeviceValidated(id string) error {
-	_, e := c.Device(id).Validated().Post("").Send()
+	_, e := c.Device(id).Validated().Post().Send()
 	return e
 }
 

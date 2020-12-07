@@ -129,7 +129,7 @@ func (c *Client) DeleteUser(email string) error {
 // revoke the authentication credentials for the user with hte given email.
 // DOES NOT AFFECT API TOKENS FOR THE USER
 func (c *Client) RevokeUserCredentials(email string) error {
-	_, e := c.User(email).Revoke().Post("").Send()
+	_, e := c.User(email).Revoke().Post().Send()
 	return e
 }
 

@@ -44,6 +44,6 @@ func (c *Client) FindOrCreateHardwareVendor(name string) (vendor types.HardwareV
 // CreateHardwareVendor (POST /hardware_vendor/:hardware_vendor_id_or_name)
 // createa a new hardware vendor with the given name
 func (c *Client) CreateHardwareVendor(name string) error {
-	_, e := c.HardwareVendor(name).Post("").Send()
+	_, e := c.HardwareVendor(name).Post().Send()
 	return e
 }

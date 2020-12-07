@@ -71,7 +71,7 @@ func datacenterCmd(cmd *cli.Cmd) {
 	idArg := cmd.StringArg(
 		"UUID",
 		"",
-		"The UUID of the datacenter. Short UUIDs (first segment) accepted",
+		"The UUID of the datacenter.",
 	)
 	cmd.Spec = "UUID"
 

@@ -341,9 +341,12 @@ func (c *Client) DeviceReport(id ...string) *Client {
 }
 
 // Post sets the HTTP method to POST and sets the JSON body to the given data
-func (c *Client) Post(data interface{}) *Client {
+func (c *Client) Post(data ...interface{}) *Client {
 	c = c.New()
-	c.Sling.Post("").BodyJSON(data)
+	c.Sling.Post("")
+	for _, d := range data {
+		c.Sling.BodyJSON(d)
+	}
 	return c
 }
 
@@ -401,6 +404,7 @@ func (c *Client) Receive(data interface{}) (*http.Response, error) {
 	res, err := c.Sling.ReceiveSuccess(data)
 	if c.Logger != nil {
 		c.Logger.Debug(res, err)
+		c.Logger.Debug(data)
 	}
 	if err != nil {
 		return res, err

@@ -136,14 +136,14 @@ func (c *Client) AddNewBuildDevice(name string, device types.BuildCreateDevices)
 // AddBuildDeviceByName - POST /build/:build_id_or_name/device/:device_id_or_serial_number
 func (c *Client) AddBuildDeviceByName(name, device string) error {
 	c.Logger.Info(fmt.Sprintf("adding device to build %v: %v", name, device))
-	_, e := c.Build(name).Device(device).Post("").Send()
+	_, e := c.Build(name).Device(device).Post().Send()
 	return e
 }
 
 // AddBuildDeviceByID - POST /build/:build_id_or_name/device/:device_id_or_serial_number
 func (c *Client) AddBuildDeviceByID(buildID, deviceID types.UUID) error {
 	c.Logger.Info(fmt.Sprintf("adding device to build %v: %v", buildID, deviceID))
-	_, e := c.Build(buildID.String()).Device(deviceID.String()).Post("").Send()
+	_, e := c.Build(buildID.String()).Device(deviceID.String()).Post().Send()
 	return e
 }
 
@@ -164,7 +164,7 @@ func (c *Client) GetBuildRacks(name string) (racks types.Racks, e error) {
 // AddBuildRackByID - POST /build/:build_id_or_name/rack/:rack_id_or_name
 func (c *Client) AddBuildRackByID(name, rack string) error {
 	c.Logger.Info(fmt.Sprintf("adding rack to build %v: %v", name, rack))
-	_, e := c.Build(name).Rack(rack).Post("").Send()
+	_, e := c.Build(name).Rack(rack).Post().Send()
 	return e
 }
 

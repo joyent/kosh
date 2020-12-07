@@ -7,6 +7,13 @@ import (
 	"github.com/joyent/kosh/conch/types"
 )
 
+// ReadRackCreate takes an io.Reader and returns a RackCreate
+// struct suitable for CreateRack
+func (c *Client) ReadRackCreate(r io.Reader) (rackCreate types.RackCreate, e error) {
+	e = json.NewDecoder(r).Decode(&rackCreate)
+	return
+}
+
 // CreateRack (POST /rack) creates a new rack
 func (c *Client) CreateRack(rack types.RackCreate) error {
 	_, e := c.Rack().Post(rack).Send()
@@ -48,15 +55,15 @@ func (c *Client) GetRackLayout(id types.UUID) (rack types.RackLayouts, e error) 
 
 // UpdateRackLayout (POST /rack/:rack_id_or_name/layout) updates the rack
 // layout for the rack with the given UUID
-func (c *Client) UpdateRackLayout(id types.UUID, layout types.RackLayoutUpdate) error {
+func (c *Client) UpdateRackLayout(id types.UUID, layout []types.RackLayoutUpdate) error {
 	_, e := c.Rack(id.String()).Layout().Post(layout).Send()
 	return e
 }
 
 // ReadRackLayoutUpdate takes an io.Reader and returns a RackLayoutUpdate
 // struct suitable for UpdateRackLayout
-func (c *Client) ReadRackLayoutUpdate(r io.Reader) (update types.RackLayoutUpdate) {
-	json.NewDecoder(r).Decode(&update)
+func (c *Client) ReadRackLayoutUpdate(r io.Reader) (update []types.RackLayoutUpdate, e error) {
+	e = json.NewDecoder(r).Decode(&update)
 	return
 }
 
@@ -76,8 +83,8 @@ func (c *Client) UpdateRackAssignments(id types.UUID, rack types.RackAssignmentU
 
 // ReadRackAssignmentUpdate takes an io reader and returns a RackAssignmentUpdates
 // struct suitable for UpdateRackAssignments
-func (c *Client) ReadRackAssignmentUpdate(r io.Reader) (update types.RackAssignmentUpdates) {
-	json.NewDecoder(r).Decode(&update)
+func (c *Client) ReadRackAssignmentUpdate(r io.Reader) (update types.RackAssignmentUpdates, e error) {
+	e = json.NewDecoder(r).Decode(&update)
 	return
 }
 

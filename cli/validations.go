@@ -26,7 +26,7 @@ func validationCmd(cmd *cli.Cmd) {
 	cmd.Command("plan", "Work with a specific validation plan", func(cmd *cli.Cmd) {
 		var plan types.ValidationPlan
 
-		idArg := cmd.StringArg("UUID", "", "UUID of the Validation Plan, Short IDs accepted")
+		idArg := cmd.StringArg("UUID", "", "UUID of the Validation Plan")
 		cmd.Spec = "UUID"
 
 		cmd.Before = func() {

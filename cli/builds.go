@@ -330,7 +330,7 @@ func buildCmd(cmd *cli.Cmd) {
 		})
 	})
 
-	cmd.Command("racks", "Manage racks in a specific build", func(cmd *cli.Cmd) {
+	cmd.Command("racks rs", "Manage racks in a specific build", func(cmd *cli.Cmd) {
 		// default to list
 		cmd.Action = func() { display(conch.GetBuildRacks(*buildNameArg)) }
 

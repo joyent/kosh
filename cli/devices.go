@@ -65,7 +65,7 @@ func deviceCmd(cmd *cli.Cmd) {
 	id := cmd.StringArg(
 		"DEVICE",
 		"",
-		"UUID or serial number of the device. Short UUIDs are *not* accepted",
+		"UUID or serial number of the device.",
 	)
 	cmd.Spec = "DEVICE"
 
