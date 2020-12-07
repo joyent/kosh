@@ -369,7 +369,6 @@ type RackAssignmentDeletes []RackAssignmentDelete
 // RackAssignmentUpdate is a struct
 type RackAssignmentUpdate struct {
 	DeviceAssetTag     interface{}        `json:"device_asset_tag,omitempty"`
-	DeviceID           UUID               `json:"device_id,omitempty"`
 	DeviceSerialNumber DeviceSerialNumber `json:"device_serial_number,omitempty"`
 	RackUnitStart      PositiveInteger    `json:"rack_unit_start"`
 }

@@ -50,7 +50,7 @@ func TestRacks(t *testing.T) {
 		{
 			URL:    "/rack/00000000-0000-0000-0000-000000000000/layout/",
 			Method: "POST",
-			Do:     func(c *conch.Client) { c.UpdateRackLayout(types.UUID{}, types.RackLayoutUpdate{}) },
+			Do:     func(c *conch.Client) { c.UpdateRackLayout(types.UUID{}, []types.RackLayoutUpdate{}) },
 		},
 		{
 			URL:    "/rack/00000000-0000-0000-0000-000000000000/assignment/",

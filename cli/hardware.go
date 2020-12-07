@@ -22,7 +22,7 @@ func cmdCreateProduct(cmd *cli.Cmd) {
 		cpuType           = cmd.StringOpt("cpu-type", "", "CPU type for the product")
 	)
 
-	cmd.Spec = "--sku --name --alias --vendor --validation-plan --purpose --bios-firmware --cpu-type [OPTIONS]"
+	cmd.Spec = "[OPTIONS]"
 	cmd.Action = func() {
 		conch := config.ConchClient()
 		display := config.Renderer()

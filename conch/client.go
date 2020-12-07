@@ -404,6 +404,7 @@ func (c *Client) Receive(data interface{}) (*http.Response, error) {
 	res, err := c.Sling.ReceiveSuccess(data)
 	if c.Logger != nil {
 		c.Logger.Debug(res, err)
+		c.Logger.Debug(data)
 	}
 	if err != nil {
 		return res, err

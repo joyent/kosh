@@ -11,7 +11,7 @@ import (
 
 func racksCmd(cmd *cli.Cmd) {
 	var conch *conch.Client
-	var display func(interface{}, error)
+	//	var display func(interface{}, error)
 
 	cmd.Before = func() {
 		config.requireAuth()
@@ -77,26 +77,27 @@ func racksCmd(cmd *cli.Cmd) {
 				}
 				buildID = build.ID
 			}
-			conch.CreateRack(types.RackCreate{
+
+			fatalIf(conch.CreateRack(types.RackCreate{
 				Name:             types.MojoRelaxedPlaceholder(*nameOpt),
 				DatacenterRoomID: roomID,
 				RackRoleID:       roleID,
 				Phase:            types.DevicePhase(*phaseOpt),
 				BuildID:          buildID,
-			})
-			display(conch.GetRackByName(*nameOpt))
+			}))
 		}
 	})
 	cmd.Command("import", "Import a new rack from json", func(cmd *cli.Cmd) {
 		cmd.Action = func() {
-			filePathArg := cmd.StringArg("FILE", "-", "Path to a JSON file that defines the layout. '-' indicates STDIN")
+			filePathArg := cmd.StringArg("FILE", "-", "Path to a JSON file that defines the rack. '-' indicates STDIN")
 
 			input, e := getInputReader(*filePathArg)
 			fatalIf(e)
 
-			rackCreate := conch.ReadRackCreate(input)
-			conch.CreateRack(rackCreate)
-			display(conch.GetRackByName(string(rackCreate.Name)))
+			rackCreate, e := conch.ReadRackCreate(input)
+			fatalIf(e)
+
+			fatalIf(conch.CreateRack(rackCreate))
 		}
 	})
 }
@@ -122,9 +123,8 @@ func rackCmd(cmd *cli.Cmd) {
 
 		var e error
 		rack, e = conch.GetRackByName(*idArg)
-		if e != nil {
-			fatalIf(e)
-		}
+		fatalIf(e)
+
 		if (rack == types.Rack{}) {
 			fatalIf(errors.New("could not find the rack"))
 		}
@@ -219,6 +219,9 @@ func rackCmd(cmd *cli.Cmd) {
 	})
 
 	cmd.Command("layout", "The layout of the rack", func(cmd *cli.Cmd) {
+		// default action is 'get'
+		cmd.Action = func() { display(conch.GetRackLayout(rack.ID)) }
+
 		cmd.Command("get", "Get the layout of a rack", func(cmd *cli.Cmd) {
 			cmd.Action = func() {
 				display(conch.GetRackLayout(rack.ID))
@@ -241,9 +244,8 @@ func rackCmd(cmd *cli.Cmd) {
 
 			cmd.Action = func() {
 				layout, e := conch.GetRackLayout(rack.ID)
-				if e != nil {
-					fatalIf(e)
-				}
+				fatalIf(e)
+
 				if len(layout) > 0 {
 					if !*overwriteOpt {
 						fatalIf(errors.New("rack already has a layout. use --overwrite to force"))
@@ -253,7 +255,11 @@ func rackCmd(cmd *cli.Cmd) {
 				input, e := getInputReader(*filePathArg)
 				fatalIf(e)
 
-				update := conch.ReadRackLayoutUpdate(input)
+				update, e := conch.ReadRackLayoutUpdate(input)
+				if e != nil {
+					fatalIf(fmt.Errorf("problem reading Rack Layout: %s", e))
+				}
+
 				conch.UpdateRackLayout(rack.ID, update)
 				fmt.Println("OK")
 			}
@@ -267,7 +273,8 @@ func rackCmd(cmd *cli.Cmd) {
 			if err != nil {
 				fatalIf(err)
 			}
-			update := conch.ReadRackAssignmentUpdate(input)
+			update, e := conch.ReadRackAssignmentUpdate(input)
+			fatalIf(e)
 			conch.UpdateRackAssignments(rack.ID, update)
 		}
 	})
